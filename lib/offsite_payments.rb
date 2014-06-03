@@ -17,6 +17,8 @@ require "offsite_payments/notification"
 require "offsite_payments/return"
 require "offsite_payments/integrations"
 
+I18n.enforce_available_locales = false
+
 module OffsitePayments
   # Return the matching integration module
   # You can then get the notification from the module
