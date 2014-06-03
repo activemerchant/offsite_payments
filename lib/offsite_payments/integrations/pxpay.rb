@@ -1,3 +1,5 @@
+require 'rexml/document'
+
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Pxpay

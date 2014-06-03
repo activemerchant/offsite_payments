@@ -17,7 +17,10 @@ class IntegrationGenerator < Thor::Group
 
   def generate
     template "templates/integration.rb", "#{lib}.rb"
-    template "templates/integration_test.rb", "#{test_dir}/#{identifier}_test.rb"
+
+    template "templates/module_test.rb", "#{test_dir}/integrations/#{identifier}_module_test.rb"
+    template "templates/helper_test.rb", "#{test_dir}/integrations/#{identifier}_helper_test.rb"
+    template "templates/notification_test.rb", "#{test_dir}/integrations/#{identifier}_notification_test.rb"
   end
 
   protected

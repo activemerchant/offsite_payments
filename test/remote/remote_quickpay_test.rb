@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RemoteQuickPayIntegrationTest < Test::Unit::TestCase
+class RemoteQuickPayTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup

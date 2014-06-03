@@ -1,8 +1,8 @@
 require 'test_helper'
-require 'remote/integrations/remote_integration_helper'
+require 'remote_test_helper'
 
-class RemoteBitPayIntegrationTest < Test::Unit::TestCase
-  include RemoteIntegrationHelper
+class RemoteBitPayTest < Test::Unit::TestCase
+  include RemoteTestHelper
 
   def setup
     @api_key = fixtures(:bit_pay)[:api_key]

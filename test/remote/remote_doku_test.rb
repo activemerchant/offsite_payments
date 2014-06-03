@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RemoteDokuIntegrationTest < Test::Unit::TestCase
+class RemoteDokuTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup

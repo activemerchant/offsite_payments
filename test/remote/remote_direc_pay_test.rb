@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RemoteDirecPayIntegrationTest < Test::Unit::TestCase
+class RemoteDirecPayTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
@@ -13,7 +13,7 @@ class RemoteDirecPayIntegrationTest < Test::Unit::TestCase
   end
 
   def test_return_is_always_acknowledged
-    assert_equal "https://test.timesofmoney.com/direcpay/secure/dpMerchantTransaction.jsp", DirecPay.service_url
+    assert_equal "https://test.direcpay.com/direcpay/secure/dpMerchantTransaction.jsp", DirecPay.service_url
     assert_nothing_raised do
       assert_equal true, @notification.acknowledge
     end

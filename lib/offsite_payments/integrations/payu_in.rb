@@ -1,6 +1,3 @@
-require 'digest/sha2'
-require 'bigdecimal'
-
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module PayuIn

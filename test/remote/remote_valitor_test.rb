@@ -1,9 +1,9 @@
 require 'test_helper'
-require 'remote/integrations/remote_integration_helper'
+require 'remote_test_helper'
 require 'nokogiri'
 
-class RemoteValitorIntegrationTest < Test::Unit::TestCase
-  include RemoteIntegrationHelper
+class RemoteValitorTest < Test::Unit::TestCase
+  include RemoteTestHelper
 
   def setup
     @order = "order#{generate_unique_id}"

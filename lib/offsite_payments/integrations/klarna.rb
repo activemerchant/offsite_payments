@@ -1,5 +1,3 @@
-require 'digest'
-
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Klarna

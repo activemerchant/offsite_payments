@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RemotePaypalIntegrationTest < Test::Unit::TestCase
+class RemotePaypalTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup

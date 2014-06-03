@@ -1,7 +1,7 @@
 require 'test_helper'
-require 'remote/integrations/remote_integration_helper'
+require 'remote_test_helper'
 
-class RemotePxpayIntegrationTest < Test::Unit::TestCase
+class RemotePxpayTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
   include ActionViewHelperTestHelper
 

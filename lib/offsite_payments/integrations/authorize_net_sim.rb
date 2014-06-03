@@ -1,6 +1,3 @@
-require 'active_support/version' # for ActiveSupport2.3
-require 'active_support/core_ext/float/rounding.rb' unless ActiveSupport::VERSION::MAJOR > 3 # Float#round(precision)
-
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module AuthorizeNetSim

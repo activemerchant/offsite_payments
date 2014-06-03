@@ -22,8 +22,6 @@ Gem::Specification.new do |s|
   s.files = Dir['CHANGELOG', 'README.md', 'MIT-LICENSE', 'lib/**/*']
   s.require_path = 'lib'
 
-  s.has_rdoc = true if Gem::VERSION < '1.7.0'
-
   s.add_dependency('activesupport', '>= 3.0.0', '< 5.0.0')
   s.add_dependency('i18n', '~> 0.5')
   s.add_dependency('money', '< 7.0.0')

@@ -1,3 +1,5 @@
+require 'builder'
+
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     # Platron API: www.platron.ru/PlatronAPI.pdf‎

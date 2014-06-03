@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RemoteMollieIdealIntegrationTest < Test::Unit::TestCase
+class RemoteMollieIdealTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup

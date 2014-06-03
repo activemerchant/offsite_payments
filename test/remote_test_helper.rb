@@ -3,9 +3,13 @@ require 'action_view/base'
 require 'launchy'
 require 'mongrel' unless defined?(JRUBY_VERSION)
 
-module RemoteIntegrationHelper
+module RemoteTestHelper
   class FakeView < ActionView::Base
     include OffsitePayments::ActionViewHelper
+
+    def protect_against_forgery?
+      false
+    end
   end
 
   def submit(string)
