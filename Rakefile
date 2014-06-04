@@ -9,24 +9,25 @@ rescue LoadError => e
   require 'rubygems'
 end
 
+require 'bundler/gem_tasks'
 require 'rake'
 require 'rake/testtask'
 
 task :gem => :build
 task :build do
   raise "Please set a private key to sign the gem" unless ENV['GEM_PRIVATE_KEY']
-  system "gem build activemerchant.gemspec"
+  system "gem build offsite_payments.gemspec"
 end
 
 task :install => :build do
-  system "gem install activemerchant-#{ActiveMerchant::VERSION}.gem"
+  system "gem install offsite_payments-#{OffsitePayments::VERSION}.gem"
 end
 
 task :release => :build do
-  system "git tag -a v#{ActiveMerchant::VERSION} -m 'Tagging #{ActiveMerchant::VERSION}'"
+  system "git tag -a v#{OffsitePayments::VERSION} -m 'Tagging #{OffsitePayments::VERSION}'"
   system "git push --tags"
-  system "gem push activemerchant-#{ActiveMerchant::VERSION}.gem"
-  system "rm activemerchant-#{ActiveMerchant::VERSION}.gem"
+  system "gem push offsite_payments-#{OffsitePayments::VERSION}.gem"
+  system "rm offsite_payments-#{OffsitePayments::VERSION}.gem"
 end
 
 desc "Run the unit test suite"
