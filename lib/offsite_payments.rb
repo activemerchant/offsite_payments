@@ -16,6 +16,7 @@ require "offsite_payments/helper"
 require "offsite_payments/notification"
 require "offsite_payments/return"
 require "offsite_payments/integrations"
+require "offsite_payments/action_view_helper"
 
 I18n.enforce_available_locales = false
 
