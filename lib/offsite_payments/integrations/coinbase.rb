@@ -15,6 +15,10 @@ module OffsitePayments #:nodoc:
         Notification.new(post)
       end
 
+      def self.return(query_string, options = {})
+        Return.new(query_string)
+      end
+
       class Helper < OffsitePayments::Helper
         # account should be a Coinbase API key; see https://coinbase.com/account/integrations
         # options[:credential2] should be the corresponding API secret
@@ -181,6 +185,9 @@ module OffsitePayments #:nodoc:
         def parse(post)
           @params = post['order']
         end
+      end
+
+      class Return < OffsitePayments::Return
       end
     end
   end
