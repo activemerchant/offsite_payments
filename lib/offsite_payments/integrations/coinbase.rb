@@ -36,17 +36,13 @@ module OffsitePayments #:nodoc:
 
         def form_fields
           uri = URI.parse(Coinbase.buttoncreate_url)
-          http = Net::HTTP.new(uri.host, uri.port)
-          http.use_ssl = true
-
-          request = Net::HTTP::Post.new(uri.request_uri)
 
           title = @options[:description]
           if title.nil?
             title = "Your Order"
           end
 
-          request.body = {
+          request_body = {
             'button[name]' => title,
             'button[price_string]' => @options[:amount],
             'button[price_currency_iso]' => @options[:currency],
@@ -57,14 +53,7 @@ module OffsitePayments #:nodoc:
             'api_key' => @account
           }.to_query
 
-          # Authentication
-          nonce = (Time.now.to_f * 1e6).to_i
-          hmac_message = nonce.to_s + Coinbase.buttoncreate_url + request.body
-          request['ACCESS_KEY'] = @account
-          request['ACCESS_SIGNATURE'] = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), @options[:credential2], hmac_message)
-          request['ACCESS_NONCE'] = nonce.to_s
-
-          data = http.request(request).body
+          data = Coinbase.do_request(uri, @account, @options[:credential2], request_body)
           json = JSON.parse(data)
 
           if json.nil?
@@ -136,18 +125,7 @@ module OffsitePayments #:nodoc:
 
           uri = URI.parse(Coinbase.notification_confirmation_url % transaction_id)
 
-          request = Net::HTTP::Get.new(uri.path)
-
-          http = Net::HTTP.new(uri.host, uri.port)
-          http.use_ssl        = true
-
-          # Authentication
-          nonce = (Time.now.to_f * 1e6).to_i
-          request['ACCESS_KEY'] = authcode[:api_key]
-          request['ACCESS_SIGNATURE'] = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), authcode[:api_secret], nonce.to_s + uri.to_s)
-          request['ACCESS_NONCE'] = nonce.to_s
-
-          response = http.request(request).body
+          response = Coinbase.do_request(uri, authcode[:api_key], authcode[:api_secret])
           order = JSON.parse(response)
 
           if order.nil?
@@ -169,6 +147,34 @@ module OffsitePayments #:nodoc:
       end
 
       class Return < OffsitePayments::Return
+      end
+
+      protected
+
+      def self.do_request(uri, api_key, api_secret, post_body = nil)
+
+        nonce = (Time.now.to_f * 1e6).to_i
+        hmac_message = nonce.to_s + uri.to_s
+
+        if post_body
+          request = Net::HTTP::Post.new(uri.request_uri)
+          request.body = post_body
+          hmac_message = hmac_message + request.body
+        else
+          request = Net::HTTP::Get.new(uri.path)
+        end
+
+        puts "going to #{uri.path} #{uri.host} #{uri.port}"
+
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+
+        # Authentication
+        request['ACCESS_KEY'] = api_key
+        request['ACCESS_SIGNATURE'] = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), api_secret, hmac_message)
+        request['ACCESS_NONCE'] = nonce.to_s
+
+        http.request(request).body
       end
     end
   end
