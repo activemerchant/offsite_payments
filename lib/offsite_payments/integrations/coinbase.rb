@@ -30,28 +30,9 @@ module OffsitePayments #:nodoc:
           @options = options
         end
 
-        mapping :amount, ''
-
-        mapping :order, ''
-
-        mapping :customer, :first_name => '',
-                           :last_name  => '',
-                           :email      => '',
-                           :phone      => ''
-
-        mapping :billing_address, :city     => '',
-                                  :address1 => '',
-                                  :address2 => '',
-                                  :state    => '',
-                                  :zip      => '',
-                                  :country  => ''
-
         mapping :notify_url, 'notify_url'
         mapping :return_url, 'return_url'
         mapping :cancel_return_url, 'cancel_return_url'
-        mapping :description, ''
-        mapping :tax, ''
-        mapping :shipping, ''
 
         def form_fields
           uri = URI.parse(Coinbase.buttoncreate_url)
