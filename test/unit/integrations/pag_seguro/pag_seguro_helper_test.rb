@@ -156,4 +156,12 @@ class PagSeguroHelperTest < Test::Unit::TestCase
     @helper.customer :first_name => '  Cody  Yo ', :last_name => 'Fau  ser     ', :email => 'cody@example.com', phone: "71 98765432"
     assert_field 'senderName', 'Cody Yo Fau ser'
   end
+
+  def test_fetch_token_raise_view_helper_error_if_ETIMEDOUT_error
+    Net::HTTP.any_instance.expects(:request).raises(Errno::ETIMEDOUT, "Connection timed out")
+
+    assert_raise ActionViewHelperError do
+      @helper.fetch_token
+    end
+  end
 end

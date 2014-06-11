@@ -108,7 +108,7 @@ module OffsitePayments #:nodoc:
           check_for_errors(response, xml)
 
           extract_token(xml)
-        rescue Timeout::Error, Errno::ECONNRESET => e
+        rescue Timeout::Error, Errno::ECONNRESET, Errno::ETIMEDOUT => e
           raise ActionViewHelperError, "Erro ao conectar-se ao PagSeguro. Por favor, tente novamente."
         end
 
