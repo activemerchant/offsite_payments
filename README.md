@@ -49,6 +49,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 * [PagSeguro](http://www.pagseguro.com.br/) - BR
 * [Paxum](https://www.paxum.com/)
 * [PayPal Website Payments Standard](https://www.paypal.com/cgi-bin/webscr?cmd#_wp-standard-overview-outside)
+* [PayDollar](http://www.paydollar.com)
 * [Paysbuy](https://www.paysbuy.com/) - TH
 * [Platron](https://www.platron.ru/) - RU
 * [RBK Money](https://rbkmoney.ru/) - RU
