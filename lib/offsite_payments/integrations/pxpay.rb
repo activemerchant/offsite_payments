@@ -58,6 +58,8 @@ module OffsitePayments #:nodoc:
           end
 
           url.to_s
+        rescue ActiveMerchant::ConnectionError
+          raise ActionViewHelperError, "A connection error occurred while contacting the payment gateway. Please try again."
         end
 
         def form_method
