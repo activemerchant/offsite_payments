@@ -84,11 +84,13 @@ module OffsitePayments #:nodoc:
         end
 
         def customer(params = {})
-          phone = area_code_and_number(params[:phone])
           full_name = remove_excessive_whitespace("#{params[:first_name]} #{params[:last_name]}")
 
-          add_field("senderAreaCode", phone[0])
-          add_field("senderPhone", phone[1])
+          if phone = area_code_and_number(params[:phone])
+            add_field("senderAreaCode", phone[0])
+            add_field("senderPhone", phone[1])
+          end
+
           add_field("senderEmail", params[:email])
           add_field('senderName', full_name)
         end
@@ -113,6 +115,7 @@ module OffsitePayments #:nodoc:
         end
 
         def area_code_and_number(phone)
+          return if phone.nil?
           phone.gsub!(/[^\d]/, '')
 
           ddd    = phone.slice(0..1)
