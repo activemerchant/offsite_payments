@@ -138,9 +138,12 @@ module OffsitePayments #:nodoc:
         def request_redirect
           MollieIdeal.create_payment(token, redirect_paramaters)
         rescue ActiveMerchant::ResponseError => e
-          if %w(401 403 422).include?(e.response.code)
+          case e.response.code
+          when '401', '403', '422'
             error = JSON.parse(e.response.body)['error']['message']
             raise ActionViewHelperError, error
+          when '503'
+            raise ActionViewHelperError, 'Service temporarily unavailable. Please try again.'
           else
             raise
           end

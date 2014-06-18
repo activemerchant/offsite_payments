@@ -42,6 +42,14 @@ class MollieIdealHelperTest < Test::Unit::TestCase
     end
   end
 
+  def test_credential_based_url_server_errors
+    @mock_api.expects(:post_request).raises(ActiveMerchant::ResponseError.new(stub(:code => "503", :message => "Service Unavailable")))
+
+    assert_raises ActionViewHelperError do
+      @helper.credential_based_url
+    end
+  end
+
   def test_raises_without_required_options
     assert_raises(ArgumentError) { MollieIdeal::Helper.new('order-500','1234567', @required_options.merge(:redirect_param => nil)) }
     assert_raises(ArgumentError) { MollieIdeal::Helper.new('order-500','1234567', @required_options.merge(:return_url => nil)) }
