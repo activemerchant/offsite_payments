@@ -78,6 +78,16 @@ class PxpayModuleTest < Test::Unit::TestCase
     assert helper.redirect_parameters.empty?
   end
 
+  def test_credential_based_url_connection_error
+    Pxpay::Helper.any_instance.expects(:ssl_post).raises(ActiveMerchant::ConnectionError)
+
+    helper = Pxpay::Helper.new('44', @username, @service_options.slice(:amount, :return_url, :credential2))
+
+    assert_raises ActionViewHelperError do
+      helper.credential_based_url
+    end
+  end
+
   private
 
   def valid_response
