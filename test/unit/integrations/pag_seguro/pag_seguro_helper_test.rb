@@ -115,6 +115,12 @@ class PagSeguroHelperTest < Test::Unit::TestCase
     assert_field 'itemDescription1', 'Some description'
   end
 
+  def test_no_phone_number
+    @helper.customer :first_name => 'Cody', :last_name => 'Fauser', :email => 'cody@example.com'
+    assert_field 'senderAreaCode', nil
+    assert_field 'senderPhone', nil
+  end
+
   def test_get_token_should_get_the_token
     Net::HTTP.any_instance.expects(:request).returns(stub(code: "200" , body: '<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"yes\"?><checkout><code>E20521EF6C6C159994DFFF8F5A4C3ED7</code><date>2014-02-12T02:10:25.000-02:00</date></checkout>"'))
     assert_equal "E20521EF6C6C159994DFFF8F5A4C3ED7", @helper.fetch_token
