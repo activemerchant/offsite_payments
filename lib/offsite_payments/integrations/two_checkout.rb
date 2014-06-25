@@ -82,9 +82,6 @@ module OffsitePayments #:nodoc:
         # Overrides Approved URL for return process redirects
         mapping :return_url, 'x_receipt_link_url'
 
-        # notifications are sent via static URLs in the Instant Notification Settings of 2Checkout admin
-        mapping :notify_url, 'notify_url'
-
         # Allow seller to indicate the step of the checkout page
         # Possible values: ‘review-cart’, ‘shipping-information’, ‘shipping-method’, ‘billing-information’ and ‘payment-method’
         mapping :purchase_step, 'purchase_step'
