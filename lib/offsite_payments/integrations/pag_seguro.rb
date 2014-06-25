@@ -70,7 +70,7 @@ module OffsitePayments #:nodoc:
           add_field('shippingAddressCity',       params[:city].slice(0, 60))     if params[:city]
           add_field('shippingAddressStreet',     params[:address1].slice(0, 80)) if params[:address1]
           add_field('shippingAddressComplement', params[:address2].slice(0, 40)) if params[:address2]
-          add_field('shippingAddressState',      params[:state].slice(0, 10))    if params[:state]
+          add_field('shippingAddressState',      params[:state])
           add_field('shippingAddressPostalCode', params[:zip].delete("^0-9").slice(0, 8)) if params[:zip]
           add_field('shippingAddressCountry',    "BRA")
         end
