@@ -71,13 +71,14 @@ class PagSeguroHelperTest < Test::Unit::TestCase
 
   def test_address_mapping
     @helper.billing_address :address1 => '1 My Street',
-                            :address2 => '',
+                            :address2 => 'Ed. Por do Sol, Apt 1033',
                             :city => 'Leeds',
                             :state => 'SP',
                             :zip => 'LS2 7EE',
                             :country  => 'CA'
 
     assert_field 'shippingAddressStreet', '1 My Street'
+    assert_field 'shippingAddressComplement', 'Ed. Por do Sol, Apt 1033'
     assert_field 'shippingAddressCity', 'Leeds'
     assert_field 'shippingAddressState', 'SP'
     assert_field 'shippingAddressPostalCode', 'LS2 7EE'

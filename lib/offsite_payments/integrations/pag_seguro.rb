@@ -64,7 +64,7 @@ module OffsitePayments #:nodoc:
 
         mapping :billing_address, :city     => 'shippingAddressCity',
                                   :address1 => 'shippingAddressStreet',
-                                  :address2 => 'shippingAddressNumber',
+                                  :address2 => 'shippingAddressComplement',
                                   :state    => 'shippingAddressState',
                                   :zip      => 'shippingAddressPostalCode',
                                   :country  => 'shippingAddressCountry'
