@@ -35,6 +35,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 * [A1Agregator](http://a1agregator.ru/) - RU
 * [Authorize.Net SIM](http://developer.authorize.net/api/sim/) - US
 * [Banca Sella GestPay](https://www.gestpay.it/)
+* [BitPay](https://bitpay.com/)
 * [Chronopay](http://www.chronopay.com)
 * [DirecPay](http://www.timesofmoney.com/direcpay/jsp/home.jsp)
 * [Direct-eBanking / sofortueberweisung.de by Payment-Networks AG](https://www.payment-network.com/deb_com_en/merchantarea/home) - DE, AT, CH, BE, UK, NL
