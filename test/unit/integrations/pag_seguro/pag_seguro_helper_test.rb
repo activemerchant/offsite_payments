@@ -74,20 +74,36 @@ class PagSeguroHelperTest < Test::Unit::TestCase
                             :address2 => 'Ed. Por do Sol, Apt 1033',
                             :city => 'Leeds',
                             :state => 'SP',
-                            :zip => 'LS2 7EE',
+                            :zip => '41825-855',
                             :country  => 'CA'
 
     assert_field 'shippingAddressStreet', '1 My Street'
     assert_field 'shippingAddressComplement', 'Ed. Por do Sol, Apt 1033'
     assert_field 'shippingAddressCity', 'Leeds'
     assert_field 'shippingAddressState', 'SP'
-    assert_field 'shippingAddressPostalCode', 'LS2 7EE'
-    assert_field 'shippingAddressCountry', 'CA'
+    assert_field 'shippingAddressPostalCode', '41825855'
+    assert_field 'shippingAddressCountry', 'BRA' #making sure we always use 'BRA'
+  end
+
+  def test_address_mapping_limits
+    long_string = 'a' * 100
+
+    @helper.billing_address :address1 => long_string,
+                            :address2 => long_string,
+                            :city => long_string,
+                            :state => 'SP',
+                            :zip => '123456789'
+
+    assert_field 'shippingAddressStreet', long_string.slice(0, 80)
+    assert_field 'shippingAddressComplement', long_string.slice(0, 40)
+    assert_field 'shippingAddressCity', long_string.slice(0, 60)
+    assert_field 'shippingAddressState', 'SP'
+    assert_field 'shippingAddressPostalCode', '12345678'
   end
 
   def test_unknown_address_mapping
     @helper.billing_address :farm => 'CA'
-    assert_equal 8, @helper.fields.size
+    assert_equal 9, @helper.fields.size
   end
 
   def test_unknown_mapping
@@ -97,6 +113,8 @@ class PagSeguroHelperTest < Test::Unit::TestCase
   end
 
   def test_setting_invalid_address_field
+    @helper.billing_address
+
     fields = @helper.fields.dup
     @helper.billing_address :street => 'My Street'
     assert_equal fields, @helper.fields

@@ -62,16 +62,18 @@ module OffsitePayments #:nodoc:
 
         mapping :order, 'reference'
 
-        mapping :billing_address, :city     => 'shippingAddressCity',
-                                  :address1 => 'shippingAddressStreet',
-                                  :address2 => 'shippingAddressComplement',
-                                  :state    => 'shippingAddressState',
-                                  :zip      => 'shippingAddressPostalCode',
-                                  :country  => 'shippingAddressCountry'
-
         mapping :notify_url, 'notificationURL'
         mapping :return_url, 'redirectURL'
         mapping :description, 'itemDescription1'
+
+        def billing_address(params = {})
+          add_field('shippingAddressCity',       params[:city].slice(0, 60))     if params[:city]
+          add_field('shippingAddressStreet',     params[:address1].slice(0, 80)) if params[:address1]
+          add_field('shippingAddressComplement', params[:address2].slice(0, 40)) if params[:address2]
+          add_field('shippingAddressState',      params[:state].slice(0, 10))    if params[:state]
+          add_field('shippingAddressPostalCode', params[:zip].delete("^0-9").slice(0, 8)) if params[:zip]
+          add_field('shippingAddressCountry',    "BRA")
+        end
 
         def form_fields
           invoice_id = fetch_token
