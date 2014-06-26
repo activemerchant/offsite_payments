@@ -243,6 +243,8 @@ module OffsitePayments #:nodoc:
         # Take the posted data and move the relevant data into a hash
         def parse_xml(post)
           @params = Hash.from_xml(post)
+        rescue => e
+          raise StandardError.new("#{e.class}: #{e.message} - Response: '#{post}'")
         end
 
         def parse_http_query(post)

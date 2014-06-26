@@ -52,6 +52,14 @@ class PagSeguroNotificationTest < Test::Unit::TestCase
     assert_equal "Pending", pag_seguro.status
   end
 
+  def test_invalid_xml_response
+    Net::HTTP.expects(:get_response).with(@uri).returns(stub(body: "Not found"))
+
+    assert_raise(StandardError) do
+      PagSeguro::Notification.new(notification_data)
+    end
+  end
+
   private
   def notification_code
     "766B9C-AD4B044B04DA-77742F5FA653-E1AB24"
