@@ -11,8 +11,9 @@ module OffsitePayments #:nodoc:
       mattr_accessor :notification_confirmation_url
       self.notification_confirmation_url = 'https://coinbase.com/api/v1/orders/%s'
 
-      def self.notification(post)
-        Notification.new(post)
+      # options should be { credential1: "your API key", credential2: "your API secret" }
+      def self.notification(post, options = {})
+        Notification.new(post, options)
       end
 
       def self.return(query_string, options = {})
@@ -59,6 +60,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Notification < OffsitePayments::Notification
+
         def complete?
           status == "completed"
         end
@@ -100,14 +102,12 @@ module OffsitePayments #:nodoc:
         # apc arrives. Coinbase will verify that all the information we received are correct and will return a
         # ok or a fail.
         #
-        # authcode should be { api_key: "your API key", api_secret: "your API secret" }
-        #
         # Example:
         #
         #   def ipn
-        #     notify = CoinbaseNotification.new(request.raw_post)
+        #     notify = CoinbaseNotification.new(request.raw_post, { credential1: "your API key", credential2: "your API secret" })
         #
-        #     if notify.acknowledge({ api_key: "your API key", api_secret: "your API secret" })
+        #     if notify.acknowledge()
         #       ... process order ... if notify.complete?
         #     else
         #       ... log possible hacking attempt ...
@@ -116,16 +116,15 @@ module OffsitePayments #:nodoc:
 
           uri = URI.parse(Coinbase.notification_confirmation_url % transaction_id)
 
-          response = Coinbase.do_request(uri, authcode[:api_key], authcode[:api_secret])
+          response = Coinbase.do_request(uri, @options[:credential1], @options[:credential2])
           return false if response.nil?
 
           order = JSON.parse(response)
-          order = order['order']
 
           # check all important properties with the server
-          good = %w(custom created_at total_native status).all? { |param| order[param] == @params[param] }
+          good = %w(custom created_at total_native status).all? { |param| order['order'][param] == @params[param] }
 
-          @params = order if good
+          parse(order) if good
           good
         end
 
