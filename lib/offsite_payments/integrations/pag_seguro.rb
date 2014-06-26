@@ -237,14 +237,17 @@ module OffsitePayments #:nodoc:
           uri.query = URI.encode_www_form(params)
 
           response = Net::HTTP.get_response(uri)
+
+          if response.code.to_i > 400
+            raise StandardError.new("Response body: '#{response.body}' Response code: #{response.code}")
+          end
+
           response.body
         end
 
         # Take the posted data and move the relevant data into a hash
         def parse_xml(post)
           @params = Hash.from_xml(post)
-        rescue => e
-          raise StandardError.new("#{e.class}: #{e.message} - Response: '#{post}'")
         end
 
         def parse_http_query(post)
