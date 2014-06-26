@@ -66,7 +66,7 @@ module OffsitePayments #:nodoc:
         mapping :return_url, 'redirectURL'
         mapping :description, 'itemDescription1'
 
-        def billing_address(params = {})
+        def shipping_address(params = {})
           add_field('shippingAddressCity',       params[:city].slice(0, 60))     if params[:city]
           add_field('shippingAddressStreet',     params[:address1].slice(0, 80)) if params[:address1]
           add_field('shippingAddressComplement', params[:address2].slice(0, 40)) if params[:address2]
