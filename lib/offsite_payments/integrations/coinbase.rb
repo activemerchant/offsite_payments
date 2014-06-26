@@ -146,9 +146,6 @@ module OffsitePayments #:nodoc:
         end
       end
 
-      class Return < OffsitePayments::Return
-      end
-
       protected
 
       def self.do_request(uri, api_key, api_secret, post_body = nil)
