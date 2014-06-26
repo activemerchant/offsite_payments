@@ -4,7 +4,7 @@ class CoinbaseHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    @helper = Coinbase::Helper.new('order-500','api_key', :amount => 500, :currency => 'USD', :credential2 => 'api_secret')
+    @helper = Coinbase::Helper.new('order-500', 'api_key', :amount => 500, :currency => 'USD', :credential2 => 'api_secret')
   end
 
   def test_helper_id

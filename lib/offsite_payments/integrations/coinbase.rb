@@ -37,13 +37,8 @@ module OffsitePayments #:nodoc:
         def form_fields
           uri = URI.parse(Coinbase.buttoncreate_url)
 
-          title = @options[:description]
-          if title.nil?
-            title = "Your Order"
-          end
-
           request_body = {
-            'button[name]' => title,
+            'button[name]' => @options[:description] || "Your Order",
             'button[price_string]' => @options[:amount],
             'button[price_currency_iso]' => @options[:currency],
             'button[custom]' => @order,
@@ -56,16 +51,10 @@ module OffsitePayments #:nodoc:
           data = Coinbase.do_request(uri, @account, @options[:credential2], request_body)
           json = JSON.parse(data)
 
-          if json.nil?
-            raise "Response invalid %s" % data
-          end
-          unless json['success']
-            raise "JSON error %s" % JSON.pretty_generate(json)
-          end
+          raise "Response invalid %s" % data if json.nil?
+          raise "JSON error %s" % JSON.pretty_generate(json) unless json['success']
 
-          button = json['button']
-
-          {'id' => button['code']}
+          {'id' => json['button']['code']}
         end
       end
 
@@ -82,12 +71,10 @@ module OffsitePayments #:nodoc:
           params['id']
         end
 
-        # When was this payment received by the client.
         def received_at
           Time.iso8601(params['created_at']).to_time.to_i
         end
 
-        # the money amount we received in X.2 decimal.
         def gross
           params['total_native']['cents'].to_f / 100
         end
@@ -96,13 +83,17 @@ module OffsitePayments #:nodoc:
           params['total_native']['currency_iso']
         end
 
-        # Was this a test transaction?
         def test?
           false
         end
 
         def status
-          params['status']
+          case params['status']
+          when "completed"
+            "Completed"
+          else
+            "Failed"
+          end
         end
 
         # Acknowledge the transaction to Coinbase. This method has to be called after a new
@@ -128,14 +119,15 @@ module OffsitePayments #:nodoc:
           response = Coinbase.do_request(uri, authcode[:api_key], authcode[:api_secret])
           order = JSON.parse(response)
 
-          if order.nil?
-            return false
-          end
+          return false if order.nil?
 
           order = order['order']
 
-          # check all properties with the server
-          order['custom'] == @params['custom'] && order['created_at'] == @params['created_at'] && order['total_native'] == @params['total_native'] && order['status'] == @params['status']
+          # check all important properties with the server
+          good = %w(custom created_at total_native status).all? { |param| order[param] == @params[param] }
+
+          @params = order if good
+          good
         end
 
         private
@@ -161,12 +153,9 @@ module OffsitePayments #:nodoc:
           request = Net::HTTP::Get.new(uri.path)
         end
 
-        puts "going to #{uri.path} #{uri.host} #{uri.port}"
-
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true
 
-        # Authentication
         request['ACCESS_KEY'] = api_key
         request['ACCESS_SIGNATURE'] = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), api_secret, hmac_message)
         request['ACCESS_NONCE'] = nonce.to_s
