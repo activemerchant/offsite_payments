@@ -9,7 +9,7 @@ class CoinbaseNotificationTest < Test::Unit::TestCase
 
   def test_accessors
     assert @coinbase.complete?
-    assert_equal "completed", @coinbase.status
+    assert_equal "Completed", @coinbase.status
     assert_equal "ABC123", @coinbase.transaction_id
     assert_equal "test123", @coinbase.item_id
     assert_equal 1.00, @coinbase.gross
