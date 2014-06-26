@@ -76,7 +76,7 @@ module OffsitePayments #:nodoc:
         end
 
         def gross
-          params['total_native']['cents'].to_f / 100
+          (params['total_native']['cents'].to_f / 100).to_s
         end
 
         def currency
@@ -117,10 +117,9 @@ module OffsitePayments #:nodoc:
           uri = URI.parse(Coinbase.notification_confirmation_url % transaction_id)
 
           response = Coinbase.do_request(uri, authcode[:api_key], authcode[:api_secret])
+          return false if response.nil?
+
           order = JSON.parse(response)
-
-          return false if order.nil?
-
           order = order['order']
 
           # check all important properties with the server
