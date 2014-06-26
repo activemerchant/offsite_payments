@@ -12,7 +12,7 @@ class CoinbaseNotificationTest < Test::Unit::TestCase
     assert_equal "Completed", @coinbase.status
     assert_equal "ABC123", @coinbase.transaction_id
     assert_equal "test123", @coinbase.item_id
-    assert_equal 1.00, @coinbase.gross
+    assert_equal "1.00", @coinbase.gross
     assert_equal "USD", @coinbase.currency
     assert_equal 0, @coinbase.received_at
   end
