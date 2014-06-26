@@ -62,7 +62,7 @@ module OffsitePayments #:nodoc:
       class Notification < OffsitePayments::Notification
 
         def complete?
-          status == "completed"
+          status == "Completed"
         end
 
         def item_id
@@ -78,7 +78,7 @@ module OffsitePayments #:nodoc:
         end
 
         def gross
-          (params['total_native']['cents'].to_f / 100).to_s
+          "%.2f" % (params['total_native']['cents'].to_f / 100)
         end
 
         def currency

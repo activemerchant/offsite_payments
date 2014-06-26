@@ -4,7 +4,7 @@ class CoinbaseNotificationTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    @coinbase = Coinbase::Notification.new(JSON.parse(http_raw_data))
+    @coinbase = Coinbase::Notification.new(JSON.parse(http_raw_data), { :credential1 => "key", :credential2 => "secret" })
   end
 
   def test_accessors
@@ -19,7 +19,7 @@ class CoinbaseNotificationTest < Test::Unit::TestCase
 
   def test_acknowledgement
     Net::HTTP.any_instance.expects(:request).returns(stub(:body => http_raw_data))
-    assert @coinbase.acknowledge({ :api_key => "key", :api_secret => "secret" })
+    assert @coinbase.acknowledge()
   end
 
   def test_respond_to_acknowledge
