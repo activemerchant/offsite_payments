@@ -345,6 +345,28 @@ module OffsitePayments #:nodoc:
           params['pending_reason']
         end
 
+        # This variable is set if payment_status is Reversed, Refunded,
+        # Canceled_Reversal, or Denied. Otherwise is nil.
+        # List of possible values when pending:
+        # <tt>adjustment_reversal</tt>::
+        # <tt>admin_fraud_reversal</tt>::
+        # <tt>admin_reversal</tt>::
+        # <tt>buyer-complaint</tt>::
+        # <tt>chargeback</tt>::
+        # <tt>chargeback_reimbursement</tt>::
+        # <tt>chargeback_settlement</tt>::
+        # <tt>guarantee</tt>::
+        # <tt>other</tt>::
+        # <tt>refund</tt>::
+        # <tt>regulatory_block</tt>::
+        # <tt>regulartory_reject</tt>::
+        # <tt>regulatory_review_exceeding_sla</tt>::
+        # <tt>unauthorized_claim</tt>::
+        # <tt>unauthorized_spoof</tt>::
+        def reason_code
+          params['reason_code']
+        end
+
         # Acknowledge the transaction to paypal. This method has to be called after a new
         # ipn arrives. Paypal will verify that all the information we received are correct and will return a
         # ok or a fail.

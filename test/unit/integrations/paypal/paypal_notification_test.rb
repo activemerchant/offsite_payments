@@ -22,6 +22,7 @@ class PaypalNotificationTest < Test::Unit::TestCase
     assert !@paypal.voided?
     assert !@paypal.masspay?
     assert @paypal.pending_reason.nil?
+    assert @paypal.reason_code.nil?
     assert_equal "Completed", @paypal.status
     assert_equal "6G996328CK404320L", @paypal.transaction_id
     assert_equal "web_accept", @paypal.type
@@ -35,6 +36,11 @@ class PaypalNotificationTest < Test::Unit::TestCase
   def test_pending_reason
     notification = Paypal::Notification.new(pending_transaction_http_raw_data)
     assert_equal "paymentreview", notification.pending_reason
+  end
+
+  def test_reason_code
+    notification = Paypal::Notification.new(denied_transaction_http_raw_data)
+    assert_equal "other", notification.reason_code
   end
 
   def test_mass_pay_accessors
@@ -150,5 +156,9 @@ class PaypalNotificationTest < Test::Unit::TestCase
 
   def pending_transaction_http_raw_data
     "mc_gross=500.00&address_status=confirmed&payer_id=EVMXCLDZJV77Q&tax=0.00&address_street=164+Waverley+Street&payment_date=15%3A23%3A54+Apr+15%2C+2005+PDT&payment_status=Pending&pending_reason=paymentreview&address_zip=K2P0V6&first_name=Tobias&mc_fee=15.05&address_country_code=CA&address_name=Tobias+Luetke&notify_version=1.7&custom=&payer_status=unverified&business=tobi%40leetsoft.com&address_country=Canada&address_city=Ottawa&quantity=1&payer_email=tobi%40snowdevil.ca&verify_sign=AEt48rmhLYtkZ9VzOGAtwL7rTGxUAoLNsuf7UewmX7UGvcyC3wfUmzJP&txn_id=6G996328CK404320L&payment_type=instant&last_name=Luetke&address_state=Ontario&receiver_email=tobi%40leetsoft.com&payment_fee=&receiver_id=UQ8PDYXJZQD9Y&txn_type=web_accept&item_name=Store+Purchase&mc_currency=CAD&item_number=&test_ipn=1&payment_gross=&shipping=0.00"
+  end
+
+  def denied_transaction_http_raw_data
+    "mc_gross=500.00&address_status=confirmed&payer_id=EVMXCLDZJV77Q&tax=0.00&address_street=164+Waverley+Street&payment_date=15%3A23%3A54+Apr+15%2C+2005+PDT&payment_status=Denied&reason_code=other&address_zip=K2P0V6&first_name=Tobias&mc_fee=15.05&address_country_code=CA&address_name=Tobias+Luetke&notify_version=1.7&custom=&payer_status=unverified&business=tobi%40leetsoft.com&address_country=Canada&address_city=Ottawa&quantity=1&payer_email=tobi%40snowdevil.ca&verify_sign=AEt48rmhLYtkZ9VzOGAtwL7rTGxUAoLNsuf7UewmX7UGvcyC3wfUmzJP&txn_id=6G996328CK404320L&payment_type=instant&last_name=Luetke&address_state=Ontario&receiver_email=tobi%40leetsoft.com&payment_fee=&receiver_id=UQ8PDYXJZQD9Y&txn_type=web_accept&item_name=Store+Purchase&mc_currency=CAD&item_number=&test_ipn=1&payment_gross=&shipping=0.00"
   end
 end
