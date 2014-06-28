@@ -192,6 +192,56 @@ module OffsitePayments #:nodoc:
           status == "Completed"
         end
 
+        # Was the transaction reversal canceled?
+        def canceled_reversal?
+          status == "Canceled_Reversal"
+        end
+
+        # Was the transaction created?
+        def created?
+          status == "Created"
+        end
+
+        # Was the transaction denied?
+        def denied?
+          status == "Denied"
+        end
+
+        # Was the transaction expired?
+        def expired?
+          status == "Expired"
+        end
+
+        # Was the transaction failed?
+        def failed?
+          status == "Failed"
+        end
+
+        # Was the transaction pending?
+        def pending?
+          status == "Pending"
+        end
+
+        # Was the transaction refunded?
+        def refunded?
+          status == "Refunded"
+        end
+
+        # Was the transaction reversed?
+        def reversed?
+          status == "Reversed"
+        end
+
+        # Was the transaction processed?
+        def processed?
+          status == "Processed"
+        end
+
+        # Was the transaction voided?
+        def voided?
+          status == "Voided"
+        end
+
         # Is it a masspay notification?
         def masspay?
           type == "masspay"

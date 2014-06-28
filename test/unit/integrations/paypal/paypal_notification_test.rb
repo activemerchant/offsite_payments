@@ -10,6 +10,16 @@ class PaypalNotificationTest < Test::Unit::TestCase
 
   def test_accessors
     assert @paypal.complete?
+    assert !@paypal.pending?
+    assert !@paypal.canceled_reversal?
+    assert !@paypal.created?
+    assert !@paypal.denied?
+    assert !@paypal.expired?
+    assert !@paypal.failed?
+    assert !@paypal.refunded?
+    assert !@paypal.reversed?
+    assert !@paypal.processed?
+    assert !@paypal.voided?
     assert !@paypal.masspay?
     assert_equal "Completed", @paypal.status
     assert_equal "6G996328CK404320L", @paypal.transaction_id
