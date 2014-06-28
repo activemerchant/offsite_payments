@@ -327,6 +327,24 @@ module OffsitePayments #:nodoc:
           params['business'] || params['receiver_email']
         end
 
+        # Status of a pending transaction. Returns nil if not pending.
+        # List of possible values when pending:
+        # <tt>address</tt>::
+        # <tt>authorization</tt>::
+        # <tt>echeck</tt>::
+        # <tt>intl</tt>::
+        # <tt>multi-currency</tt>::
+        # <tt>order</tt>::
+        # <tt>paymentreview</tt>::
+        # <tt>regulartory_review</tt>::
+        # <tt>unilateral</tt>::
+        # <tt>upgrade</tt>::
+        # <tt>verify</tt>::
+        # <tt>other</tt>::
+        def pending_reason
+          params['pending_reason']
+        end
+
         # Acknowledge the transaction to paypal. This method has to be called after a new
         # ipn arrives. Paypal will verify that all the information we received are correct and will return a
         # ok or a fail.
