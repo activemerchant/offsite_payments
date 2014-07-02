@@ -39,6 +39,7 @@ module OffsitePayments #:nodoc:
           uri = URI.parse(Coinbase.buttoncreate_url)
 
           request_body = {
+            'button[auto_redirect]' => true,
             'button[name]' => @options[:description] || "Your Order",
             'button[price_string]' => @options[:amount],
             'button[price_currency_iso]' => @options[:currency],
