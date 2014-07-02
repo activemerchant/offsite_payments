@@ -82,7 +82,6 @@ class PagSeguroHelperTest < Test::Unit::TestCase
     assert_field 'shippingAddressCity', 'Leeds'
     assert_field 'shippingAddressState', 'SP'
     assert_field 'shippingAddressPostalCode', '41825855'
-    assert_field 'shippingAddressCountry', 'BRA' #making sure we always use 'BRA'
   end
 
   def test_address_mapping_limits
@@ -103,7 +102,7 @@ class PagSeguroHelperTest < Test::Unit::TestCase
 
   def test_unknown_address_mapping
     @helper.shipping_address :farm => 'CA'
-    assert_equal 9, @helper.fields.size
+    assert_equal 8, @helper.fields.size
   end
 
   def test_unknown_mapping
