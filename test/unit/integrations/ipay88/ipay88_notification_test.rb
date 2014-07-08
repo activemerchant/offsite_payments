@@ -55,10 +55,10 @@ class Ipay88NotificationTest < Test::Unit::TestCase
     assert !@ipay88.acknowledge
   end
 
-  def test_unsuccessful_acknowledge_due_to_payment_failed
+  def test_successful_acknowledge_on_cancellation
     params = parameterize(payload)
-    ipay = build_notification(http_raw_data(:payment_failed))
-    assert !ipay.acknowledge
+    ipay = build_notification(http_raw_data(:payment_cancelled))
+    assert ipay.acknowledge
   end
 
   def test_unsuccessful_acknowledge_due_to_missing_amount
@@ -84,7 +84,7 @@ class Ipay88NotificationTest < Test::Unit::TestCase
       parameterize(base.merge("Signature" => "bPlMszCBwxlfGX9ZkgmSfT+OeLQ="))
     when :invalid_sig
       parameterize(base.merge("Signature" => "hacked"))
-    when :payment_failed
+    when :payment_cancelled
       parameterize(base.merge("Status" => 0, "Signature" => "p8nXYcl/wytpNMzsf31O/iu/2EU="))
     when :missing_amount
       parameterize(base.except("Amount"))
