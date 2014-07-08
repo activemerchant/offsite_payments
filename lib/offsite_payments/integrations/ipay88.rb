@@ -110,6 +110,7 @@ module OffsitePayments #:nodoc:
         mapping :language,    "Lang"
         mapping :payment,     "PaymentId"
         mapping :return_url,  "ResponseURL"
+        mapping :notify_url,  "BackendURL"
         mapping :signature,   "Signature"
 
         protected

@@ -62,6 +62,11 @@ class Ipay88HelperTest < Test::Unit::TestCase
     assert_field "ResponseURL", "http://www.example.com"
   end
 
+  def test_notify_url
+    @helper.notify_url "http://www.example.com"
+    assert_field "BackendURL", "http://www.example.com"
+  end
+
   def test_supported_payment
     @helper.payment 6 # 6 => m2u
     assert_field "PaymentId", "6"
