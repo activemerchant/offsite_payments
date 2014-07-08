@@ -17,7 +17,7 @@ module OffsitePayments #:nodoc:
       end
 
       def self.return(query_string, options = {})
-        Return.new(query_string)
+        Return.new(query_string, options)
       end
 
       class Helper < OffsitePayments::Helper
@@ -130,14 +130,27 @@ module OffsitePayments #:nodoc:
 
         # Take the posted data and move the relevant data into a hash
         def parse(post)
-          @params = JSON.parse(post)['order']
+          @raw = post.to_s
+          parsed_values = post.is_a?(Hash) ? post : JSON.parse(post)
+          @params = parsed_values['order']
+        end
+      end
+
+      class Return < OffsitePayments::Return
+        def initialize(query_string, options = {})
+          super
+          parsed_return = Rack::Utils.parse_nested_query(query_string)
+          @notification = Notification.new(parsed_return, options)
+        end
+
+        def success?
+          @notification.acknowledge
         end
       end
 
       protected
 
       def self.do_request(uri, api_key, api_secret, post_body = nil)
-
         nonce = (Time.now.to_f * 1e6).to_i
         hmac_message = nonce.to_s + uri.to_s
 

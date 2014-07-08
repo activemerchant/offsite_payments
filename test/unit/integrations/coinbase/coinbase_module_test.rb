@@ -6,4 +6,8 @@ class CoinbaseModuleTest < Test::Unit::TestCase
   def test_notification_method
     assert_instance_of Coinbase::Notification, Coinbase.notification('{"name":"cody"}')
   end
+
+  def test_return_method
+    assert_instance_of Coinbase::Return, Coinbase.return('{"name":"cody"}')
+  end
 end
