@@ -15,6 +15,10 @@ module OffsitePayments #:nodoc:
         Return.new(query_string, options)
       end
 
+      def self.notification(post, options = {})
+        Notification.new(post, options)
+      end
+
       class Helper < OffsitePayments::Helper
         include ActiveMerchant::RequiresParameters
 

@@ -7,6 +7,10 @@ class Ipay88ModuleTest < Test::Unit::TestCase
     assert_instance_of Ipay88::Return, Ipay88.return('name=cody')
   end
 
+  def test_return_method
+    assert_instance_of Ipay88::Notification, Ipay88.notification('name=cody')
+  end
+
   def test_service_url
     assert_equal "https://www.mobile88.com/epayment/entry.asp", Ipay88.service_url
   end
