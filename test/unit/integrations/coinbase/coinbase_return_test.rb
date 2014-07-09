@@ -11,6 +11,7 @@ class CoinbaseReturnTest < Test::Unit::TestCase
     Net::HTTP.any_instance.expects(:request).returns(stub(:body => valid_http_raw_data))
     coinbase_return = Coinbase::Return.new(valid_query_string, @options)
 
+    assert coinbase_return.notification.acknowledge
     assert coinbase_return.success?
   end
 
@@ -18,7 +19,8 @@ class CoinbaseReturnTest < Test::Unit::TestCase
     Net::HTTP.any_instance.expects(:request).returns(stub(:body => valid_http_raw_data))
     coinbase_return = Coinbase::Return.new(invalid_query_string, @options)
 
-    assert !coinbase_return.success?
+    assert !coinbase_return.notification.acknowledge
+    assert coinbase_return.success?
   end
 
   private
