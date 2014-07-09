@@ -107,7 +107,7 @@ module OffsitePayments #:nodoc:
           posted_order = @params
           parse(response)
 
-          %w(id custom status).all? { |param| posted_order[param] == @params[param] }
+          %w(id custom total_native status).all? { |param| posted_order[param] == @params[param] }
         end
 
         private
@@ -125,7 +125,13 @@ module OffsitePayments #:nodoc:
         end
 
         def parse(query_string)
-          Rack::Utils.parse_nested_query(query_string)
+          parsed_hash = Rack::Utils.parse_nested_query(query_string)
+
+          if native_cents = parsed_hash['order'] && parsed_hash['order']['total_native'] && parsed_hash['order']['total_native']['cents']
+            parsed_hash['order']['total_native']['cents'] = native_cents.to_i
+          end
+
+          parsed_hash
         end
 
         def success?
