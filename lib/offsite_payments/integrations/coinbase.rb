@@ -1,7 +1,6 @@
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Coinbase
-
       mattr_accessor :service_url
       self.service_url = 'https://coinbase.com/checkouts/redirect'
 
@@ -86,10 +85,6 @@ module OffsitePayments #:nodoc:
           params['total_native']['currency_iso']
         end
 
-        def test?
-          false
-        end
-
         def status
           case params['status']
           when "completed"
@@ -100,19 +95,8 @@ module OffsitePayments #:nodoc:
         end
 
         # Acknowledge the transaction to Coinbase. This method has to be called after a new
-        # apc arrives. Coinbase will verify that all the information we received are correct and will return a
-        # ok or a fail.
-        #
-        # Example:
-        #
-        #   def ipn
-        #     notify = CoinbaseNotification.new(request.raw_post, { credential1: "your API key", credential2: "your API secret" })
-        #
-        #     if notify.acknowledge()
-        #       ... process order ... if notify.complete?
-        #     else
-        #       ... log possible hacking attempt ...
-        #     end
+        # apc arrives. Coinbase will verify that all the information we received are correct
+        # and will return a ok or a fail.
         def acknowledge(authcode = {})
 
           uri = URI.parse(Coinbase.notification_confirmation_url % transaction_id)
@@ -120,27 +104,28 @@ module OffsitePayments #:nodoc:
           response = Coinbase.do_request(uri, @options[:credential1], @options[:credential2])
           return false if response.nil?
 
-          order = parse(response)
+          posted_order = @params
+          parse(response)
 
-          # check all important properties with the server
-          %w(custom created_at total_native status).all? { |param| order[param] == @params[param] }
+          %w(id custom status).all? { |param| posted_order[param] == @params[param] }
         end
 
         private
 
-        # Take the posted data and move the relevant data into a hash
         def parse(post)
           @raw = post.to_s
-          parsed_values = post.is_a?(Hash) ? post : JSON.parse(post)
-          @params = parsed_values['order']
+          @params = JSON.parse(post)['order']
         end
       end
 
       class Return < OffsitePayments::Return
         def initialize(query_string, options = {})
           super
-          parsed_return = Rack::Utils.parse_nested_query(query_string)
-          @notification = Notification.new(parsed_return, options)
+          @notification = Notification.new(@params.to_json, options)
+        end
+
+        def parse(query_string)
+          Rack::Utils.parse_nested_query(query_string)
         end
 
         def success?

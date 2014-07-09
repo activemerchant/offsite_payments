@@ -8,6 +8,6 @@ class CoinbaseModuleTest < Test::Unit::TestCase
   end
 
   def test_return_method
-    assert_instance_of Coinbase::Return, Coinbase.return('{"name":"cody"}')
+    assert_instance_of Coinbase::Return, Coinbase.return('name=cody')
   end
 end
