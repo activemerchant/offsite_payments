@@ -12,4 +12,20 @@ class CoinbaseHelperTest < Test::Unit::TestCase
 
     assert_equal 'test123', @helper.form_fields['id']
   end
+
+  def test_raise_error_on_invalid_json
+    Net::HTTP.any_instance.expects(:request).returns(stub(:body => 'totally not json'))
+
+    assert_raise ActionViewHelperError do
+      @helper.form_fields
+    end
+  end
+
+  def test_raise_error_on_error_response
+    Net::HTTP.any_instance.expects(:request).returns(stub(:body => '{"error":"something bad happened"}'))
+
+    assert_raise ActionViewHelperError do
+      @helper.form_fields
+    end
+  end
 end
