@@ -12,4 +12,3 @@ script: "bundle exec rake test:units"
 notifications:
   email:
     - payments-dev@shopify.com
-    - nathaniel@talbott.ws
