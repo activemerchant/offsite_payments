@@ -52,8 +52,8 @@ module OffsitePayments #:nodoc:
           data = Coinbase.do_request(uri, @account, @options[:credential2], request_body)
           json = JSON.parse(data)
 
-          raise "Response invalid %s" % data if json.nil?
-          raise "JSON error %s" % JSON.pretty_generate(json) unless json['success']
+          raise ActionViewHelperError, "Response invalid %s" % data if json.nil?
+          raise ActionViewHelperError, "JSON error %s" % JSON.pretty_generate(json) unless json['success']
 
           {'id' => json['button']['code']}
         end
