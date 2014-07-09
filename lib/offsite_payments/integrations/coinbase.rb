@@ -133,10 +133,6 @@ module OffsitePayments #:nodoc:
 
           parsed_hash
         end
-
-        def success?
-          @notification.acknowledge
-        end
       end
 
       protected
