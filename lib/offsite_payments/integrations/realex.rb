@@ -99,10 +99,10 @@ module OffsitePayments #:nodoc:
           end
 
           data = fields_to_sign.join('.')
-          digest = OpenSSL::Digest.digest("SHA1", data)
+          digest = Digest::SHA1.hexdigest(data)
           signed = "#{digest}.#{@secret}"
 
-          OpenSSL::Digest.digest("SHA1", signed)
+          Digest::SHA1.hexdigest(signed)
         end
 
         # Realex Required Fields
@@ -154,7 +154,7 @@ module OffsitePayments #:nodoc:
           params['AMOUNT'].to_f/100.0
         end
 
-        def success?
+        def complete?
           verified? && status == 'Completed'
         end
 
@@ -191,14 +191,17 @@ module OffsitePayments #:nodoc:
           params['SHA1HASH']
         end
 
-        def verified?
+        def calculated_signature
           fields = [timestamp, merchant_id, order_id, result, message, pasref, authcode]
 
           data = fields.join('.')
-          digest = OpenSSL::Digest.digest("SHA1", data)
+          digest = Digest::SHA1.hexdigest(data)
           signed = "#{digest}.#{@secret}"
+          Digest::SHA1.hexdigest(signed)
+        end
 
-          signature == OpenSSL::Digest.digest("SHA1", signed)
+        def verified?
+          signature == calculated_signature
         end
 
       end
@@ -210,7 +213,7 @@ module OffsitePayments #:nodoc:
         end
 
         def success?
-          notification.success?
+          notification.complete?
         end
 
         # TODO: realex does not provide a separate cancelled endpoint
