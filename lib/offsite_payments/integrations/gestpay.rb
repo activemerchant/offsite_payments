@@ -50,6 +50,8 @@ module OffsitePayments #:nodoc:
           site.use_ssl = true
           site.verify_mode    = OpenSSL::SSL::VERIFY_NONE
           site.get(path).body
+        rescue Timeout::Error, Errno::ECONNRESET, Errno::ETIMEDOUT
+          raise ActionViewHelperError, "Error occured while contacting payment gateway. Please try again."
         end
       end
 
