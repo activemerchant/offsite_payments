@@ -4,14 +4,23 @@ module OffsitePayments #:nodoc:
       mattr_accessor :production_url
       mattr_accessor :test_url
       self.production_url = 'https://hpp.realexpayments.com/pay'
-      self.test_url       = 'https://hpp.sandbox.realexpayments.com/pay '
+      self.test_url       = 'https://hpp.sandbox.realexpayments.com/pay'
 
-      def self.return(query_string, options = {})
+      def self.helper(order, account, options={})
+        Helper.new(order, account, options)
+      end
+
+      def self.notification(query_string, options={})
+        Notification.new(query_string, options)
+      end
+
+      def self.return(query_string, options={})
         Return.new(query_string, options)
       end
 
       def self.service_url
-        case OffsitePayments.mode
+        mode = OffsitePayments.mode
+        case mode
         when :production
           self.production_url
         when :test
@@ -124,22 +133,93 @@ module OffsitePayments #:nodoc:
         end
       end
 
-      class Return < OffsitePayments::Return
-        def initialize(data, options)
+      class Notification < OffsitePayments::Notification
+
+        def initialize(post, options={})
           super
+          @secret = options[:credential4]
+        end
+
+        # Required Notification methods to define
+        def status
+          if result == '00'
+            'Completed'
+          else
+            'Invalid'
+          end
+        end
+
+        # TODO: Realex does not send back the currency param
+        def gross
+          params['AMOUNT'].to_f/100.0
         end
 
         def success?
-          @params['RESULT'] == '00'
+          verified? && status == 'Completed'
         end
 
+        # Fields for Realex signature verification
+        def timestamp
+          params['TIMESTAMP']
+        end
+
+        def merchant_id
+          params['MERCHANT_ID']
+        end
+
+        def order_id
+          params['ORDER_ID']
+        end
+
+        def result
+          params['RESULT']
+        end
+
+        def message
+          params['MESSAGE']
+        end
+
+        def pasref
+          params['PASREF']
+        end
+
+        def authcode
+          params['AUTHCODE']
+        end
+
+        def signature
+          params['SHA1HASH']
+        end
+
+        def verified?
+          fields = [timestamp, merchant_id, order_id, result, message, pasref, authcode]
+
+          data = fields.join('.')
+          digest = OpenSSL::Digest.digest("SHA1", data)
+          signed = "#{digest}.#{@secret}"
+
+          signature == OpenSSL::Digest.digest("SHA1", signed)
+        end
+
+      end
+
+      class Return < OffsitePayments::Return
+        def initialize(data, options)
+          super
+          @notification = Notification.new(data, options)
+        end
+
+        def success?
+          notification.success?
+        end
+
+        # TODO: realex does not provide a separate cancelled endpoint
         def cancelled?
-          # TODO: realex does not provide a separate cancelled endpoint
           false
         end
 
         def message
-          @params['MESSAGE']
+          notification.message
         end
       end
 
