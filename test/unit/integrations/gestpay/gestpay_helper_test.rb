@@ -88,6 +88,30 @@ class GestpayHelperTest < Test::Unit::TestCase
     assert_equal fields, @helper.fields
   end
 
+  def test_raise_user_error_on_timeout
+    Net::HTTP.any_instance.expects(:request).raises(Timeout::Error)
+
+    assert_raise ActionViewHelperError do
+      @helper.get_encrypted_string
+    end
+  end
+
+  def test_raise_user_error_on_ECONNRESET
+    Net::HTTP.any_instance.expects(:request).raises(Errno::ECONNRESET)
+
+    assert_raise ActionViewHelperError do
+      @helper.get_encrypted_string
+    end
+  end
+
+  def test_raise_user_error_on_ETIMEDOUT
+    Net::HTTP.any_instance.expects(:request).raises(Errno::ETIMEDOUT)
+
+    assert_raise ActionViewHelperError do
+      @helper.get_encrypted_string
+    end
+  end
+
   private
 
   def encrypted_string_response
