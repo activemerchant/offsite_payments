@@ -30,8 +30,19 @@ module OffsitePayments #:nodoc:
         end
       end
 
-      class Helper < OffsitePayments::Helper
+      module Common
 
+        def create_signature(fields, secret)
+          data = fields.join('.')
+          digest = Digest::SHA1.hexdigest(data)
+          signed = "#{digest}.#{secret}"
+          Digest::SHA1.hexdigest(signed)
+        end
+
+      end
+
+      class Helper < OffsitePayments::Helper
+        include Common
         CURRENCY_SPECIAL_MINOR_UNITS = {
           'BIF' => 0,
           'BYR' => 0,
@@ -98,11 +109,7 @@ module OffsitePayments #:nodoc:
             fields_to_sign << @fields[field]
           end
 
-          data = fields_to_sign.join('.')
-          digest = Digest::SHA1.hexdigest(data)
-          signed = "#{digest}.#{@secret}"
-
-          Digest::SHA1.hexdigest(signed)
+          create_signature(fields_to_sign, @secret)
         end
 
         # Realex Required Fields
@@ -134,7 +141,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Notification < OffsitePayments::Notification
-
+        include Common
         def initialize(post, options={})
           super
           @secret = options[:credential4]
@@ -193,11 +200,7 @@ module OffsitePayments #:nodoc:
 
         def calculated_signature
           fields = [timestamp, merchant_id, order_id, result, message, pasref, authcode]
-
-          data = fields.join('.')
-          digest = Digest::SHA1.hexdigest(data)
-          signed = "#{digest}.#{@secret}"
-          Digest::SHA1.hexdigest(signed)
+          create_signature(fields, @secret)
         end
 
         def verified?
