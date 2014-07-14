@@ -340,7 +340,8 @@ module OffsitePayments #:nodoc:
               params["mc_currency_#{item_number}"],
               params["unique_id_#{item_number}"],
               params["receiver_email_#{item_number}"],
-              params["status_#{item_number}"]
+              params["status_#{item_number}"],
+              params["reason_code_#{item_number}"]
             )
           end
         end
@@ -352,7 +353,7 @@ module OffsitePayments #:nodoc:
         end
       end
 
-      class MassPayItem < Struct.new(:transaction_id, :gross, :fee, :currency, :item_id, :account, :status)
+      class MassPayItem < Struct.new(:transaction_id, :gross, :fee, :currency, :item_id, :account, :status, :reason_code)
       end
 
       class Return < OffsitePayments::Return

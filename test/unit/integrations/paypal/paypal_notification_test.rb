@@ -52,7 +52,10 @@ class PaypalNotificationTest < Test::Unit::TestCase
     assert_equal "buyer_1351170993_per@example.com", @mass_pay_paypal.items[2].account
     assert_equal "Completed", @mass_pay_paypal.items[0].status
     assert_equal "Completed", @mass_pay_paypal.items[1].status
-    assert_equal "Completed", @mass_pay_paypal.items[2].status
+    assert_equal "Failed", @mass_pay_paypal.items[2].status
+    assert_equal nil, @mass_pay_paypal.items[0].reason_code
+    assert_equal nil, @mass_pay_paypal.items[1].reason_code
+    assert_equal "1001", @mass_pay_paypal.items[2].reason_code
     assert @mass_pay_paypal.test?
   end
 
@@ -129,6 +132,6 @@ class PaypalNotificationTest < Test::Unit::TestCase
   end
 
   def mass_pay_http_raw_data
-    "payer_id=LPV4F4HZHCE&payment_date=06%3A25%3A37+Oct+25%2C+2012+PDT&payment_gross_1=&payment_gross_2=&payment_gross_3=&payment_status=Completed&receiver_email_1=buyer_1348066306_per%40example.com&receiver_email_2=buyer_1351170859_per%40example.com&charset=windows-1252&receiver_email_3=buyer_1351170993_per%40example.com&mc_currency_1=GBP&masspay_txn_id_1=7XW35917TG8293137&mc_currency_2=GBP&masspay_txn_id_2=79512417EL9296629&mc_currency_3=GBP&masspay_txn_id_3=75X24749Y32677910&first_name=Test&unique_id_1=123&notify_version=3.7&unique_id_2=456&unique_id_3=789&payer_status=verified&verify_sign=AwtKW.5QSiJCrI10IE.2gmVei1MEAwsHLftLIB9pXgu82MLXoCS1yeE-&payer_email=massuk_1351170591_biz%40example.com&payer_business_name=Tests%27s+Test+Store&last_name=Test&status_1=Completed&status_2=Completed&status_3=Completed&txn_type=masspay&mc_gross_1=10.00&mc_gross_2=24.50&mc_gross_3=20.00&payment_fee_1=&residence_country=GB&test_ipn=1&payment_fee_2=&payment_fee_3=&mc_fee_1=0.20&mc_fee_2=0.49&mc_fee_3=0.40&ipn_track_id=89f7ff244947f"
+    "payer_id=LPV4F4HZHCE&payment_date=06%3A25%3A37+Oct+25%2C+2012+PDT&payment_gross_1=&payment_gross_2=&payment_gross_3=&payment_status=Completed&receiver_email_1=buyer_1348066306_per%40example.com&receiver_email_2=buyer_1351170859_per%40example.com&charset=windows-1252&receiver_email_3=buyer_1351170993_per%40example.com&mc_currency_1=GBP&masspay_txn_id_1=7XW35917TG8293137&mc_currency_2=GBP&masspay_txn_id_2=79512417EL9296629&mc_currency_3=GBP&masspay_txn_id_3=75X24749Y32677910&first_name=Test&unique_id_1=123&notify_version=3.7&unique_id_2=456&unique_id_3=789&payer_status=verified&verify_sign=AwtKW.5QSiJCrI10IE.2gmVei1MEAwsHLftLIB9pXgu82MLXoCS1yeE-&payer_email=massuk_1351170591_biz%40example.com&payer_business_name=Tests%27s+Test+Store&last_name=Test&status_1=Completed&status_2=Completed&status_3=Failed&reason_code_3=1001&txn_type=masspay&mc_gross_1=10.00&mc_gross_2=24.50&mc_gross_3=20.00&payment_fee_1=&residence_country=GB&test_ipn=1&payment_fee_2=&payment_fee_3=&mc_fee_1=0.20&mc_fee_2=0.49&mc_fee_3=0.40&ipn_track_id=89f7ff244947f"
   end
 end
