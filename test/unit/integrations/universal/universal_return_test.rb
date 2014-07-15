@@ -18,7 +18,7 @@ class UniversalReturnTest < Test::Unit::TestCase
     assert !@return.success?
   end
 
-  def test_success_after_ackowledge
+  def test_success_after_acknowledge
     assert @return.notification.acknowledge
     assert @return.success?
   end
