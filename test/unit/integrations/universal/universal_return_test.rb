@@ -18,6 +18,11 @@ class UniversalReturnTest < Test::Unit::TestCase
     assert !@return.success?
   end
 
+  def test_success_after_ackowledge
+    assert @return.notification.acknowledge
+    assert @return.success?
+  end
+
   private
 
   def query_data
