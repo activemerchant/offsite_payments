@@ -1,6 +1,3 @@
-require File.dirname(__FILE__) + '/<%= identifier %>/helper.rb'
-require File.dirname(__FILE__) + '/<%= identifier %>/notification.rb'
-
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module <%= class_name %>
