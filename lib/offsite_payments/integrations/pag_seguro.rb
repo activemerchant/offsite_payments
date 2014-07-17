@@ -238,6 +238,11 @@ module OffsitePayments #:nodoc:
           uri.query = URI.encode_www_form(params)
 
           response = Net::HTTP.get_response(uri)
+
+          if response.code.to_i > 400
+            raise StandardError.new("Response body: '#{response.body}' Response code: #{response.code}")
+          end
+
           response.body
         end
 
