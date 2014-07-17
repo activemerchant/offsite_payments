@@ -161,7 +161,8 @@ module OffsitePayments #:nodoc:
         private
 
         def generate_signature
-          Universal.sign(@params.reject { |k| k == 'x_signature' }, @key)
+          signature_params = @params.select { |k| k.start_with? 'x_' }.reject { |k| k == 'x_signature' }
+          Universal.sign(signature_params, @key)
         end
       end
 
