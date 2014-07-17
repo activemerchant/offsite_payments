@@ -25,6 +25,12 @@ class UniversalNotificationTest < Test::Unit::TestCase
     assert @notification.acknowledge
   end
 
+  def test_acknowledge_valid_signature_with_extra_parameter
+    @notification = Universal::Notification.new(http_raw_data_extra_parameter, :credential2 => @secret)
+
+    assert @notification.acknowledge
+  end
+
   def test_acknowledge_valid_uppercase_signature
     @notification = Universal::Notification.new(http_raw_data_uppercase_signature, :credential2 => @secret)
 
@@ -41,6 +47,10 @@ class UniversalNotificationTest < Test::Unit::TestCase
 
   def http_raw_data
     'x_account_id=zork&x_reference=order-500&x_currency=USD&x_test=true&x_amount=123.45&x_gateway_reference=blorb123&x_timestamp=2014-03-24T12:15:41Z&x_result=completed&x_signature=d8797220f2f0ccef90c1ee80e82494cd709fb10ab1f50a016578208c3fb5a0c1'
+  end
+
+  def http_raw_data_extra_parameter
+    'utm_nooverride=1&x_account_id=zork&x_reference=order-500&x_currency=USD&x_test=true&x_amount=123.45&x_gateway_reference=blorb123&x_timestamp=2014-03-24T12:15:41Z&x_result=completed&x_signature=d8797220f2f0ccef90c1ee80e82494cd709fb10ab1f50a016578208c3fb5a0c1'
   end
 
   def http_raw_data_uppercase_signature
