@@ -89,6 +89,7 @@ module OffsitePayments #:nodoc:
           add_field 'AUTO_SETTLE_FLAG', '1'
           add_field 'RETURN_TSS', '1'
           add_field 'TIMESTAMP', @timestamp
+          add_field 'COMMENT1', 'Shopify'
         end
 
         def form_fields
