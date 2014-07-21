@@ -115,6 +115,10 @@ module OffsitePayments #:nodoc:
 
         # Realex Required Fields
         mapping :currency,         'CURRENCY'
+        # Realex does not send back CURRENCY param however it does echo
+        # any other param so we send it twice.
+        mapping :currency,         'X-CURRENCY'
+
         mapping :order,            'ORDER_ID'
         mapping :amount,           'AMOUNT'
         mapping :return_url,       'MERCHANT_RESPONSE_URL'
@@ -139,6 +143,12 @@ module OffsitePayments #:nodoc:
           multiple = 10**units
           return (amount.to_f * multiple.to_f).to_i
         end
+
+        def format_amount_as_float(amount, currency)
+          units = CURRENCY_SPECIAL_MINOR_UNITS[currency] || 2
+          divisor = 10**units
+          return (amount.to_f / divisor.to_f)
+        end
       end
 
       class Notification < OffsitePayments::Notification
@@ -157,9 +167,14 @@ module OffsitePayments #:nodoc:
           end
         end
 
-        # TODO: Realex does not send back the currency param
+        # Realex does not send back the currency param by default
+        # we have sent this additional parameter
+        def currency
+          params['X-CURRENCY']
+        end
+
         def gross
-          params['AMOUNT'].to_f/100.0
+          format_amount_as_float(params['AMOUNT'], currency)
         end
 
         def complete?
