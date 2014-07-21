@@ -31,18 +31,6 @@ module OffsitePayments #:nodoc:
       end
 
       module Common
-
-        def create_signature(fields, secret)
-          data = fields.join('.')
-          digest = Digest::SHA1.hexdigest(data)
-          signed = "#{digest}.#{secret}"
-          Digest::SHA1.hexdigest(signed)
-        end
-
-      end
-
-      class Helper < OffsitePayments::Helper
-        include Common
         CURRENCY_SPECIAL_MINOR_UNITS = {
           'BIF' => 0,
           'BYR' => 0,
@@ -75,6 +63,35 @@ module OffsitePayments #:nodoc:
           'COU' => 4
         }
 
+        def create_signature(fields, secret)
+          data = fields.join('.')
+          digest = Digest::SHA1.hexdigest(data)
+          signed = "#{digest}.#{secret}"
+          Digest::SHA1.hexdigest(signed)
+        end
+
+        # Realex accepts currency amounts as an integer in the lowest value
+        # e.g. 
+        #     format_amount(110.56, 'GBP')
+        #     => 11056
+        def format_amount(amount, currency)
+          units = CURRENCY_SPECIAL_MINOR_UNITS[currency] || 2
+          multiple = 10**units
+          return (amount.to_f * multiple.to_f).to_i
+        end
+
+        # Realex returns currency amount as an integer
+        def format_amount_as_float(amount, currency)
+          units = CURRENCY_SPECIAL_MINOR_UNITS[currency] || 2
+          divisor = 10**units
+          return (amount.to_f / divisor.to_f)
+        end
+
+      end
+
+      class Helper < OffsitePayments::Helper
+        include Common
+
         def initialize(order, account, options = {})
           @timestamp   = Time.now.to_i.to_s
           @currency    = options[:currency]
@@ -90,6 +107,9 @@ module OffsitePayments #:nodoc:
           add_field 'RETURN_TSS', '1'
           add_field 'TIMESTAMP', @timestamp
           add_field 'COMMENT1', 'Shopify'
+          # Realex does not send back CURRENCY param in response
+          # however it does echo any other param so we send it twice.
+          add_field 'X-CURRENCY', @currency
         end
 
         def form_fields
@@ -115,9 +135,6 @@ module OffsitePayments #:nodoc:
 
         # Realex Required Fields
         mapping :currency,         'CURRENCY'
-        # Realex does not send back CURRENCY param however it does echo
-        # any other param so we send it twice.
-        mapping :currency,         'X-CURRENCY'
 
         mapping :order,            'ORDER_ID'
         mapping :amount,           'AMOUNT'
@@ -130,25 +147,6 @@ module OffsitePayments #:nodoc:
                                    :country =>    'SHIPPING_CO'
         mapping :billing_address,  :zip =>        'BILLING_CODE',
                                    :country =>    'BILLING_CO'
-
-
-        private
-
-        # Realex accepts currency amounts as an integer in the lowest value
-        # e.g. 
-        #     format_amount(110.56, 'GBP')
-        #     => 11056
-        def format_amount(amount, currency)
-          units = CURRENCY_SPECIAL_MINOR_UNITS[currency] || 2
-          multiple = 10**units
-          return (amount.to_f * multiple.to_f).to_i
-        end
-
-        def format_amount_as_float(amount, currency)
-          units = CURRENCY_SPECIAL_MINOR_UNITS[currency] || 2
-          divisor = 10**units
-          return (amount.to_f / divisor.to_f)
-        end
       end
 
       class Notification < OffsitePayments::Notification
