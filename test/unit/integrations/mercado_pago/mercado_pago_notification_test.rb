@@ -4,19 +4,35 @@ class MercadoPagoNotificationTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-
-    @mercado_pago = MercadoPago::Notification.new("collection_id=805289315", :credential1 => '1234567890', :credential2 => 'CLIENT_SECRET')
-
+    @mercado_pago = MercadoPago::Notification.new(custom_ipn_raw_data("approved"))
   end
 
   def test_accessors
     assert @mercado_pago.complete?
     assert_equal "Completed", @mercado_pago.status
-    assert_equal 39865275, @mercado_pago.transaction_id
+    assert_equal 1234567, @mercado_pago.transaction_id
     assert_equal "RTV-25640", @mercado_pago.item_id
-    assert_equal 814.81, @mercado_pago.gross
+    assert_equal 100, @mercado_pago.gross
     assert_equal "ARS", @mercado_pago.currency
-    assert_equal "2014-07-08T15:26:00.000-04:00", @mercado_pago.received_at
+    assert_equal "2014-01-30T18:14:24Z", @mercado_pago.received_at
+    assert_equal "payer@example.com", @mercado_pago.payer_email
+    assert_equal "collector@example.com", @mercado_pago.receiver_email
+  end
+
+  def test_pending
+    @mercado_pago = MercadoPago::Notification.new(custom_ipn_raw_data("pending"))
+    refute @mercado_pago.complete?
+    assert_equal "Pending", @mercado_pago.status
+  end
+
+  def test_rejected
+    @mercado_pago = MercadoPago::Notification.new(custom_ipn_raw_data("rejected"))
+    refute @mercado_pago.complete?
+    assert_equal "Failed", @mercado_pago.status
+  end
+
+  def test_compositions
+    assert_equal Money.new(10000, 'ARS'), @mercado_pago.amount
   end
 
   def test_respond_to_acknowledge
@@ -25,75 +41,92 @@ class MercadoPagoNotificationTest < Test::Unit::TestCase
 
   private
 
-  def oauth_raw_data
-    <<-DATA
-      {
-        "access_token": "APP_USR-7007620073316002-071810-fb0f921bd4761b67bbc7182762658e92__F_M__-157723203",
-        "token_type": "bearer",
-        "expires_in": 21600,
-        "scope": "offline_access read write",
-        "refresh_token": "TG-53c9323ae4b0bd1014915431"
-      }
-    DATA
-  end
-
-  def http_raw_data
+  def custom_ipn_raw_data(status, status_detail = "some_status_detail")
     <<-DATA
         {
-            "id": 805289315,
-            "site_id": "MLA",
-            "date_created": "2014-07-08T15:26:00.000-04:00",
-            "date_approved": "2014-07-08T15:26:00.000-04:00",
-            "money_release_date": "2014-07-22T15:26:00.000-04:00",
-            "last_modified": "2014-07-08T15:26:00.000-04:00",
-            "sponsor_id": null,
-            "collector_id": 157723203,
-            "payer": {
-                "id": 127729747,
-                "email": "payermla01@hotmail.com",
-                "phone": {
-                    "number": "00000",
-                    "area_code": null,
-                    "extension": null
-                }
-            },
-            "order_id": "RTV-25640",
-            "external_reference": "RTV-25640",
-            "merchant_order_id": 39865275,
-            "reason": "test pref",
-            "currency_id": "ARS",
-            "transaction_amount": 814.81,
-            "mercadopago_fee": 48.81,
-            "net_received_amount": 766,
-            "total_paid_amount": 814.81,
-            "shipping_cost": 0,
-            "coupon_amount": 0,
-            "coupon_fee": 0,
-            "finance_fee": 0,
-            "discount_fee": 0,
-            "coupon_id": null,
-            "status": "approved",
-            "status_detail": "accredited",
-            "status_code": "0",
-            "installments": 1,
-            "account_money_amount": 0,
-            "payment_type": "credit_card",
-            "marketplace": "NONE",
-            "operation_type": "regular_payment",
-            "statement_descriptor": "WWW.MERCADOPAGO.COM",
-            "cardholder": {
-                "name": "ZãÃáÁàÀâÂäÄ¿¿éÉèÈêÊëËiIíÍìÌîÎïÏõÕóÓòÒôÔöÖuUúÚùÙûÛüÜçÇ’ñÑ",
-                "identification": {
-                    "number": "28987654",
-                    "type": "DNI"
-                }
-            },
-            "marketplace_fee": 0,
-            "released": "no",
-            "tags": [
-                "new"
-            ],
-            "notification_url": null
+          "id": 1234567,
+          "created_from": "963",
+          "reason": "test",
+          "shipping_cost": 0,
+          "net_received_amount": 100,
+          "activation_uri": null,
+          "date_created": "2014-01-30T18:14:24Z",
+          "order_id": "RTV-25640",
+          "card_id": "12345678",
+          "version": 1,
+          "timestamp": 1352139265093,
+          "released": "no",
+          "total_paid_amount": 100,
+          "collector": {
+              "id": 1111111,
+              "first_name": null,
+              "phone": {
+                  "extension": null,
+                  "area_code": "54",
+                  "number": "111111111"
+              },
+              "email": "collector@example.com",
+              "nickname": "TESTCOLLECTOR",
+              "identification": {
+                  "number": null,
+                  "type": "CPF"
+              },
+              "last_name": "TEST"
+          },
+          "last_modified": "2012-11-05T18:14:24Z",
+          "first_six_digits": 444444,
+          "last_modified_by": 6490823,
+          "external_reference": "RTV-25640",
+          "transaction_amount": 100,
+          "card": {
+              "id": "1111111",
+              "number_id": "ASD123213ASDAS12312SDAS124312"
+          },
+          "statement_descriptor": null,
+          "client_id": "CHO-Lite",
+          "marketplace": "NONE",
+          "ow_payment_id": 123456789,
+          "modified_from": "CHO-Lite",
+          "status_code": "0",
+          "currency_id": "ARS",
+          "authorization_date": "2012-11-05T18:14:24Z",
+          "sponsor_id": null,
+          "status": "#{status.to_s}",
+          "site_id": "MLB",
+          "status_detail": "#{status_detail.to_s}",
+          "operation_type": "regular_payment",
+          "mercadopago_fee": 3.63,
+          "buyer_fee": 0,
+          "last_four_digits": 5054,
+          "transaction_id": "12345678_676d3123667777977",
+          "installments": 3,
+          "extra_part": null,
+          "money_release_date": null,
+          "finance_charge": 0,
+          "payer": {
+              "id": 123456789,
+              "first_name": "Test",
+              "phone": {
+                  "extension": null,
+                  "area_code": "011",
+                  "number": "1234567890"
+              },
+              "email": "payer@example.com",
+              "nickname": "TEST",
+              "identification": {
+                  "number": null,
+                  "type": null
+              },
+              "last_name": "TEST"
+          },
+          "item_id": "456789",
+          "last_modified_from": "963",
+          "date_approved": "2012-11-05T18:14:24Z",
+          "authorization_code": "987654",
+          "payment_method": {
+              "id": "master",
+              "payment_type": "credit_card"
+          }
         }
     DATA
   end

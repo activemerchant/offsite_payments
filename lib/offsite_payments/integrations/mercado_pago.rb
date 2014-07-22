@@ -6,59 +6,23 @@ module OffsitePayments #:nodoc:
       self.oauth_url = 'https://api.mercadolibre.com/oauth/token'
 
       mattr_accessor :service_url
-      self.service_url = "https://www.mercadopago.com/checkout/beta/form"
-
-      mattr_accessor :notification_url
-      self.notification_url = "https://api.mercadolibre.com/collections/"
+      self.service_url = "https://www.mercadopago.com/checkout/form"
 
       def self.test?
         OffsitePayments.mode == :test
       end
 
-      def self.notification(post, options = {})
-        Notification.new(post, options = {})
-      end
-
-      def self.return(query_string, options = {})
-        Return.new(query_string, options)
-      end
-
-      def self.get_access_token(client_id, client_secret)
-        uri = URI.parse(MercadoPago.oauth_url)
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-
-        request = Net::HTTP::Post.new(uri)
-        request.content_type = "application/x-www-form-urlencoded"
-        payload = {
-          "grant_type" => "client_credentials",
-          "client_id" => client_id.to_s,
-          "client_secret" => client_secret.to_s
-        }
-
-        request.set_form_data(payload)
-
-        response = http.request(request)
-        json = JSON.parse(response.body)
-
-        if response.code == "200"
-          return json["access_token"]
-        else
-          raise ActiveMerchant::ResponseError, response
-        end
-
-        rescue Timeout::Error, Errno::ECONNRESET, Errno::ETIMEDOUT => e
-          raise ActionViewHelperError, "Connection Error"
+      def self.notification(post)
+        Notification.new(post)
       end
 
       class Helper < OffsitePayments::Helper
         # MP Preference
         def initialize(order, account, options)
           super
-
           @client_id = account
           @client_secret = options[:credential2]
-          @access_token = get_access_token(client_id, client_secret)
+          @test = OffsitePayments.mode == :test
 
           #item
           add_field('item_unit_price', sprintf("%0.02f", options[:amount]))
@@ -74,59 +38,63 @@ module OffsitePayments #:nodoc:
         mapping :description, 'item_title'
 
         # back_url
-        mapping :notify_url, 'url_process'
-        mapping :return_url, 'url_succesfull'
+        mapping :notify_url, 'notification_url'
+        mapping :return_url, 'success_url'
+        mapping :cancel_return_url, 'failure_url'
 
         mapping :billing_address,   :address1 => 'payer_street_name' ,
                                     :zip => 'payer_zip_code'
 
-        mapping :shipping_address,  :address1 => 'shipment_street_name' ,
-                                    :zip => 'shipment_zip_code'
-
         mapping :customer,  :first_name => 'payer_name' ,
                             :last_name => 'payer_surname' ,
-                            :email => 'payer_email'
+                            :email => 'payer_email',
+                            :phone => 'phone_number'
 
         def form_fields
           {
-            "access_token" => @access_token
+            "test" => @test ,
+            "access_token" => get_access_token(@client_id, @client_secret)
           }
         end
 
-        private
+        def get_access_token(client_id, client_secret)
+          uri = URI.parse(MercadoPago.oauth_url)
+          http = Net::HTTP.new(uri.host, uri.port)
+          http.use_ssl = true
 
-        # def parse_phone(phone)
-        #   return if phone.nil?
-        #
-        #   phone.gsub!(/[^\d]/, '')
-        #
-        #   phone_area_code = phone.slice(0..1)
-        #   phone_number = phone.slice(2..12)
-        #
-        #   [phone_area_code, phone_number]
-        # end
+          request = Net::HTTP::Post.new(uri)
+          request.content_type = "application/x-www-form-urlencoded"
+          payload = {
+            "grant_type" => "client_credentials",
+            "client_id" => client_id.to_s,
+            "client_secret" => client_secret.to_s
+          }
+
+          request.set_form_data(payload)
+
+          response = http.request(request)
+          json = JSON.parse(response.body)
+
+          if response.code == "200"
+            return json["access_token"]
+          else
+            raise ActiveMerchant::ResponseError, response
+          end
+
+          rescue Timeout::Error, Errno::ECONNRESET, Errno::ETIMEDOUT => e
+            raise ActionViewHelperError, "Connection Error"
+        end
 
       end
 
       class Notification < OffsitePayments::Notification
 
-        def initialize(post, options = {})
-
-          collection_id = parse_http_query(post)['collection_id']
-
-          client_id = options[:credential1]
-          client_secret = options[:credential2]
-          access_token = MercadoPago.get_access_token(client_id, client_secret)
-
-          @params = get_collection(MercadoPago.notification_url, collection_id, access_token)
+        def initialize(post)
+          @params = parse_ipn(post)
         end
 
-        def get_collection(url, collection_id, access_token)
-          uri = URI.join(url, collection_id.to_s)
-          uri.query = [uri.query, "access_token=#{access_token}"].compact.join('&')
-          response = Net::HTTP.get_response(uri)
-
-          JSON.parse(response.body)
+        def parse_ipn(json)
+          JSON.parse(json.to_s)
         end
 
         def complete?
@@ -138,7 +106,17 @@ module OffsitePayments #:nodoc:
         end
 
         def transaction_id
-          params['merchant_order_id']
+          params['id']
+        end
+
+        def payer_email
+          return if params['payer'].nil?
+          params['payer']['email']
+        end
+
+        def receiver_email
+          return if params['collector'].nil?
+          params['collector']['email']
         end
 
         def currency

@@ -18,27 +18,19 @@ class MercadoPagoHelperTest < Test::Unit::TestCase
   end
 
   def test_customer_fields
-    @helper.customer :first_name => 'Cody', :last_name => 'Fauser', :email => 'cody@example.com'
+    @helper.customer :first_name => 'Cody', :last_name => 'Fauser', :email => 'cody@example.com', :phone => "+5491122334455"
     assert_field 'payer_name', 'Cody'
     assert_field 'payer_surname', 'Fauser'
     assert_field 'payer_email', 'cody@example.com'
+    assert_field 'phone_number', '+5491122334455'
   end
 
   def test_address_mapping
     @helper.billing_address :address1 => 'Street 123',
-                            :zip => '5700'
+                            :zip => '5710'
 
     assert_field 'payer_street_name', 'Street 123'
-    assert_field 'payer_zip_code', '5700'
-
-  end
-
-  def test_shipping_mapping
-    @helper.shipping_address :address1 => 'Street 123',
-                            :zip => '5700'
-
-    assert_field 'shipment_street_name', 'Street 123'
-    assert_field 'shipment_zip_code', '5700'
+    assert_field 'payer_zip_code', '5710'
 
   end
 
