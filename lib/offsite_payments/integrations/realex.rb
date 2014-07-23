@@ -221,6 +221,27 @@ module OffsitePayments #:nodoc:
           signature == calculated_signature
         end
 
+        # Extra data (available from Realex)
+        def cvn_result
+          params['CVNRESULT']
+        end
+
+        def pasref
+          params['PASREF']
+        end
+
+        def eci
+          params['ECI']
+        end
+
+        def cavv
+          params['CAVV']
+        end
+
+        def xid
+          params['XID']
+        end
+
       end
 
       class Return < OffsitePayments::Return
