@@ -226,6 +226,14 @@ module OffsitePayments #:nodoc:
           params['CVNRESULT']
         end
 
+        def avs_postcode_result
+          params['AVSPOSTCODERESULT']
+        end
+
+        def avs_address_result
+          params['AVSADDRESSRESULT']
+        end
+
         def pasref
           params['PASREF']
         end
