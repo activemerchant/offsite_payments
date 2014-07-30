@@ -9,9 +9,9 @@ class GoCoinNotificationTest < Test::Unit::TestCase
 
   def test_accessors
     assert @go_coin.complete?
-    assert_equal "ready_to_ship", @go_coin.status
-    assert_equal "b9879d2b-052f-4a0a-8a3f-3e72049e4d19", @go_coin.transaction_id
-    assert_equal "050b550a-1f4d-4c1e-a0b7-7d9a27e44c4a", @go_coin.item_id
+    assert_equal "Completed", @go_coin.status
+    assert_equal "050b550a-1f4d-4c1e-a0b7-7d9a27e44c4a", @go_coin.transaction_id
+    assert_equal "237", @go_coin.item_id
     assert_equal "31.66", @go_coin.gross.to_s
     assert_equal "USD", @go_coin.currency
     assert_equal "2014-01-24 00:26:39 UTC", @go_coin.received_at.to_s
@@ -53,7 +53,7 @@ class GoCoinNotificationTest < Test::Unit::TestCase
   # This hash (converted to JSON) is what the acknowledge HTTP read invoice returns
   def invoice_data
     {
-      "id"=>"050b550a-1f4d-4c1e-a0b7-7d9a27e44c4a", 
+      "id"=>"050b550a-1f4d-4c1e-a0b7-7d9a27e44c4a",
       "status"=>"ready_to_ship", 
       "payment_address"=>"bitcoin_public_address", 
       "price"=>"0.00012350", 

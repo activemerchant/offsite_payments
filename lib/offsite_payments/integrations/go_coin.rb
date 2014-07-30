@@ -1,18 +1,8 @@
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module GoCoin
-
-      def self.create_invoice_url(merchant_id)
-        "https://api.gocoin.com/api/v1/merchants/#{merchant_id}/invoices"
-      end
-
-      def self.read_invoice_url_prefix
-        "https://api.gocoin.com/api/v1/invoices"
-      end
-
-      def self.credential_based_url(options)
-        "https://gateway.gocoin.com/merchant/#{options[:account_name]}/invoices"
-      end
+      mattr_accessor :service_url
+      self.service_url = 'https://api.gocoin.com/api/v1/invoices'
 
       def self.notification(post, options = {})
         Notification.new(post, options)
@@ -35,6 +25,15 @@ module OffsitePayments #:nodoc:
           @merchant_id = options[:account_name]
           super
         end
+
+        def credential_based_url
+          "https://gateway.gocoin.com/merchant/#{@merchant_id}/invoices"
+        end
+
+        def invoicing_url
+          "https://api.gocoin.com/api/v1/merchants/#{@merchant_id}/invoices"
+        end
+
 
         mapping :amount, 'base_price'
         mapping :order, 'order_id'
@@ -67,7 +66,7 @@ module OffsitePayments #:nodoc:
         private
 
         def create_invoice
-          uri = URI.parse(GoCoin.create_invoice_url(@merchant_id))
+          uri = URI.parse(invoicing_url)
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true
           request = Net::HTTP::Post.new(uri.request_uri)
@@ -85,21 +84,28 @@ module OffsitePayments #:nodoc:
 
       class Notification < OffsitePayments::Notification
           def complete?
-            status == 'ready_to_ship'
+            status == 'Completed'
           end
 
           def status
-            params['payload']['status']
-          end
-
-          # GoCoin Event ID
-          def transaction_id
-            params['id']
+            case params['payload']['status']
+            when 'ready_to_ship'
+              'Completed'
+            when 'paid', 'underpaid', 'unpaid', 'merchant_review'
+              'Pending'
+            when 'invalid'
+              'Failed'
+            end
           end
 
           # GoCoin Invoice ID
-          def item_id
+          def transaction_id
             params['payload']['id']
+          end
+
+          # Merchant's Order ID
+          def item_id
+            params['payload']['order_id']
           end
 
           # Time GoCoin server generated callback
@@ -129,7 +135,7 @@ module OffsitePayments #:nodoc:
 
           # Hits the GoCoin API to get the invoice and compare the data
           def acknowledge(access_token = nil)
-            uri = URI.parse("#{OffsitePayments::Integrations::GoCoin.read_invoice_url_prefix}/#{item_id}")
+            uri = URI.parse("#{OffsitePayments::Integrations::GoCoin.service_url}/#{transaction_id}")
             http = Net::HTTP.new(uri.host, uri.port)
             http.use_ssl = true
             request = Net::HTTP::Get.new(uri.path)
