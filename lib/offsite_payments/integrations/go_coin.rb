@@ -31,7 +31,7 @@ module OffsitePayments #:nodoc:
           @access_token = options[:authcode]
           @currency = options[:currency] || 'USD'
           @crypto_currency = options[:crypto_currency]
-          @is_bill? = true unless options[:is_bill] == 'false'
+          @is_bill = true unless options[:is_bill] == 'false'
           @merchant_id = options[:account_name]
           super
         end
@@ -74,7 +74,7 @@ module OffsitePayments #:nodoc:
           request.content_type = "application/json"
           @fields['base_price_currency'] = @currency
           @fields['price_currency'] = @crypto_currency
-          @fields['type'] = 'bill' if @is_bill? 
+          @fields['type'] = 'bill' if @is_bill
           request.body = @fields.to_json
           request.add_field("Authorization", "Bearer #{@access_token}")
           response = http.request(request)
