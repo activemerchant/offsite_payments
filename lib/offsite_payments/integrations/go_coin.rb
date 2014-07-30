@@ -18,6 +18,7 @@ module OffsitePayments #:nodoc:
 
       class Helper < OffsitePayments::Helper
         def initialize(order, account, options)
+          puts options.inspect
           @access_token = options[:authcode]
           @currency = options[:currency] || 'USD'
           @crypto_currency = options[:crypto_currency]
@@ -66,6 +67,8 @@ module OffsitePayments #:nodoc:
         private
 
         def create_invoice
+          puts self.inspect
+          puts @is_bill
           uri = URI.parse(invoicing_url)
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true
