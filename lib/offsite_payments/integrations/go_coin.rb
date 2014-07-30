@@ -70,6 +70,7 @@ module OffsitePayments #:nodoc:
           request = Net::HTTP::Post.new(uri.request_uri)
           request.content_type = 'application/json'
           @fields['base_price_currency'] = @currency
+          @fields['type'] = 'bill'
           request.body = @fields.to_json
           request.add_field('Authorization', "Bearer #{@access_token}")
           response = http.request(request)
