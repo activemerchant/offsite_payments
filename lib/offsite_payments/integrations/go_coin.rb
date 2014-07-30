@@ -18,12 +18,9 @@ module OffsitePayments #:nodoc:
 
       class Helper < OffsitePayments::Helper
         def initialize(order, account, options)
-          puts options.inspect
           @access_token = options[:authcode]
           @currency = options[:currency] || 'USD'
-          @crypto_currency = options[:crypto_currency]
-          @is_bill = true unless options[:is_bill] == 'false'
-          @merchant_id = options[:account_name]
+          @merchant_id = account
           super
         end
 
@@ -55,30 +52,26 @@ module OffsitePayments #:nodoc:
         mapping :return_url, 'redirect_url'
 
         def form_method
-          "GET"
+          'GET'
         end
 
         def form_fields
           invoice = create_invoice
-          raise StandardError, "Invalid response while retrieving GoCoin Invoice ID. Please try again." unless invoice
-          {"invoice_id" => invoice['id']}
+          raise StandardError, 'Invalid response while retrieving GoCoin Invoice ID. Please try again.' unless invoice
+          {'invoice_id' => invoice['id']}
         end
 
         private
 
         def create_invoice
-          puts self.inspect
-          puts @is_bill
           uri = URI.parse(invoicing_url)
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true
           request = Net::HTTP::Post.new(uri.request_uri)
-          request.content_type = "application/json"
+          request.content_type = 'application/json'
           @fields['base_price_currency'] = @currency
-          @fields['price_currency'] = @crypto_currency
-          @fields['type'] = 'bill' if @is_bill
           request.body = @fields.to_json
-          request.add_field("Authorization", "Bearer #{@access_token}")
+          request.add_field('Authorization', "Bearer #{@access_token}")
           response = http.request(request)
           JSON.parse(response.body)
         rescue JSON::ParserError
@@ -94,7 +87,7 @@ module OffsitePayments #:nodoc:
             case params['payload']['status']
             when 'ready_to_ship'
               'Completed'
-            when 'paid', 'underpaid', 'unpaid', 'merchant_review'
+            when 'billed', 'unpaid', 'underpaid', 'paid', 'merchant_review'
               'Pending'
             when 'invalid'
               'Failed'
@@ -121,7 +114,7 @@ module OffsitePayments #:nodoc:
             params['payload']['base_price_currency']
           end
 
-          # Crypto currency invoice was actually paid in
+          # Crypto currency invoice was actually paid in (could be nil when in :billed state)
           def crypto_currency
             params['payload']['price_currency']
           end
@@ -142,7 +135,7 @@ module OffsitePayments #:nodoc:
             http = Net::HTTP.new(uri.host, uri.port)
             http.use_ssl = true
             request = Net::HTTP::Get.new(uri.path)
-            request.add_field("Authorization", "Bearer #{access_token}")
+            request.add_field('Authorization', "Bearer #{access_token}")
             response = http.request(request)
             retrieved_params = JSON.parse(response.body.to_s)
 
