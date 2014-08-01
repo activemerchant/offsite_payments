@@ -148,7 +148,8 @@ module OffsitePayments #:nodoc:
         end
 
         def test
-          false
+          return if params['sandbox'].nil?
+          params['sandbox'] == true
         end
 
         def acknowledge(authcode = nil)

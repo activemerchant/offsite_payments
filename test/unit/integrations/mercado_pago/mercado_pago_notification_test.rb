@@ -17,6 +17,7 @@ class MercadoPagoNotificationTest < Test::Unit::TestCase
     assert_equal "2014-01-30T18:14:24Z", @mercado_pago.received_at
     assert_equal "payer@example.com", @mercado_pago.payer_email
     assert_equal "collector@example.com", @mercado_pago.receiver_email
+    assert_equal @mercado_pago.test, true
   end
 
   def test_pending
@@ -103,6 +104,7 @@ class MercadoPagoNotificationTest < Test::Unit::TestCase
           "extra_part": null,
           "money_release_date": null,
           "finance_charge": 0,
+          "sandbox": true,
           "payer": {
               "id": 123456789,
               "first_name": "Test",
