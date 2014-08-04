@@ -1,3 +1,5 @@
+require 'resolv'
+
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     # Documentation:
@@ -21,6 +23,9 @@ module OffsitePayments #:nodoc:
 
       mattr_accessor :signature_parameter_name
       self.signature_parameter_name = 'signature'
+
+      mattr_accessor :passphrase_parameter_name
+      self.passphrase_parameter_name = 'passphrase'
 
       def self.service_url
         mode = OffsitePayments.mode
@@ -59,12 +64,12 @@ module OffsitePayments #:nodoc:
       end
 
       module Common
-        def generate_signature(type)
+        def generate_signature(type, options = {})
           string = case type
           when :request
-            request_signature_string
+            request_signature_string(options[:passphrase])
           when :notify
-            notify_signature_string
+            notify_signature_string(options[:passphrase])
           end
 
           Digest::MD5.hexdigest(string)
@@ -74,20 +79,27 @@ module OffsitePayments #:nodoc:
           [:merchant_id, :merchant_key, :return_url, :cancel_url,
            :notify_url, :name_first, :name_last, :email_address,
            :payment_id, :amount, :item_name, :item_description,
-           :custom_str1, :custom_str2, :custom_str3, :custom_str4,
-           :custom_str5, :custom_int1, :custom_int2, :custom_int3,
-           :custom_int4, :custom_int5, :email_confirmation,
-           :confirmation_address]
+           :custom_int1, :custom_int2, :custom_int3,
+           :custom_int4, :custom_int5, :custom_str1, :custom_str2,
+           :custom_str3, :custom_str4, :custom_str5, :email_confirmation,
+           :confirmation_address, PayFast.passphrase_parameter_name]
         end
 
-        def request_signature_string
+        def request_signature_string(passphrase = nil)
           request_attributes.map do |attr|
-            "#{mappings[attr]}=#{CGI.escape(@fields[mappings[attr]])}" if @fields[mappings[attr]].present?
+            if attr == PayFast.passphrase_parameter_name && passphrase
+              "#{PayFast.passphrase_parameter_name}=#{CGI.escape(passphrase)}"
+            else
+              "#{mappings[attr]}=#{CGI.escape(@fields[mappings[attr]])}" if @fields[mappings[attr]].present?
+            end
           end.compact.join('&')
         end
 
-        def notify_signature_string
-          params.map do |key, value|
+        def notify_signature_string(passphrase = nil)
+          notify_params = params.dup
+          notify_params[PayFast.passphrase_parameter_name] = passphrase if passphrase
+
+          notify_params.map do |key, value|
             "#{key}=#{CGI.escape(value)}" unless key == PayFast.signature_parameter_name
           end.compact.join('&')
         end
@@ -98,13 +110,14 @@ module OffsitePayments #:nodoc:
 
         def initialize(order, account, options = {})
           super
+          @passphrase = options.delete(:credential3)
           add_field('merchant_id', account)
           add_field('merchant_key', options.delete(:credential2))
           add_field('m_payment_id', order)
         end
 
         def form_fields
-          @fields
+          @fields.merge(PayFast.signature_parameter_name => generate_signature(:request, passphrase: @passphrase))
         end
 
         def params
@@ -114,7 +127,7 @@ module OffsitePayments #:nodoc:
         mapping :merchant_id, 'merchant_id'
         mapping :merchant_key, 'merchant_key'
         mapping :return_url, 'return_url'
-        mapping :cancel_return_url, 'cancel_url'
+        mapping :cancel_url, 'cancel_url'
         mapping :notify_url, 'notify_url'
         mapping :name_first, 'name_first'
         mapping :name_last, 'name_last'
@@ -122,12 +135,11 @@ module OffsitePayments #:nodoc:
         mapping :payment_id, 'm_payment_id'
         mapping :amount, 'amount'
         mapping :item_name, 'item_name'
-        mapping :description, 'item_name'
+        mapping :item_description, 'item_description'
 
         mapping :customer, :first_name => 'name_first',
                            :last_name  => 'name_last',
-                           :email      => 'email_address',
-                           :phone      => 'phone'
+                           :email      => 'email_address'
 
         5.times { |i| mapping :"custom_str#{i}", "custom_str#{i}" }
         5.times { |i| mapping :"custom_int#{i}", "custom_int#{i}" }
@@ -175,6 +187,15 @@ module OffsitePayments #:nodoc:
         include ActiveUtils::PostsData
         include Common
 
+        def valid_hosts
+          [
+            'www.payfast.co.za',
+            'sandbox.payfast.co.za',
+            'w1w.payfast.co.za',
+            'w2w.payfast.co.za'
+          ]
+        end
+
         # Was the transaction complete?
         def complete?
           status == "Completed"
@@ -182,11 +203,16 @@ module OffsitePayments #:nodoc:
 
         # Status of transaction. List of possible values:
         # <tt>COMPLETE</tt>::
+        # <tt>FAILED</tt>::
+        # <tt>PENDING</tt>::
         def status
-          if params['payment_status'] == "COMPLETE"
+          case params['payment_status']
+          when 'COMPLETE'
             "Completed"
-          else
+          when 'FAILED'
             "Failed"
+          when 'PENDING'
+            "Pending"
           end
         end
 
@@ -249,16 +275,22 @@ module OffsitePayments #:nodoc:
         #     else
         #       ... log possible hacking attempt ...
         #     end
-        def acknowledge(authcode = nil)
-          if params[PayFast.signature_parameter_name] == generate_signature(:notify)
-            response = ssl_post(PayFast.validate_service_url, notify_signature_string,
-              'Content-Type' => "application/x-www-form-urlencoded",
-              'Content-Length' => "#{notify_signature_string.size}"
-            )
-            raise StandardError.new("Faulty PayFast result: #{response}") unless ['VALID', 'INVALID'].include?(response)
+        def acknowledge
+          # Security Check 1
+          return unless params[PayFast.signature_parameter_name] == generate_signature(:notify, passphrase: @options[:passphrase])
+          # Security Check 2
+          return unless valid_hosts.include?(Resolv.getname(@options[:remote_ip]))
+          # Security Check 3
+          return if (@options[:amount].to_f - gross.to_f).abs > 0.01
+          # Security Check 4
+          response = ssl_post(PayFast.validate_service_url, notify_signature_string,
+            'Content-Type' => "application/x-www-form-urlencoded",
+            'Content-Length' => "#{notify_signature_string.size}"
+          )
+          raise StandardError.new("Faulty PayFast result: #{response}") unless ['VALID', 'INVALID'].include?(response)
+          return unless response == "VALID"
 
-            response == "VALID"
-          end
+          true
         end
       end
 
