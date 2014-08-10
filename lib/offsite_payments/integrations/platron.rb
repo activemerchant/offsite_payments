@@ -31,7 +31,7 @@ module OffsitePayments #:nodoc:
         end
 
         def form_fields
-          @fields.merge('pg_sig' => Common.generate_signature(@fields, @path, @secret_key))
+          @fields.merge('pg_sig' => Platron.generate_signature(@fields, @path, @secret_key))
         end
 
         def params
