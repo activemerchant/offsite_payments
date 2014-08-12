@@ -43,6 +43,12 @@ module OffsitePayments #:nodoc:
         mapping :order, 'pg_order_id'
         mapping :description, 'pg_description'
         mapping :currency, 'pg_currency'
+        
+        mapping :customer, :email => 'pg_user_contact_email', :phone => 'pg_user_phone'
+        
+        mapping :return_url, 'pg_result_url'
+        mapping :forward_url, 'pg_success_url'
+        
       end
 
       class Notification < OffsitePayments::Notification
