@@ -46,7 +46,7 @@ module OffsitePayments #:nodoc:
         
         mapping :customer, :email => 'pg_user_contact_email', :phone => 'pg_user_phone'
         
-        mapping :return_url, 'pg_result_url'
+        mapping :notify_url, 'pg_result_url'
         mapping :forward_url, 'pg_success_url'
         
       end
