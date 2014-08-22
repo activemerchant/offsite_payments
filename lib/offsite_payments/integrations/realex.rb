@@ -95,9 +95,9 @@ module OffsitePayments #:nodoc:
         def initialize(order, account, options = {})
           @timestamp   = Time.now.to_i.to_s
           @currency    = options[:currency]
-          @merchant_id = options[:credential2]
-          @sub_account = options[:credential3]
-          @secret      = options[:credential4]
+          @merchant_id = options[:credential1]
+          @sub_account = options[:credential2]
+          @secret      = options[:credential3]
           super
           # Credentials
           add_field 'MERCHANT_ID', @merchant_id
