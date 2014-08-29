@@ -4,7 +4,7 @@ class PagSeguroModuleTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def test_notification_method
-    Net::HTTP.expects(:get_response).returns(stub(body: "<xml></xml>"))
+    Net::HTTP.expects(:get_response).returns(stub(code: "200", body: "<xml></xml>"))
     assert_instance_of PagSeguro::Notification, PagSeguro.notification('notificationCode=1234')
   end
 

@@ -165,13 +165,19 @@ module OffsitePayments #:nodoc:
       end
 
       class Notification < OffsitePayments::Notification
+        class NotificationError < StandardError; end
+
         def initialize(post, options = {})
+          @acknowledge = true
           notify_code = parse_http_query(post)["notificationCode"]
           email = options[:credential1]
           token = options[:credential2]
 
           uri = URI.join(PagSeguro.notification_url, notify_code)
           parse_xml(web_get(uri, email: email, token: token))
+
+        rescue NotificationError
+          @acknowledge = false
         end
 
         def complete?
@@ -227,9 +233,8 @@ module OffsitePayments #:nodoc:
           end
         end
 
-        # There's no acknowledge for PagSeguro
         def acknowledge
-          true
+          @acknowledge
         end
 
         private
@@ -238,6 +243,8 @@ module OffsitePayments #:nodoc:
           uri.query = URI.encode_www_form(params)
 
           response = Net::HTTP.get_response(uri)
+          raise NotificationError if response.code.to_i > 200
+
           response.body
         end
 
