@@ -66,6 +66,14 @@ class Ipay88NotificationTest < Test::Unit::TestCase
     assert !ipay.acknowledge
   end
 
+  def test_gross_strips_commas
+    @ipay88.stubs(:params).returns("Amount" => "23,123.00")
+    assert_equal "23123.00", @ipay88.gross
+
+    @ipay88.stubs(:params).returns("Amount" => "1,123,123.00")
+    assert_equal "1123123.00", @ipay88.gross
+  end
+
   private
   def http_raw_data(mode=:success)
     base = { "MerchantCode" => "ipay88merchcode",
