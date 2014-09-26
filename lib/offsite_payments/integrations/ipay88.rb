@@ -149,7 +149,7 @@ module OffsitePayments #:nodoc:
         end
 
         def gross
-          params["Amount"]
+          params["Amount"].try(:gsub, /,(?=\d{3}\b)/, '')
         end
 
         def currency
