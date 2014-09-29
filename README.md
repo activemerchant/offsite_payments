@@ -53,6 +53,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 * [PayDollar](http://www.paydollar.com)
 * [Paysbuy](https://www.paysbuy.com/) - TH
 * [Platron](https://www.platron.ru/) - RU
+* [QuickPay](http://quickpay.net/dk/) - AT, DE, DK, EE, LT, LV, FO, NL, NO, SE, UK
 * [RBK Money](https://rbkmoney.ru/) - RU
 * [Robokassa](http://robokassa.ru/) - RU
 * [SagePay Form](http://www.sagepay.com/products_services/sage_pay_go/integration/form)
