@@ -28,12 +28,6 @@ class CybersourceSecureAcceptanceNotificationTest < Test::Unit::TestCase
     assert_equal 'order-500;3993692250820176195663;5551234567890123456789', @cybersource_secure_acceptance.authorization
   end
 
-  def test_invalid_authorization
-    assert_raise ArgumentError do
-      @cybersource_secure_acceptance.authorization
-    end
-  end
-
   # Replace with real successful acknowledgement code
   def test_acknowledgement
     assert @cybersource_secure_acceptance.acknowledge
