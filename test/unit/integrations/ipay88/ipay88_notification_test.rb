@@ -11,14 +11,14 @@ class Ipay88NotificationTest < Test::Unit::TestCase
     assert_equal "ipay88merchcode",              @ipay88.account
     assert_equal 6,                              @ipay88.payment
     assert_equal "order-500",                    @ipay88.item_id
-    assert_equal "5.00",                         @ipay88.gross
+    assert_equal "1523.00",                      @ipay88.gross
     assert_equal "MYR",                          @ipay88.currency
     assert_equal "Remarkable",                   @ipay88.remark
     assert_equal "12345",                        @ipay88.transaction_id
     assert_equal "auth123",                      @ipay88.auth_code
     assert_equal "Completed",                    @ipay88.status
     assert_equal "Invalid merchant",             @ipay88.error
-    assert_equal "bPlMszCBwxlfGX9ZkgmSfT+OeLQ=", @ipay88.signature
+    assert_equal "qRkTjHm5O9RXD8/0S/EYKJ7U8y0=", @ipay88.signature
   end
 
   def test_secure_request
@@ -66,12 +66,20 @@ class Ipay88NotificationTest < Test::Unit::TestCase
     assert !ipay.acknowledge
   end
 
+  def test_gross_strips_commas
+    @ipay88.stubs(:params).returns("Amount" => "23,123.00")
+    assert_equal "23123.00", @ipay88.gross
+
+    @ipay88.stubs(:params).returns("Amount" => "1,123,123.00")
+    assert_equal "1123123.00", @ipay88.gross
+  end
+
   private
   def http_raw_data(mode=:success)
     base = { "MerchantCode" => "ipay88merchcode",
              "PaymentId"    =>  6,
              "RefNo"        =>  "order-500",
-             "Amount"       =>  "5.00",
+             "Amount"       =>  "1,523.00",
              "Currency"     =>  "MYR",
              "Remark"       =>  "Remarkable",
              "TransId"      =>  "12345",
@@ -81,11 +89,11 @@ class Ipay88NotificationTest < Test::Unit::TestCase
 
     case mode
     when :success
-      parameterize(base.merge("Signature" => "bPlMszCBwxlfGX9ZkgmSfT+OeLQ="))
+      parameterize(base.merge("Signature" => "qRkTjHm5O9RXD8/0S/EYKJ7U8y0="))
     when :invalid_sig
       parameterize(base.merge("Signature" => "hacked"))
     when :payment_cancelled
-      parameterize(base.merge("Status" => 0, "Signature" => "p8nXYcl/wytpNMzsf31O/iu/2EU="))
+      parameterize(base.merge("Status" => 0, "Signature" => "dzn4gOE2R5Jlzr6fs6nz418LsU4="))
     when :missing_amount
       parameterize(base.except("Amount"))
     else
@@ -94,7 +102,7 @@ class Ipay88NotificationTest < Test::Unit::TestCase
   end
 
   def payload
-    { "MerchantCode" => "ipay88merchcode", "RefNo" => "order-500", "Amount" => "5.00" }
+    { "MerchantCode" => "ipay88merchcode", "RefNo" => "order-500", "Amount" => "1523.00" }
   end
 
   def parameterize(params)
