@@ -28,6 +28,8 @@ module OffsitePayments #:nodoc:
           @order = order_id
           @account = account
           @options = options
+          @options[:credential1] ||= ''
+          @options[:credential2] ||= ''
         end
 
         mapping :notify_url, 'notify_url'
