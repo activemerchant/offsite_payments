@@ -2,13 +2,13 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Coinbase
       mattr_accessor :service_url
-      self.service_url = 'https://coinbase.com/checkouts/redirect'
+      self.service_url = 'https://www.coinbase.com/checkouts/redirect'
 
       mattr_accessor :buttoncreate_url
-      self.buttoncreate_url = 'https://coinbase.com/api/v1/buttons'
+      self.buttoncreate_url = 'https://api.coinbase.com/v1/buttons'
 
       mattr_accessor :notification_confirmation_url
-      self.notification_confirmation_url = 'https://coinbase.com/api/v1/orders/%s'
+      self.notification_confirmation_url = 'https://api.coinbase.com/v1/orders/%s'
 
       # options should be { credential1: "your API key", credential2: "your API secret" }
       def self.notification(post, options = {})
