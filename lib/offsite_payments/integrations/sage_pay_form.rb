@@ -131,6 +131,8 @@ module OffsitePayments #:nodoc:
           fields['BillingPostCode'] ||= "0000"
           fields['DeliveryPostCode'] ||= "0000"
 
+          fields['ReferrerID'] = referrer_id if referrer_id
+
           crypt_skip = ['Vendor', 'EncryptKey', 'SendEmail']
           crypt_skip << 'BillingState'  unless fields['BillingCountry']  == 'US'
           crypt_skip << 'DeliveryState' unless fields['DeliveryCountry'] == 'US'
@@ -138,14 +140,12 @@ module OffsitePayments #:nodoc:
           key = fields['EncryptKey']
           @crypt ||= create_crypt_field(fields.except(*crypt_skip), key)
 
-          result = {
+          {
             'VPSProtocol' => '3.00',
             'TxType' => 'PAYMENT',
             'Vendor' => @fields['Vendor'],
             'Crypt'  => @crypt
           }
-          result['ReferrerID'] = referrer_id if referrer_id
-          result
         end
 
         private

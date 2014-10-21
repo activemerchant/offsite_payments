@@ -16,6 +16,10 @@ class SagePayFormHelperTest < Test::Unit::TestCase
     @helper.credential2
   end
 
+  def teardown
+    OffsitePayments::Integrations::SagePayForm::Helper.referrer_id = nil
+  end
+
   def test_basic_helper_fields
     assert_equal 5, @helper.fields.size
     assert_field 'Vendor', 'cody@example.com'
@@ -237,6 +241,27 @@ class SagePayFormHelperTest < Test::Unit::TestCase
     assert_field 'DeliveryCity', 'Dublin Shipping'
     assert_field 'DeliveryPostCode', '0000'
     assert_field 'DeliveryCountry', 'IE'
+  end
+
+  def test_referrer_id_in_crypt_when_included
+    OffsitePayments::Integrations::SagePayForm::Helper.referrer_id = 'some-referrer-id'
+
+    @helper.customer :first_name => 'Tobias', :last_name => "Lütke", :email => 'tobi@example.com'
+    @helper.form_fields
+
+    assert_field 'ReferrerID', 'some-referrer-id'
+
+    with_crypt_plaintext do |plain|
+      assert plain.include?('some-referrer-id')
+    end
+  end
+
+  def test_do_not_send_referrer_id_by_default
+    @helper.customer :first_name => 'Tobias', :last_name => "Lütke", :email => 'tobi@example.com'
+
+    @helper.form_fields
+
+    refute @helper.fields['ReferrerID']
   end
 
   private
