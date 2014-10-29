@@ -38,7 +38,7 @@ module OffsitePayments #:nodoc:
         end
 
         def generate_signature
-          Digest::MD5.hexdigest(generate_signature_string).upcase
+          Digest::SHA256.hexdigest(generate_signature_string).upcase
         end
       end
 
