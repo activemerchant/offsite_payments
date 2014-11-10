@@ -163,7 +163,7 @@ module OffsitePayments #:nodoc:
 
         # original amount send by merchant
         def gross
-          params['amount']
+          parse_and_round_gross_amount(params['amount'])
         end
 
         # This is discount given to user - based on promotion set by merchants.
@@ -232,6 +232,12 @@ module OffsitePayments #:nodoc:
             return false
           end
           true
+        end
+
+        private
+        def parse_and_round_gross_amount(amount)
+          rounded_amount = (amount.to_f * 100.0).round
+          sprintf("%.2f", rounded_amount / 100.00)
         end
       end
 
