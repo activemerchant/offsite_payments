@@ -32,7 +32,7 @@ class PayuInPaisaReturnTest < Test::Unit::TestCase
     assert notification.complete?
     assert_equal 'Completed', notification.status
     assert notification.invoice_ok?('4ba4afe87f7e73468f2a')
-    assert notification.amount_ok?(BigDecimal.new('10.00'),BigDecimal.new('0.00'))
+    assert notification.amount_ok?(BigDecimal.new('10.00'), BigDecimal.new('0.00'))
     assert_equal "success", notification.transaction_status
     assert_equal '403993715508030204', @payu.notification.transaction_id
     assert_equal 'CC', @payu.notification.type

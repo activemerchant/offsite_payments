@@ -38,6 +38,12 @@ class PayuInPaisaNotificationTest < Test::Unit::TestCase
     assert @payu.acknowledge
   end
 
+  def test_handles_floating_point_problems_in_amount
+    bad_data = http_raw_data.gsub('amount=10.00', 'amount=2337.2960000000003')
+    notification = PayuInPaisa::Notification.new(bad_data)
+    assert_equal '2337.30', notification.gross
+  end
+
   def test_item_id_gives_the_original_item_id
     assert 'original_item_id', @payu.item_id
   end
