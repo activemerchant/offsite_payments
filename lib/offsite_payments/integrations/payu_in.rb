@@ -162,6 +162,10 @@ module OffsitePayments #:nodoc:
         end
 
         # original amount send by merchant
+        def original_gross
+          params['amount']
+        end
+
         def gross
           parse_and_round_gross_amount(params['amount'])
         end
@@ -225,7 +229,7 @@ module OffsitePayments #:nodoc:
         end
 
         def checksum_ok?
-          checksum_fields = [transaction_status, *user_defined.reverse, customer_email, customer_first_name, product_info, gross, invoice]
+          checksum_fields = [transaction_status, *user_defined.reverse, customer_email, customer_first_name, product_info, original_gross, invoice]
 
           unless Digest::SHA512.hexdigest([@secret_key, *checksum_fields, @merchant_id].join("|")) == checksum
             @message = 'Return checksum not matching the data provided'
