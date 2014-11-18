@@ -16,6 +16,20 @@ class PayuInPaisaReturnTest < Test::Unit::TestCase
     assert_equal 'Completed', @payu.status('4ba4afe87f7e73468f2a','10.00')
   end
 
+  def test_success_with_floating_point_error
+    bad_data = http_raw_data_success.gsub('amount=10.00', 'amount=2337.2960000000003')
+    payu_return = PayuInPaisa::Return.new(bad_data, credential1: 'merchant_id', credential2: 'secret')
+
+    assert payu_return.success?
+  end
+
+  def test_success_with_stripped_trailing_digit
+    bad_data = http_raw_data_success.gsub('amount=10.00', 'amount=10.0')
+    payu_return = PayuInPaisa::Return.new(bad_data, credential1: 'merchant_id', credential2: 'secret')
+
+    assert payu_return.success?
+  end
+
   def test_failure_is_successful
     setup_failed_return
     assert_equal 'Failed', @payu.status('8ae1034d1abf47fde1cf', '10.00')
