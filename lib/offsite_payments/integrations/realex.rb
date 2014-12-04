@@ -1,9 +1,9 @@
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Realex
-      mattr_accessor :production_url
+      mattr_accessor :service_url
       mattr_accessor :test_url
-      self.production_url = 'https://hpp.realexpayments.com/pay'
+      self.service_url = 'https://hpp.realexpayments.com/pay'
       self.test_url       = 'https://hpp.sandbox.realexpayments.com/pay'
 
       def self.helper(order, account, options={})
@@ -21,8 +21,8 @@ module OffsitePayments #:nodoc:
       def self.service_url
         mode = OffsitePayments.mode
         case mode
-        when :production
-          self.production_url
+        when :service_url
+          self.service_url
         when :test
           self.test_url
         else
