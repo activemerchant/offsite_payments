@@ -93,7 +93,7 @@ module OffsitePayments #:nodoc:
         include Common
 
         def initialize(order, account, options = {})
-          @timestamp   = Time.now.to_i.to_s
+          @timestamp   = Time.now.strftime('%Y%m%d%H%M%S')
           @currency    = options[:currency]
           @merchant_id = options[:credential2]
           @sub_account = options[:credential3]
