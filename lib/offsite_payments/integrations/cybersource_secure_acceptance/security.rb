@@ -8,6 +8,8 @@ module OffsitePayments #:nodoc:
         end
 
         def valid? data
+          return false unless params['signature'] && params['signed_field_names']
+          
           signature = generate_signature data
           signature.strip.eql? params['signature'].strip
         end
