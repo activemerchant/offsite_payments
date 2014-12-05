@@ -60,7 +60,7 @@ module OffsitePayments #:nodoc:
           # This is equivalent to the authorization in the Cybersource gateway module.
           # reference_number = merchant_reference_code (order_id), transaction_id = RequestID, payment_token = requestToken.
           # payment_token is required for this. Use transaction_type=authorization,create_payment_token to include it in response.
-          raise ArgumentError, 'payment_token is required for authorization code' if payment_token.blank?
+          logger.warn('payment_token is required for a fully valid authorization code') if payment_token.blank?
           complete? ? [ reference_number, transaction_id, payment_token ].compact.join(";") : nil
         end
 
@@ -69,7 +69,7 @@ module OffsitePayments #:nodoc:
         end
 
         def expiry_date
-          Date.strptime params['req_card_expiry_date'], '%m-%Y'
+          params['req_card_expiry_date'].present? ? Date.strptime(params['req_card_expiry_date'], '%m-%Y') : nil
         end
 
         # When was this payment received by the client.
@@ -83,7 +83,7 @@ module OffsitePayments #:nodoc:
 
         # the money amount we received in X.2 decimal.
         def gross
-          params['auth_amount']
+          params['auth_amount'] || params['req_amount']
         end
 
         def status
@@ -120,7 +120,7 @@ module OffsitePayments #:nodoc:
 
         # Take the posted data and move the relevant data into a hash
         def parse(post)
-          @raw = post.to_s
+          @raw = post.to_s.force_encoding("UTF-8")
           for line in @raw.split('&')
             key, value = *line.scan( %r{^([A-Za-z0-9_.-]+)\=(.*)$} ).flatten
             params[key] = CGI.unescape(value.to_s) if key.present?
