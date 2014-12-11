@@ -1,7 +1,3 @@
-require File.dirname(__FILE__) + '/paystand/helper.rb'
-require File.dirname(__FILE__) + '/paystand/notification.rb'
-require 'json'
-
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Paystand
