@@ -117,11 +117,19 @@ module OffsitePayments #:nodoc:
         end
 
         def form_fields
+          check_required_fields!
+
           @fields.merge(PayFast.signature_parameter_name => generate_signature(:request, passphrase: @passphrase))
         end
 
         def params
           @fields
+        end
+
+        def check_required_fields!
+          [:merchant_id, :merchant_key, :amount, :item_name].each do |required_field|
+            raise ArgumentError, "Missing required field #{required_field}" if @fields[mappings[required_field]].nil?
+          end
         end
 
         mapping :merchant_id, 'merchant_id'
@@ -263,7 +271,7 @@ module OffsitePayments #:nodoc:
 
         # Acknowledge the transaction to PayFast. This method has to be called after a new
         # ITN arrives. PayFast will verify that all the information we received are correct and will return a
-        # VERIFIED or INVALID status.
+        # VALID or INVALID status.
         #
         # Example:
         #

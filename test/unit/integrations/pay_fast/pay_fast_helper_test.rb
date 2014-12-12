@@ -28,6 +28,15 @@ class PayFastHelperTest < Test::Unit::TestCase
     assert_field 'item_name', 'ZOMG'
   end
 
+  def test_basic_helper_without_required_fields
+    setup_without_passphrase
+    @helper.notify_url = 'http://test.com/pay_fast/paid'
+
+    assert_raise ArgumentError do
+      @helper.form_fields
+    end
+  end
+
   def test_request_signature_string_without_passphrase
     setup_without_passphrase
     assing_required_fields
