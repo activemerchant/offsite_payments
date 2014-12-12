@@ -165,7 +165,9 @@ module OffsitePayments #:nodoc:
       #     include OffsitePayments::Integrations
       #
       #     def pay_fast_itn
-      #       notify = PayFast::Notification.new(request.raw_post)
+      #       notify = PayFast::Notification.new(request.raw_post, passphrase: "passphrase",
+      #                                                            remote_ip: request.remote_ip,
+      #                                                            amount: amount)
       #
       #       order = Order.find(notify.item_id)
       #
