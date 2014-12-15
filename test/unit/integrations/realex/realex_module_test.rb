@@ -7,7 +7,6 @@ class RealexModuleTest < Test::Unit::TestCase
     assert_instance_of Realex::Helper, Realex.helper(123, 'test')
   end
 
-
   def test_return_method
     assert_instance_of Realex::Return, Realex.return('name=cody', {})
   end
