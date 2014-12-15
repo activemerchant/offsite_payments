@@ -66,4 +66,12 @@ class RealexHelperTest < Test::Unit::TestCase
     assert_field 'SHIPPING_CO', 'GB'
   end
 
+  def test_format_amount_as_float
+    amount_gbp = @helper.format_amount_as_float(999, 'GBP')
+    assert_in_delta amount_gbp, 9.99, 0.00
+
+    amount_bhd = @helper.format_amount_as_float(999, 'BHD')
+    assert_in_delta amount_bhd, 0.999, 0.00
+  end
+
 end
