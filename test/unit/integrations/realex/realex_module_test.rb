@@ -16,22 +16,18 @@ class RealexModuleTest < Test::Unit::TestCase
   end
 
   def test_test_process_mode
-    OffsitePayments.mode = :test
+    OffsitePayments.stubs(:mode).returns(:test)
     assert_equal 'https://hpp.sandbox.realexpayments.com/pay', Realex.service_url
   end
 
   def test_production_mode
-    OffsitePayments.mode = :production
+    OffsitePayments.stubs(:mode).returns(:production)
     assert_equal 'https://hpp.realexpayments.com/pay', Realex.service_url
-  ensure
-    OffsitePayments.mode = :test
   end
 
   def test_invalid_mode
-    OffsitePayments.mode = :zoomin
+    OffsitePayments.stubs(:mode).returns(:zoomin)
     assert_raise(StandardError){ Realex.service_url }
-  ensure
-    OffsitePayments.mode = :test
   end
 
 end
