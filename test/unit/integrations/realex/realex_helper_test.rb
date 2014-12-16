@@ -49,7 +49,7 @@ class RealexHelperTest < Test::Unit::TestCase
                             :zip => 'LS2 7EE',
                             :country  => 'CA'
 
-    assert_field 'BILLING_CODE', 'LS2 7EE'
+    assert_field 'BILLING_CODE', '27|1'
     assert_field 'BILLING_CO', 'CA'
   end
 
@@ -62,7 +62,7 @@ class RealexHelperTest < Test::Unit::TestCase
                              :zip => 'LS2 7E1',
                              :country  => 'GB'
 
-    assert_field 'SHIPPING_CODE', 'LS2 7E1'
+    assert_field 'SHIPPING_CODE', '271|1'
     assert_field 'SHIPPING_CO', 'GB'
   end
 

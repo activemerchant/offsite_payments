@@ -87,6 +87,14 @@ module OffsitePayments #:nodoc:
           return (amount.to_f / divisor.to_f)
         end
 
+        def extract_digits(value)
+          value.scan(/\d+/).join('')
+        end
+
+        def extract_avs_code(params={})
+          [extract_digits(params[:zip]), extract_digits(params[:address1])].join('|')
+        end
+
       end
 
       class Helper < OffsitePayments::Helper
@@ -117,6 +125,16 @@ module OffsitePayments #:nodoc:
 
         def amount=(amount)
           add_field 'AMOUNT', format_amount(amount, @currency)
+        end
+
+        def billing_address(params={})
+          add_field(mappings[:billing_address][:zip], extract_avs_code(params))
+          add_field(mappings[:billing_address][:country], lookup_country_code(params[:country]))
+        end
+
+        def shipping_address(params={})
+          add_field(mappings[:shipping_address][:zip], extract_avs_code(params))
+          add_field(mappings[:shipping_address][:country], lookup_country_code(params[:country]))
         end
 
         def sign_fields
