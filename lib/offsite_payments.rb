@@ -5,6 +5,7 @@ require "socket"
 
 require 'active_support/core_ext/class/delegating_attributes'
 
+require 'active_utils'
 require 'active_utils/common/network_connection_retries'
 require 'active_utils/common/connection'
 require 'active_utils/common/requires_parameters'
