@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency('json', '~> 1.7')
   s.add_dependency('active_utils', '~> 2.2.0')
   s.add_dependency('nokogiri', "~> 1.4")
-  s.add_dependency('actionpack', "~> 4.1.8")
+  s.add_dependency('actionpack', ">= 3.2.20", "< 5.0.0")
 
   s.add_development_dependency('rake')
   s.add_development_dependency('mocha', '~> 0.13.0')
