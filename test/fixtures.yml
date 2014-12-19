@@ -186,8 +186,8 @@ firstdata_e4:
   password:
 
 garanti:
-  login: "PROVAUT"
-  terminal_id: 111995
+  login: "PROVOOS"
+  terminal_id: 111995 
   merchant_id: 600218
   password: "123qweASD"
 
