@@ -17,7 +17,7 @@ class RemoteGarantiTest < Test::Unit::TestCase
   end
 
   def teardown
-    $KCODE = @original_kcode if @original_kcode
+   OffsitePayments.mode = :test
   end
 
   def test_raw
