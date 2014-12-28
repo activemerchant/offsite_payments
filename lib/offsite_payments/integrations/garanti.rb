@@ -49,16 +49,6 @@ module OffsitePayments #:nodoc:
         commit(money, build_sale_request(money, options))
       end
 
-      def authorize(money, options = {})
-        options = options.merge(:gvp_order_type => "preauth")
-        commit(money, build_authorize_request(money, options))
-      end
-
-      def capture(money, ref_id, options = {})
-        options = options.merge(:gvp_order_type => "postauth")
-        commit(money, build_capture_request(money, ref_id, options))
-      end
-
       private
 
       def security_data
@@ -109,28 +99,7 @@ module OffsitePayments #:nodoc:
         end
       end
 
-      def build_authorize_request(money, options)
-         build_xml_request(money, options) do |xml|
-          add_customer_data(xml, options)
-          add_order_data(xml, options)  do
-            add_addresses(xml, options)
-          end
-          add_transaction_data(xml, money, options)
-
-          xml.target!
-        end
-      end
-
-      def build_capture_request(money, ref_id, options)
-        options = options.merge(:order_id => ref_id)
-         build_xml_request(money, ref_id, options) do |xml|
-          add_customer_data(xml, options)
-          add_order_data(xml, options)
-          add_transaction_data(xml, money, options)
-
-          xml.target!
-        end
-      end
+     
 
       def add_customer_data(xml, options)
         xml.tag! 'Customer' do
@@ -209,6 +178,8 @@ module OffsitePayments #:nodoc:
           xml.tag! 'Amount', amount(money)
           xml.tag! 'CurrencyCode', currency_code(options[:currency] || currency(money))
           xml.tag! 'CardholderPresentCode', 0
+          xml.tag! 'successurl',
+          xml.tag! 'errorurl',
         end
       end
 
