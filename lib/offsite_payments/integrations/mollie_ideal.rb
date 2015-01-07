@@ -2,7 +2,7 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module MollieIdeal
       class API
-        include ActiveMerchant::PostsData
+        include ActiveUtils::PostsData
 
         attr_reader :token
 
@@ -25,7 +25,7 @@ module OffsitePayments #:nodoc:
         end
       end
 
-      RedirectError = Class.new(ActiveMerchant::ActiveMerchantError)
+      RedirectError = Class.new(ActiveUtils::ActiveUtilsError)
 
       MOLLIE_API_V1_URI = 'https://api.mollie.nl/v1/'.freeze
 
@@ -137,7 +137,7 @@ module OffsitePayments #:nodoc:
 
         def request_redirect
           MollieIdeal.create_payment(token, redirect_paramaters)
-        rescue ActiveMerchant::ResponseError => e
+        rescue ActiveUtils::ResponseError => e
           case e.response.code
           when '401', '403', '422'
             error = JSON.parse(e.response.body)['error']['message']

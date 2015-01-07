@@ -24,7 +24,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Helper < OffsitePayments::Helper
-        include ActiveMerchant::RequiresParameters
+        include ActiveUtils::RequiresParameters
 
         DEFAULT_SUCCESS_TEXT = "The transaction has been completed."
 
