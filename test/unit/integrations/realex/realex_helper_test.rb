@@ -5,9 +5,8 @@ class RealexHelperTest < Test::Unit::TestCase
 
   def credentials
     {
-      :credential2 => 'merchant-1234',
-      :credential3 => 'merchant-1234-sub-account',
-      :credential4 => 'shared-secret'
+      :credential2 => 'merchant-1234-sub-account',
+      :credential3 => 'shared-secret'
     }
   end
 
@@ -16,7 +15,7 @@ class RealexHelperTest < Test::Unit::TestCase
   end
 
   def setup
-    @helper = Realex::Helper.new('order-500', 'account', order_attributes)
+    @helper = Realex::Helper.new('order-500', 'merchant-1234', order_attributes)
   end
 
   def teardown
