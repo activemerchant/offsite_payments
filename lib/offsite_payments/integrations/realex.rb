@@ -103,9 +103,9 @@ module OffsitePayments #:nodoc:
         def initialize(order, account, options = {})
           @timestamp   = Time.now.strftime('%Y%m%d%H%M%S')
           @currency    = options[:currency]
-          @merchant_id = options[:credential2]
-          @sub_account = options[:credential3]
-          @secret      = options[:credential4]
+          @merchant_id = account
+          @sub_account = options[:credential2]
+          @secret      = options[:credential3]
           super
           # Credentials
           add_field 'MERCHANT_ID', @merchant_id
@@ -170,7 +170,7 @@ module OffsitePayments #:nodoc:
         include Common
         def initialize(post, options={})
           super
-          @secret = options[:credential4]
+          @secret = options[:credential3]
         end
 
         # Required Notification methods to define
