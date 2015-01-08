@@ -1,10 +1,10 @@
 require 'test_helper'
 
-class RealexNotificationTest < Test::Unit::TestCase
+class RealexOffsiteNotificationTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    @notification = Realex::Notification.new(http_raw_data, :credential4 => 'shared-secret')
+    @notification = RealexOffsite::Notification.new(http_raw_data, :credential4 => 'shared-secret')
   end
 
   def test_accessors
