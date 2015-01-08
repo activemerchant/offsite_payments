@@ -551,7 +551,7 @@ raven_pac_net:
   secret: "all good men die young"
   prn: 840033
 
-realex:
+realex_offsite:
   login: X
   password: Y
 
