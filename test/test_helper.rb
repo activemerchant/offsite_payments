@@ -1,13 +1,4 @@
-#!/usr/bin/env ruby
-$:.unshift File.expand_path('../../lib', __FILE__)
-
-begin
-  require 'rubygems'
-  require 'bundler'
-  Bundler.setup
-rescue LoadError => e
-  puts "Error loading bundler (#{e.message}): \"gem install bundler\" for bundler support."
-end
+require 'bundler/setup'
 
 require 'test/unit'
 require 'mocha/setup'
@@ -18,26 +9,12 @@ require 'json'
 
 require 'active_support/core_ext/integer/time'
 require 'active_support/core_ext/numeric/time'
-
-begin
-  require 'active_support/core_ext/time/acts_like'
-rescue LoadError
-end
-
-begin
-  gem 'actionpack'
-rescue LoadError
-  raise StandardError, "The view tests need ActionPack installed as gem to run"
-end
+require 'active_support/core_ext/time/acts_like'
 
 require 'action_controller'
-require "action_view/template"
-begin
-  require 'active_support/core_ext/module/deprecation'
-  require 'action_dispatch/testing/test_process'
-rescue LoadError
-  require 'action_controller/test_process'
-end
+require 'action_view'
+require 'active_support/core_ext/module/deprecation'
+require 'action_dispatch/testing/test_process'
 
 require 'offsite_payments'
 require 'offsite_payments/action_view_helper'
