@@ -4,11 +4,16 @@ class ActionViewHelperTest < Test::Unit::TestCase
   include ActionViewHelperTestHelper
 
   def test_basic_payment_service
-    payment_service_for('order-1','test', :service => :bogus){}
-    assert_match(/^<form.*action="http:\/\/www.bogus.com".*/, @output_buffer)
-    assert_match(/<input id="account" name="account" type="hidden" value="test" \/>/, @output_buffer)
-    assert_match(/<input id="order" name="order" type="hidden" value="order-1" \/>/, @output_buffer)
-    assert_match(/<\/form>/, @output_buffer)
+    payment_service_for('order-1','test', :service => :bogus) {}
+    # assert_match(/^<form.*action="http:\/\/www.bogus.com".*/, @output_buffer)
+    # assert_match(/<input id="account" name="account" type="hidden" value="test" \/>/, @output_buffer)
+    # assert_match(/<input id="order" name="order" type="hidden" value="order-1" \/>/, @output_buffer)
+
+    assert hidden_field_set 'account', 'test'
+    assert hidden_field_set 'order', 'order-1'
+
+    document = Nokogiri.HTML(@output_buffer)
+    assert document.xpath("//form[starts-with(@action, 'http://www.bogus.com')]").length == 1
   end
 
   def test_payment_service_no_block_given
@@ -16,6 +21,7 @@ class ActionViewHelperTest < Test::Unit::TestCase
   end
 
   protected
+
   def protect_against_forgery?
     false
   end

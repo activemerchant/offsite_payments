@@ -6,6 +6,7 @@ require 'mocha/setup'
 require 'money'
 require 'yaml'
 require 'json'
+require 'nokogiri'
 
 require 'active_support/core_ext/integer/time'
 require 'active_support/core_ext/numeric/time'
@@ -205,5 +206,11 @@ module ActionViewHelperTestHelper
   protected
   def protect_against_forgery?
     false
+  end
+
+  def hidden_field_set(name, value)
+    xpath_query = "//input[@name='#{name}'][@value='#{value}']"
+    document = Nokogiri.HTML(@output_buffer)
+    document.xpath(xpath_query).length == 1
   end
 end
