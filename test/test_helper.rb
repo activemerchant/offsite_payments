@@ -10,14 +10,9 @@ rescue LoadError => e
 end
 
 require 'test/unit'
+require 'mocha/setup'
 
 require 'money'
-require 'mocha/version'
-if(Mocha::VERSION.split(".")[1].to_i < 12)
-  require 'mocha'
-else
-  require 'mocha/setup'
-end
 require 'yaml'
 require 'json'
 
@@ -52,7 +47,7 @@ OffsitePayments.mode = :test
 
 module OffsitePayments
   module Assertions
-    AssertionClass = RUBY_VERSION > '1.9' ? MiniTest::Assertion : Test::Unit::AssertionFailedError
+    AssertionClass = defined?(Minitest) ? MiniTest::Assertion : Test::Unit::AssertionFailedError
 
     def assert_field(field, value)
       clean_backtrace do

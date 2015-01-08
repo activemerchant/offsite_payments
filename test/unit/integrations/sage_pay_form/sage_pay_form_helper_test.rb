@@ -261,7 +261,7 @@ class SagePayFormHelperTest < Test::Unit::TestCase
 
     @helper.form_fields
 
-    refute @helper.fields['ReferrerID']
+    assert_false @helper.fields['ReferrerID']
   end
 
   private

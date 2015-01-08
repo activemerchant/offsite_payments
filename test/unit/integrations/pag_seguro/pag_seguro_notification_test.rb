@@ -40,7 +40,7 @@ class PagSeguroNotificationTest < Test::Unit::TestCase
     Net::HTTP.expects(:get_response).with(@uri).returns(stub(code: "200", body: http_raw_data_status_only(1)))
     pag_seguro = PagSeguro::Notification.new(notification_data)
 
-    refute pag_seguro.complete?
+    assert_false pag_seguro.complete?
     assert_equal "Pending", pag_seguro.status
   end
 
@@ -48,7 +48,7 @@ class PagSeguroNotificationTest < Test::Unit::TestCase
     Net::HTTP.expects(:get_response).with(@uri).returns(stub(code: "200", body: http_raw_data_status_only(2)))
     pag_seguro = PagSeguro::Notification.new(notification_data)
 
-    refute pag_seguro.complete?
+    assert_false pag_seguro.complete?
     assert_equal "Pending", pag_seguro.status
   end
 
@@ -56,14 +56,14 @@ class PagSeguroNotificationTest < Test::Unit::TestCase
     Net::HTTP.expects(:get_response).with(@uri).returns(stub(code: "404", body: "Not found"))
 
     pag_seguro = PagSeguro::Notification.new(notification_data)
-    refute pag_seguro.acknowledge
+    assert_false pag_seguro.acknowledge
   end
 
   def test_401_response
     Net::HTTP.expects(:get_response).with(@uri).returns(stub(code: "401", body: "Unauthorized"))
 
     pag_seguro = PagSeguro::Notification.new(notification_data)
-    refute pag_seguro.acknowledge
+    assert_false pag_seguro.acknowledge
   end
 
   private

@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
   s.add_dependency('actionpack', ">= 3.2.20", "< 5.0.0")
 
   s.add_development_dependency('rake')
+  s.add_development_dependency('test-unit', '~> 1.2.3')
   s.add_development_dependency('mocha', '~> 0.13.0')
   s.add_development_dependency('rails', '>= 3.2.14')
   s.add_development_dependency('thor')
