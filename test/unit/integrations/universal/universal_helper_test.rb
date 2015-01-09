@@ -108,7 +108,7 @@ class UniversalHelperTest < Test::Unit::TestCase
   end
 
   def test_signature
-    expected_signature = Digest::HMAC.hexdigest('x_account_idzorkx_amount123.45x_currencyUSDx_referenceorder-500x_shop_countryUSx_shop_nameWidgets Incx_testfalsex_transaction_typesale', @key, Digest::SHA256)
+    expected_signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::SHA256.new, @key, 'x_account_idzorkx_amount123.45x_currencyUSDx_referenceorder-500x_shop_countryUSx_shop_nameWidgets Incx_testfalsex_transaction_typesale')
     @helper.sign_fields
 
     assert_field 'x_signature', expected_signature
