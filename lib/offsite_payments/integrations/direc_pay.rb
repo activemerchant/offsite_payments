@@ -309,7 +309,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Status
-        include ActiveMerchant::PostsData
+        include ActiveUtils::PostsData
 
         STATUS_TEST_URL = 'https://test.direcpay.com/direcpay/secure/dpMerchantTransaction.jsp'
         STATUS_LIVE_URL = 'https://www.timesofmoney.com/direcpay/secure/dpPullMerchAtrnDtls.jsp'
@@ -324,7 +324,7 @@ module OffsitePayments #:nodoc:
         def update(authorization, notification_url)
           url = test? ? STATUS_TEST_URL : STATUS_LIVE_URL
           parameters = [ authorization, account, notification_url ]
-          data = ActiveMerchant::PostData.new
+          data = ActiveUtils::PostData.new
           data[:requestparams] = parameters.join('|')
 
           response = ssl_get("#{url}?#{data.to_post_data}")

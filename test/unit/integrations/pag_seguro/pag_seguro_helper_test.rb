@@ -163,7 +163,7 @@ class PagSeguroHelperTest < Test::Unit::TestCase
   def test_fetch_token_raises_error_if_pagseguro_fails
     Net::HTTP.any_instance.expects(:request).returns(stub(code: "500", body: ""))
 
-    assert_raise ActiveMerchant::ResponseError do
+    assert_raise ActiveUtils::ResponseError do
       @helper.fetch_token
     end
   end

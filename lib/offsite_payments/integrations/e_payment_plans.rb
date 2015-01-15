@@ -67,7 +67,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Notification < OffsitePayments::Notification
-        include ActiveMerchant::PostsData
+        include ActiveUtils::PostsData
         def complete?
           status == "Completed"
         end

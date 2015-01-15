@@ -16,7 +16,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Helper < OffsitePayments::Helper
-        include ActiveMerchant::PostsData
+        include ActiveUtils::PostsData
 
         attr_reader :token_parameters, :redirect_parameters
 
@@ -58,7 +58,7 @@ module OffsitePayments #:nodoc:
           end
 
           url.to_s
-        rescue ActiveMerchant::ConnectionError
+        rescue ActiveUtils::ConnectionError
           raise ActionViewHelperError, "A connection error occurred while contacting the payment gateway. Please try again."
         end
 
@@ -104,8 +104,8 @@ module OffsitePayments #:nodoc:
       end
 
       class Notification < OffsitePayments::Notification
-        include ActiveMerchant::PostsData
-        include ActiveMerchant::RequiresParameters
+        include ActiveUtils::PostsData
+        include ActiveUtils::RequiresParameters
 
         def initialize(query_string, options={})
           # PxPay appends ?result=...&userid=... to whatever return_url was specified, even if that URL ended with a ?query.

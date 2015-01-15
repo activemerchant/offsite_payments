@@ -20,7 +20,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Helper < OffsitePayments::Helper
-        include ActiveMerchant::RequiresParameters
+        include ActiveUtils::RequiresParameters
 
         # Currencies supported
         #   MYR (Malaysian Ringgit - for all payment methods except China Union Pay and PayPal)
@@ -130,7 +130,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Notification < OffsitePayments::Notification
-        include ActiveMerchant::PostsData
+        include ActiveUtils::PostsData
 
         def status
           if params["Status"] == '1'

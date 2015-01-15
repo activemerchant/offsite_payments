@@ -213,7 +213,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Status
-        include ActiveMerchant::PostsData
+        include ActiveUtils::PostsData
 
         STATUS_TEST_URL = 'https://partner.a1pay.ru/a1lite/info/'
 

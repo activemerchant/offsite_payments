@@ -172,7 +172,7 @@ module OffsitePayments #:nodoc:
       #     end
       #   end
       class Notification < OffsitePayments::Notification
-        include ActiveMerchant::PostsData
+        include ActiveUtils::PostsData
         include Common
 
         # Was the transaction complete?

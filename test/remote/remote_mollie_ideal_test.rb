@@ -8,7 +8,7 @@ class RemoteMollieIdealTest < Test::Unit::TestCase
   end
 
   def test_authorization
-    assert_raises(ActiveMerchant::ResponseError) { MollieIdeal.retrieve_issuers('bad_api_key') }
+    assert_raises(ActiveUtils::ResponseError) { MollieIdeal.retrieve_issuers('bad_api_key') }
   end
 
   def test_retrieve_issuers
