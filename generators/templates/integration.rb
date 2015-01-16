@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + '/<%= identifier %>/helper.rb'
-require File.dirname(__FILE__) + '/<%= identifier %>/notification.rb'
+require 'offsite_payments/integrations/<%= identifier %>/helper'
+require 'offsite_payments/integrations/<%= identifier %>/notification'
 
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
