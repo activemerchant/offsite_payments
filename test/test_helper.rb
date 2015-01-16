@@ -1,7 +1,7 @@
 require 'bundler/setup'
 
 require 'test/unit'
-require 'mocha/setup'
+require 'mocha/test_unit'
 
 require 'money'
 require 'yaml'
