@@ -7,7 +7,7 @@ class Ipay88ModuleTest < Test::Unit::TestCase
     assert_instance_of Ipay88::Return, Ipay88.return('name=cody')
   end
 
-  def test_return_method
+  def test_notification_method
     assert_instance_of Ipay88::Notification, Ipay88.notification('name=cody')
   end
 
