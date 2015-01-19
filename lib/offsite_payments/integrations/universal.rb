@@ -47,7 +47,7 @@ module OffsitePayments #:nodoc:
         }
 
         def initialize(order, account, options = {})
-          @forward_url = options[:forward_url]
+          @forward_url = options[:forward_url] || forward_url
           @key = options[:credential2]
           @currency = options[:currency]
           super
