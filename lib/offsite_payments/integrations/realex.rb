@@ -156,6 +156,7 @@ module OffsitePayments #:nodoc:
         mapping :order,            'ORDER_ID'
         mapping :amount,           'AMOUNT'
         mapping :notify_url,       'MERCHANT_RESPONSE_URL'
+        mapping :return_url,       'MERCHANT_RETURN_URL'
 
         # Realex Optional fields
         mapping :customer,         :email => 'CUST_NUM'
