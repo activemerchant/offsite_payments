@@ -554,6 +554,10 @@ raven_pac_net:
   secret: "all good men die young"
   prn: 840033
 
+razorpay:
+  key_id: rzp_test_1DP5mmOlF5G5ag
+  key_secret: thisissupersecret
+
 realex:
   login: X
   password: Y
