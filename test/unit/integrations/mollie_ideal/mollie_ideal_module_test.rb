@@ -31,7 +31,7 @@ class MollieIdealModuleTest < Test::Unit::TestCase
   end
 
   def test_retrieve_issuers
-    MollieIdeal::API.stubs(:new).with('1234567').returns(@mock_api = mock())
+    Mollie::API.stubs(:new).with('1234567').returns(@mock_api = mock())
 
     @mock_api.expects(:get_request).returns(ISSERS_RESPONSE_JSON)
     issuers = MollieIdeal.retrieve_issuers('1234567')

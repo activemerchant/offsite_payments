@@ -309,6 +309,9 @@ modern_payments:
 mollie_ideal:
   api_key: 'test_8isBjQoJXJoiXRSzjhwKPO1Bo9AkVA'
 
+mollie_mistercash:
+  api_key: 'test_8isBjQoJXJoiXRSzjhwKPO1Bo9AkVA'
+
 # Working credentials, no need to replace
 moneris:
   login: store1
