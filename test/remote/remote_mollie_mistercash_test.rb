@@ -8,7 +8,7 @@ class RemoteMollieMistercashTest < Test::Unit::TestCase
   end
 
   def test_create_payment_and_check_status
-    create_response = Mollie.create_payment(@api_key,
+    create_response = MollieMistercash.create_payment(@api_key,
       :amount => BigDecimal.new('123.45'),
       :description => 'My order description',
       :redirectUrl => 'https://example.com/return',
@@ -26,7 +26,7 @@ class RemoteMollieMistercashTest < Test::Unit::TestCase
     redirect_uri = URI.parse(create_response['links']['paymentUrl'])
     assert_equal 'https', redirect_uri.scheme
     assert_equal 'www.mollie.com', redirect_uri.host
-    status_response = Mollie.check_payment_status(@api_key, create_response['id'])
+    status_response = MollieMistercash.check_payment_status(@api_key, create_response['id'])
     assert_equal status_response, create_response
   end
 end

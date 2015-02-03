@@ -5,8 +5,6 @@ module OffsitePayments #:nodoc:
 
         RedirectError = Class.new(ActiveUtils::ActiveUtilsError)
 
-        MOLLIE_API_V1_URI = 'https://api.mollie.nl/v1/'.freeze
-
         def self.notification(post, options = {})
           Notification.new(post, options)
         end
