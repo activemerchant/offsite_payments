@@ -6,6 +6,8 @@ module OffsitePayments #:nodoc:
 
         attr_reader :token
 
+        MOLLIE_API_V1_URI = 'https://api.mollie.nl/v1/'.freeze
+
         def initialize(token)
           @token = token
         end
