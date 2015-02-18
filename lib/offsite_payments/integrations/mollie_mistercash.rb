@@ -39,6 +39,7 @@ module OffsitePayments #:nodoc:
                 :description => options[:description],
                 :redirectUrl => options[:return_url],
                 :method => 'mistercash',
+                :locale => 'nl_BE',
                 :metadata => { :order => order }
               }
 
