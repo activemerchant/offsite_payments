@@ -19,7 +19,7 @@ class MollieMistercashHelperTest < Test::Unit::TestCase
 
   def test_credential_based_url
     @mock_api.expects(:post_request)
-      .with('payments', :amount => 500, :description => 'Order #111', :method => 'mistercash', :redirectUrl => 'https://return.com', :metadata => {:order => 'order-500'})
+      .with('payments', :amount => 500, :description => 'Order #111', :method => 'mistercash', :locale => 'nl_BE', :redirectUrl => 'https://return.com', :metadata => {:order => 'order-500'})
       .returns(CREATE_PAYMENT_RESPONSE_JSON)
 
     assert_equal Hash.new, @helper.fields
@@ -32,7 +32,7 @@ class MollieMistercashHelperTest < Test::Unit::TestCase
 
   def test_credential_based_url_errors
     @mock_api.expects(:post_request)
-      .with('payments', :amount => 500, :description => 'Order #111', :method => 'mistercash', :redirectUrl => 'https://return.com', :metadata => {:order => 'order-500'})
+      .with('payments', :amount => 500, :description => 'Order #111', :method => 'mistercash', :locale => 'nl_BE', :redirectUrl => 'https://return.com', :metadata => {:order => 'order-500'})
       .raises(ActiveUtils::ResponseError.new(stub(:code => "403", :message => "Internal Server Error", :body => '{"error": {"message": "bleh"}}')))
 
     assert_raises ActionViewHelperError do
