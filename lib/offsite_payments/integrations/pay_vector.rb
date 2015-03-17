@@ -60,7 +60,6 @@ module OffsitePayments #:nodoc:
         
         def minor_currency_from_major(amount, currency_iso_code)
           exponent = Money::Currency.wrap(currency_iso_code).exponent
-          #exponent = OffsitePayments::Integrations::PayVector::ISOCurrencies::get_exponent_from_ISO_code(currency_iso_code)
           amount = amount.to_f
           amount *= 10**exponent
           return amount.to_i
