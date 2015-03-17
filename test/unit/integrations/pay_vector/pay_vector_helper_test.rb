@@ -40,7 +40,6 @@ class PayVectorHelperTest < Test::Unit::TestCase
   def test_unknown_address_mapping
     @helper.billing_address :farm => 'CA'
     assert_nil @helper.fields['farm']
-    #assert_equal 3, @helper.fields.size
   end
 
   def test_unknown_mapping
@@ -53,6 +52,5 @@ class PayVectorHelperTest < Test::Unit::TestCase
     fields = @helper.fields.dup
     @helper.billing_address :street => 'My Street'
     assert_nil @helper.fields['street']
-    #assert_equal fields, @helper.fields
   end
 end
