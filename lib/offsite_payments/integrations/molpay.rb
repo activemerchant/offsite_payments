@@ -69,7 +69,7 @@ module OffsitePayments #:nodoc:
 
         def credential_based_url
           service_url = SERVICE_URL + @fields[mappings[:account]] + "/"
-          service_url = service_url + @channel unless @channel.blank?
+          service_url = service_url + @channel if @channel
           service_url
         end
 
@@ -77,8 +77,7 @@ module OffsitePayments #:nodoc:
           requires!(options, :amount, :currency, :credential2)
           @verify_key = options[:credential2] if options[:credential2]
           @amount_in_cents = options[:amount]
-          @channel = options[:channel] if options[:channel]
-          options.delete(:channel) #delete channel to left only valid keys
+          @channel = options.delete(:channel)
           super
         end
 
