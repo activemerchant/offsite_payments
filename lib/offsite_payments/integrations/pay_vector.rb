@@ -3,7 +3,7 @@ module OffsitePayments #:nodoc:
     module PayVector
 
       mattr_accessor :service_url
-      self.service_url = 'https://mms.iridiumcorp.net/Pages/PublicPages/PaymentForm.aspx'
+      self.service_url = 'https://mms.payvector.net/Pages/PublicPages/PaymentForm.aspx'
 
       def self.notification(post, options = {})
         Notification.new(post, options)
@@ -32,7 +32,6 @@ module OffsitePayments #:nodoc:
         mapping :return_url, 'CallbackURL'
         mapping :description, 'OrderDescription'
         
-         # Fetches the md5secret and adds MERCHANT_ID and API TYPE to the form
         def initialize(order, account, options = {})
           #store merchant password and the preSharedKey as private variables so they aren't added to the form
           @merchant_password = options.delete(:credential2)
@@ -45,30 +44,32 @@ module OffsitePayments #:nodoc:
 
           super
 
-          add_field("OrderDescription", "Offsite Payments Order " + order)
+          add_field("OrderDescription", self.application_id + " " + order)
+
+          amount = options[:amount].to_d
+          if Money.respond_to? :from_amount
+            money = Money.from_amount(amount, options[:currency])
+          else
+            amount.is_a? Numeric or raise ArgumentError, "'amount' must be numeric"
+            currency = Money::Currency.wrap(options[:currency])
+            value = amount * currency.subunit_to_unit
+            value = value.round unless infinite_precision
+            money = Money.new(value, currency)
+          end
 
           #get iso numeric
-          money = Money.new(options[:amount], options[:currency])
           self.currency = money.currency.iso_numeric
 
-          #get amount in minor currency
-          add_field("Amount", minor_currency_from_major(options[:amount], options[:currency]))
+          add_field("Amount", money.cents)
 
           transaction_date_time
           populate_fields_with_defaults
         end
-        
-        def minor_currency_from_major(amount, currency_iso_code)
-          exponent = Money::Currency.wrap(currency_iso_code).exponent
-          amount = amount.to_f
-          amount *= 10**exponent
-          return amount.to_i
-        end
-      
-        #Concat first and last names
+            
         def customer(params={})
           add_field(mappings[:customer][:email], params[:email])
           add_field(mappings[:customer][:phone], params[:phone])
+          #Concatenate first and last names
           add_field('CustomerName', "#{params[:first_name]} #{params[:last_name]}")
         end
         
@@ -193,10 +194,8 @@ module OffsitePayments #:nodoc:
 
         # the money amount we received in X.2 decimal.
         def gross
-          exponent = Money::Currency.find_by_iso_numeric(@params["CurrencyCode"]).exponent
-          gross = @params['Amount'].to_f
-          gross /= 10**exponent
-          gross = sprintf('%.0' + exponent.to_i.to_s + 'f', gross)
+          money = Money.new(@params['Amount'], currency)
+          money.to_s
         end
         
         def currency
