@@ -1,3 +1,5 @@
+require "bigdecimal/util"
+
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module PayVector
@@ -194,12 +196,17 @@ module OffsitePayments #:nodoc:
 
         # the money amount we received in X.2 decimal.
         def gross
-          money = Money.new(@params['Amount'], currency)
+          money = Money.new(@params['Amount'].to_d, currency)
           money.to_s
         end
         
         def currency
-          Money::Currency.find_by_iso_numeric(@params["CurrencyCode"]).iso_code
+          if Money::Currency.respond_to? :find_by_iso_numeric
+            return Money::Currency.find_by_iso_numeric(@params["CurrencyCode"]).iso_code
+          else
+            id, _ = Money::Currency.table.find{|key, currency| currency[:iso_numeric] == @params["CurrencyCode"]}
+            return Money::Currency.new(id).iso_code
+          end
         end
 
         # No way to tell if using a test transaction as the only difference is in authentication credentials
