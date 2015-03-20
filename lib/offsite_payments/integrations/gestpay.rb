@@ -189,6 +189,8 @@ module OffsitePayments #:nodoc:
           response = ssl_get(Gestpay.service_url, decryption_query_string(shop_login, encrypted_string))
           encoded_response = parse_response(response)
           parse_delimited_string(encoded_response, DELIMITER, true)
+        rescue GestpayEncryptionResponseError => e
+          { 'PAY1_TRANSACTIONRESULT' => 'Error' }
         end
 
         def decryption_query_string(shop_login, encrypted_string)

@@ -49,6 +49,16 @@ class GestpayNotificationTest < Test::Unit::TestCase
     assert_equal '1000', notification.item_id
   end
 
+  def test_error_notification
+    Gestpay::Notification.any_instance.expects(:ssl_get).returns(unencrypted_string)
+    Gestpay::Notification.any_instance.expects(:parse_response).raises(OffsitePayments::Integrations::Gestpay::Common::GestpayEncryptionResponseError.new)
+
+    assert_nothing_raised do
+      notification = Gestpay::Notification.new(raw_query_string)
+      refute notification.complete?
+    end
+  end
+
   private
   def raw_query_string
     "a=900000&b=F7DEB36478FD84760F9134F23C922697272D57DE6D4518EB9B4D468B769D9A3A8071B6EB160B35CB412FC1820C7CC12D17B3141855B1ED55468613702A2E213DDE9DE5B0209E13C416448AE833525959F05693172D7F0656"
