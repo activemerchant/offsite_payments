@@ -23,18 +23,19 @@ class DirectebankingHelperTest < Test::Unit::TestCase
     assert_field 'user_id', 'UserID-24352435'
     assert_field 'project_id', 'ProjectID-1234'
     assert_field 'amount', '5.00'
-    assert_field 'reason_1', 'order-500'
+    assert_field 'user_variable_0', 'order-500'
+    assert_field 'reason_1', 'My order #1234'
   end
 
   def test_generate_signature_string
-    assert_equal "UserID-24352435|ProjectID-1234|||||5.00|EUR|order-500|||https://localhost:8080/directebanking|||||mysecretString",
+    assert_equal "UserID-24352435|ProjectID-1234|||||5.00|EUR|||order-500|https://localhost:8080/directebanking|||||mysecretString",
     @helper.generate_signature_string
   end
 
   def test_generate_signature
     assert !@helper.form_fields['hash'].empty?
-    assert_equal '669884aeab85fedb5ed4c9614d91fcf5dde19d9f', @helper.generate_signature
-    assert_equal "669884aeab85fedb5ed4c9614d91fcf5dde19d9f", @helper.form_fields['hash']
+    assert_equal 'c34113bc04eb28a045fe5c2b1e9e186fe3cde03b', @helper.generate_signature
+    assert_equal "c34113bc04eb28a045fe5c2b1e9e186fe3cde03b", @helper.form_fields['hash']
   end
 
   def test_unknown_mapping

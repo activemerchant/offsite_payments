@@ -46,6 +46,7 @@ module OffsitePayments #:nodoc:
         # credential4: Notification Password (Algorithm: SH1)
         def initialize(order, account, options = {})
           super
+          add_field('user_variable_0', order)
           add_field('project_id', options[:credential2])
           @project_password = options[:credential3]
         end
@@ -111,7 +112,7 @@ module OffsitePayments #:nodoc:
         mapping :account, 'user_id'
         mapping :amount, 'amount'
         mapping :currency, 'currency_id'
-        mapping :order, 'reason_1'
+        mapping :description, 'reason_1'
 
         mapping :return_url, 'user_variable_1'
         mapping :cancel_return_url, 'user_variable_2'
