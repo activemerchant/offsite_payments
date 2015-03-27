@@ -174,6 +174,10 @@ module OffsitePayments #:nodoc:
         end
 
         # Required Notification methods to define
+        def acknowledge(authcode = nil)
+          verified?
+        end
+
         def status
           if result == '00'
             'Completed'
