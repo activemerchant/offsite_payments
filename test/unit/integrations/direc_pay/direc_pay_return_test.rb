@@ -6,18 +6,16 @@ class DirecPayReturnTest < Test::Unit::TestCase
   def test_success
     direc_pay = DirecPay::Return.new(http_raw_data_success)
     assert direc_pay.success?
+    assert direc_pay.notification.complete?
     assert_equal 'Completed', direc_pay.message
   end
 
-  def test_failure_is_successful
+  def test_failure
     direc_pay = DirecPay::Return.new(http_raw_data_failure)
-    assert direc_pay.success?
-    assert_equal 'Pending', direc_pay.message
-  end
-
-  def test_treat_initial_failures_as_pending
-    direc_pay = DirecPay::Return.new(http_raw_data_failure)
-    assert_equal 'Pending', direc_pay.notification.status
+    refute direc_pay.success?
+    refute direc_pay.notification.complete?
+    assert_equal 'Failed', direc_pay.message
+    assert_equal 'Failed', direc_pay.notification.status
   end
 
   def test_return_has_notification
@@ -34,11 +32,6 @@ class DirecPayReturnTest < Test::Unit::TestCase
     assert_equal 'INR', notification.currency
     assert_equal 'IND', notification.country
     assert_equal 'NULL', notification.other_details
-  end
-
-  def test_treat_failed_return_as_complete
-    direc_pay = DirecPay::Return.new(http_raw_data_failure)
-    assert direc_pay.notification.complete?
   end
 
   private
