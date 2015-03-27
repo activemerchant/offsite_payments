@@ -22,7 +22,7 @@ class RealexModuleTest < Test::Unit::TestCase
 
   def test_production_mode
     OffsitePayments.stubs(:mode).returns(:production)
-    assert_equal 'https://hpp.realexpayments.com/pay', Realex.service_url
+    assert_equal 'https://epage.payandshop.com/epage.cgi', Realex.service_url
   end
 
   def test_invalid_mode

@@ -10,6 +10,7 @@ class RealexNotificationTest < Test::Unit::TestCase
   def test_accessors
     assert @notification.verified?
     assert @notification.complete?
+    assert @notification.acknowledge
     assert_equal "Completed", @notification.status
     assert_equal 50.0, @notification.gross
     assert_equal "USD", @notification.currency

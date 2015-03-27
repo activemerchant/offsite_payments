@@ -3,7 +3,7 @@ module OffsitePayments #:nodoc:
     module Realex
       mattr_accessor :production_url
       mattr_accessor :test_url
-      self.production_url = 'https://hpp.realexpayments.com/pay'
+      self.production_url = 'https://epage.payandshop.com/epage.cgi'
       self.test_url       = 'https://hpp.sandbox.realexpayments.com/pay'
 
       def self.helper(order, account, options={})
@@ -175,6 +175,10 @@ module OffsitePayments #:nodoc:
         end
 
         # Required Notification methods to define
+        def acknowledge(authcode = nil)
+          verified?
+        end
+
         def status
           if result == '00'
             'Completed'
