@@ -117,6 +117,7 @@ module OffsitePayments #:nodoc:
           # Realex does not send back CURRENCY param in response
           # however it does echo any other param so we send it twice.
           add_field 'X-CURRENCY', @currency
+          add_field 'X-TEST', @test.to_s
         end
 
         def form_fields
@@ -177,6 +178,18 @@ module OffsitePayments #:nodoc:
         # Required Notification methods to define
         def acknowledge(authcode = nil)
           verified?
+        end
+
+        def item_id
+          order_id
+        end
+
+        def transaction_id
+          pasref
+        end
+
+        def test?
+          params['X-TEST']
         end
 
         def status
