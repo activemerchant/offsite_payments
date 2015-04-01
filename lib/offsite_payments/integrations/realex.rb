@@ -179,6 +179,18 @@ module OffsitePayments #:nodoc:
           verified?
         end
 
+        def item_id
+          order_id
+        end
+
+        def transaction_id
+          pasref
+        end
+
+        def test?
+          false
+        end
+
         def status
           if result == '00'
             'Completed'

@@ -11,6 +11,9 @@ class RealexNotificationTest < Test::Unit::TestCase
     assert @notification.verified?
     assert @notification.complete?
     assert @notification.acknowledge
+
+    assert_equal 'ORD453-11', @notification.item_id
+    assert_equal '13649024563820', @notification.transaction_id
     assert_equal "Completed", @notification.status
     assert_equal 50.0, @notification.gross
     assert_equal "USD", @notification.currency
