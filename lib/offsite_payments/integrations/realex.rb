@@ -117,6 +117,7 @@ module OffsitePayments #:nodoc:
           # Realex does not send back CURRENCY param in response
           # however it does echo any other param so we send it twice.
           add_field 'X-CURRENCY', @currency
+          add_field 'X-TEST', @test.to_s
         end
 
         def form_fields
@@ -188,7 +189,7 @@ module OffsitePayments #:nodoc:
         end
 
         def test?
-          false
+          params['X-TEST']
         end
 
         def status
