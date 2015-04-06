@@ -1,7 +1,6 @@
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Paystand
-
       mattr_accessor :service_url
 
       mattr_accessor :production_url
@@ -149,6 +148,7 @@ module OffsitePayments #:nodoc:
         #       ... log possible hacking attempt ...
         #     end
         def acknowledge(authcode = nil)
+          include ActiveUtils::PostsData
           psn = raw.to_s
           psn_post = JSON.parse(psn)
 
@@ -161,8 +161,8 @@ module OffsitePayments #:nodoc:
             :psn => psn_post
           }.to_json
 
-          request = Net::HTTP::Post.new(uri.path)
-
+          #request = Net::HTTP::Post.new(uri.path)
+          request = PostsData.new(uri.path)
           request['Content-Length'] = "#{payload.size}"
           request['User-Agent'] = "Active Merchant -- http://activemerchant.org/"
           request['Content-Type'] = "application/json"
