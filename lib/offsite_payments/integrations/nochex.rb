@@ -200,7 +200,7 @@ module OffsitePayments #:nodoc:
         #
         #   def nochex_ipn
         #     notify = NochexNotification.new(request.raw_post)
-        #
+       #
         #     if notify.acknowledge
         #       ... process order ... if notify.complete?
         #     else

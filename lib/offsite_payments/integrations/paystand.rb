@@ -1,7 +1,9 @@
+require 'active_utils'
+include ActiveMerchant
+
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Paystand
-
       mattr_accessor :service_url
 
       mattr_accessor :production_url
@@ -105,6 +107,8 @@ module OffsitePayments #:nodoc:
       #   'order_token': ''
       # };
       class Notification < OffsitePayments::Notification
+        
+        include ActiveMerchant::PostsData
 
         def complete?
           status == "paid"
@@ -153,6 +157,9 @@ module OffsitePayments #:nodoc:
           psn_post = JSON.parse(psn)
 
           uri = URI.parse(Paystand.notification_confirmation_url)
+          #uri = "https://intern.paystand.com/api/v2/orders"
+
+          puts Paystand.notification_confirmation_url
 
           payload ={
             :action => "verify_psn",
@@ -161,23 +168,14 @@ module OffsitePayments #:nodoc:
             :psn => psn_post
           }.to_json
 
-          request = Net::HTTP::Post.new(uri.path)
-
-          request['Content-Length'] = "#{payload.size}"
-          request['User-Agent'] = "Active Merchant -- http://activemerchant.org/"
-          request['Content-Type'] = "application/json"
-
-          http = Net::HTTP.new(uri.host, uri.port)
-          http.verify_mode    = OpenSSL::SSL::VERIFY_NONE unless @ssl_strict
-          http.use_ssl        = true
-
-          response = http.request(request, payload)
-          response_body = response.body.to_s
-          response_data = JSON.parse(response_body)
-
+          #trying out post
+          response = ssl_post(uri, payload)
+          #response_body = response.body.to_s
+          response_data = JSON.parse(response)
           # Replace with the appropriate codes
-          raise StandardError.new("Faulty Paystand result: #{response_data['data']}") unless [true].include?(response_data['data'])
-          response_data['data'] == true
+          raise StandardError.new("Faulty Paystand result: #{response_data['data']}") unless (response_data['data'])
+          response_data['data'] == true 
+          #response_data['data'] == true
         end
 
         private
