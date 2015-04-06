@@ -1,7 +1,5 @@
 require 'test_helper'
-
-# sandbox api key
-PS_API_KEY = 'axr2RqZNFAJA9jelggHnmTXWzgPfBa6omk1OrsM0FIJfXRkvyS6oXDusTg9i70RRYJXxc+nmDNPttL2GfbAKV9A'
+# sandbox api key PS_API_KEY in fixtures.yml
 
 class PaystandHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
