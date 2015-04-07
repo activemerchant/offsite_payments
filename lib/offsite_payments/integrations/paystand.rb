@@ -153,6 +153,7 @@ module OffsitePayments #:nodoc:
         #       ... log possible hacking attempt ...
         #     end
         def acknowledge(authcode = nil)
+          include ActiveUtils::PostsData
           psn = raw.to_s
           psn_post = JSON.parse(psn)
 
@@ -168,10 +169,27 @@ module OffsitePayments #:nodoc:
             :psn => psn_post
           }.to_json
 
+<<<<<<< HEAD
           #trying out post
           response = ssl_post(uri, payload)
           #response_body = response.body.to_s
           response_data = JSON.parse(response)
+=======
+          #request = Net::HTTP::Post.new(uri.path)
+          request = PostsData.new(uri.path)
+          request['Content-Length'] = "#{payload.size}"
+          request['User-Agent'] = "Active Merchant -- http://activemerchant.org/"
+          request['Content-Type'] = "application/json"
+
+          http = Net::HTTP.new(uri.host, uri.port)
+          http.verify_mode    = OpenSSL::SSL::VERIFY_NONE unless @ssl_strict
+          http.use_ssl        = true
+
+          response = http.request(request, payload)
+          response_body = response.body.to_s
+          response_data = JSON.parse(response_body)
+
+>>>>>>> 7a39b2f8b97985dc4f0cec6ad43818e400a7e0a2
           # Replace with the appropriate codes
           raise StandardError.new("Faulty Paystand result: #{response_data['data']}") unless (response_data['data'])
           response_data['data'] == true 
