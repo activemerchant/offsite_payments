@@ -1,6 +1,0 @@
-1. Check the Semantic Versioning page for info on how to version the new release: http://semver.org
-2. Update the version of Offsite Payments in lib/offsite_payments/version.rb
-3. Add a CHANGELOG entry for the new release with the date
-4. Tag the release commit on GitHub
-    bundle exec rake tag_release
-5. Deploy using ShipIt

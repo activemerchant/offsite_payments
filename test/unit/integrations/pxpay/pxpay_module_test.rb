@@ -40,14 +40,14 @@ class PxpayModuleTest < Test::Unit::TestCase
 
   def test_all_fields
     Pxpay::Helper.any_instance.expects(:ssl_post).with do |_, request|
-      assert_match "<MerchantReference>44</MerchantReference>", request
-      assert_match "<PxPayUserId>#{@username}</PxPayUserId>", request
-      assert_match "<PxPayKey>#{@key}</PxPayKey>", request
-      assert_match "<TxnType>Purchase</TxnType>", request
-      assert_match "<AmountInput>157.00</AmountInput>", request
-      assert_match "<EnableAddBillCard>0</EnableAddBillCard>", request
-      assert_match "<UrlSuccess>http://example.com/pxpay/return_url</UrlSuccess>", request
-      assert_match "<UrlFail>http://example.com/pxpay/return_url</UrlFail>", request
+      request.include?("<MerchantReference>44</MerchantReference>") &&
+        request.include?("<PxPayUserId>#{@username}</PxPayUserId>") &&
+        request.include?("<PxPayKey>#{@key}</PxPayKey>") &&
+        request.include?("<TxnType>Purchase</TxnType>") &&
+        request.include?("<AmountInput>157.00</AmountInput>") &&
+        request.include?("<EnableAddBillCard>0</EnableAddBillCard>") &&
+        request.include?("<UrlSuccess>http://example.com/pxpay/return_url</UrlSuccess>") &&
+        request.include?("<UrlFail>http://example.com/pxpay/return_url</UrlFail>")
     end.returns(valid_response)
 
     payment_service_for('44', @username, @service_options) {}
@@ -79,7 +79,7 @@ class PxpayModuleTest < Test::Unit::TestCase
   end
 
   def test_credential_based_url_connection_error
-    Pxpay::Helper.any_instance.expects(:ssl_post).raises(ActiveMerchant::ConnectionError)
+    Pxpay::Helper.any_instance.expects(:ssl_post).raises(ActiveUtils::ConnectionError)
 
     helper = Pxpay::Helper.new('44', @username, @service_options.slice(:amount, :return_url, :credential2))
 

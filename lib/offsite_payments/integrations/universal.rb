@@ -10,7 +10,7 @@ module OffsitePayments #:nodoc:
       end
 
       def self.sign(fields, key)
-        Digest::HMAC.hexdigest(fields.sort.join, key, Digest::SHA256)
+        OpenSSL::HMAC.hexdigest(OpenSSL::Digest::SHA256.new, key, fields.sort.join)
       end
 
       class Helper < OffsitePayments::Helper

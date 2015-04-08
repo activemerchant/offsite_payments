@@ -12,8 +12,7 @@ class UniversalModuleTest < Test::Unit::TestCase
   end
 
   def test_sign
-    expected = Digest::HMAC.hexdigest('a1b2', 'zork', Digest::SHA256)
-
+    expected = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::SHA256.new, 'zork', 'a1b2')
     assert_equal expected, Universal.sign({:b => '2', :a => '1'}, 'zork')
   end
 

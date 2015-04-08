@@ -54,7 +54,7 @@ module OffsitePayments #:nodoc:
     end
 
     def iso_currency
-      ActiveMerchant::CurrencyCode.standardize(currency)
+      ActiveUtils::CurrencyCode.standardize(currency)
     end
 
     private

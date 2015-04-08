@@ -53,7 +53,7 @@ class NotificationTest < Test::Unit::TestCase
     assert_equal 'TWD', CurrencyNotificationStub.new('currency=NTD').iso_currency
     assert_equal 'CNY', CurrencyNotificationStub.new('currency=rmb').iso_currency
 
-    assert_raise ActiveMerchant::InvalidCurrencyCodeError do
+    assert_raise ActiveUtils::InvalidCurrencyCodeError do
       CurrencyNotificationStub.new('currency=not_real').iso_currency
     end
   end

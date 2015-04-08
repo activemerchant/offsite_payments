@@ -26,12 +26,13 @@ Gem::Specification.new do |s|
   s.add_dependency('i18n', '~> 0.5')
   s.add_dependency('money', '< 7.0.0')
   s.add_dependency('builder', '>= 2.1.2', '< 4.0.0')
-  s.add_dependency('json', '~> 1.7')
-  s.add_dependency('active_utils', '~> 2.2.0')
+  s.add_dependency('active_utils', '~> 3.0.0')
   s.add_dependency('nokogiri', "~> 1.4")
+  s.add_dependency('actionpack', ">= 3.2.20", "< 5.0.0")
 
   s.add_development_dependency('rake')
-  s.add_development_dependency('mocha', '~> 0.13.0')
+  s.add_development_dependency('test-unit', '~> 3.0')
+  s.add_development_dependency('mocha', '~> 1.0')
   s.add_development_dependency('rails', '>= 3.2.14')
   s.add_development_dependency('thor')
 end

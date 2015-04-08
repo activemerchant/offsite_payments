@@ -289,7 +289,7 @@ module OffsitePayments #:nodoc:
 
       class Return < OffsitePayments::Return
         def initialize(post_data, options = {})
-          @notification = Notification.new(treat_failure_as_pending(post_data), options)
+          @notification = Notification.new(post_data, options)
         end
 
         def success?
@@ -299,17 +299,10 @@ module OffsitePayments #:nodoc:
         def message
           notification.status
         end
-
-        private
-
-        # Work around the issue that the initial return from DirecPay is always either SUCCESS or FAIL, there is no PENDING
-        def treat_failure_as_pending(post_data)
-          post_data.sub(/FAIL/, 'PENDING')
-        end
       end
 
       class Status
-        include ActiveMerchant::PostsData
+        include ActiveUtils::PostsData
 
         STATUS_TEST_URL = 'https://test.direcpay.com/direcpay/secure/dpMerchantTransaction.jsp'
         STATUS_LIVE_URL = 'https://www.timesofmoney.com/direcpay/secure/dpPullMerchAtrnDtls.jsp'
@@ -324,7 +317,7 @@ module OffsitePayments #:nodoc:
         def update(authorization, notification_url)
           url = test? ? STATUS_TEST_URL : STATUS_LIVE_URL
           parameters = [ authorization, account, notification_url ]
-          data = ActiveMerchant::PostData.new
+          data = ActiveUtils::PostData.new
           data[:requestparams] = parameters.join('|')
 
           response = ssl_get("#{url}?#{data.to_post_data}")

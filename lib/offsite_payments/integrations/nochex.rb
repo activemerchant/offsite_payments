@@ -139,7 +139,7 @@ module OffsitePayments #:nodoc:
 
       # Parser and handler for incoming Automatic Payment Confirmations from Nochex.
       class Notification < OffsitePayments::Notification
-        include ActiveMerchant::PostsData
+        include ActiveUtils::PostsData
 
         def complete?
           status == 'Completed'

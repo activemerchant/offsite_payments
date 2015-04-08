@@ -180,7 +180,7 @@ module OffsitePayments #:nodoc:
       #     end
       #   end
       class Notification < OffsitePayments::Notification
-        include ActiveMerchant::PostsData
+        include ActiveUtils::PostsData
 
         def initialize(post, options = {})
           super

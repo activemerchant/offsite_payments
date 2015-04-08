@@ -63,10 +63,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 * [WebPay](http://webpay.by/)
 * [WorldPay](http://www.worldpay.com)
 
-## Contributing
+## Misc.
 
-The source code is hosted at [GitHub](http://github.com/Shopify/offsite_payments), and can be fetched using:
-
-    git clone https://github.com/Shopify/offsite_payments.git
-
-Please don't touch the CHANGELOG in your pull requests, we'll add the appropriate CHANGELOG entries at release time.
+- This library is MIT licensed.
+- We will gladly accept contributions. See **CONTRIBUTING.md** for more information.
