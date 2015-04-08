@@ -108,6 +108,7 @@ module OffsitePayments #:nodoc:
       # };
       class Notification < OffsitePayments::Notification
 
+        include ActiveUtils::PostsData
 
         def complete?
           status == "paid"
@@ -152,8 +153,6 @@ module OffsitePayments #:nodoc:
         #       ... log possible hacking attempt ...
         #     end
         def acknowledge(authcode = nil)
-
-          include ActiveUtils::PostsData
 
           psn = raw.to_s
           psn_post = JSON.parse(psn)
