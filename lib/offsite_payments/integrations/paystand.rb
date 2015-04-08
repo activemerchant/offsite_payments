@@ -1,5 +1,4 @@
 require 'active_utils'
-include ActiveMerchant
 
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
