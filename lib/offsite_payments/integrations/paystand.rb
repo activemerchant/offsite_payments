@@ -159,7 +159,7 @@ module OffsitePayments #:nodoc:
           uri = URI.parse(Paystand.notification_confirmation_url)
           #uri = "https://intern.paystand.com/api/v2/orders"
 
-          puts Paystand.notification_confirmation_url
+          #puts Paystand.notification_confirmation_url
 
           payload ={
             :action => "verify_psn",
