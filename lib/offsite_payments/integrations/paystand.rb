@@ -1,4 +1,5 @@
-require 'active_utils'
+#require 'active_utils'
+#include ActiveUtils::PostsData
 
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
@@ -74,7 +75,7 @@ module OffsitePayments #:nodoc:
                            :email      => 'email'
 
         mapping :billing_address,  :city    => 'city',
-                                    :address1 => 'address1',
+                                    :addres => 'address1',
                                     :address2 => 'address2',
                                     :state   => 'state',
                                     :zip     => 'zip',
@@ -106,8 +107,7 @@ module OffsitePayments #:nodoc:
       #   'order_token': ''
       # };
       class Notification < OffsitePayments::Notification
-        
-        include ActiveMerchant::PostsData
+
 
         def complete?
           status == "paid"
@@ -152,6 +152,9 @@ module OffsitePayments #:nodoc:
         #       ... log possible hacking attempt ...
         #     end
         def acknowledge(authcode = nil)
+
+          include ActiveUtils::PostsData
+
           psn = raw.to_s
           psn_post = JSON.parse(psn)
 
@@ -171,10 +174,11 @@ module OffsitePayments #:nodoc:
           response = ssl_post(uri, payload)
           #response_body = response.body.to_s
           response_data = JSON.parse(response)
+
           # Replace with the appropriate codes
           raise StandardError.new("Faulty Paystand result: #{response_data['data']}") unless (response_data['data'])
           response_data['data'] == true 
-          #response_data['data'] == true
+
         end
 
         private
