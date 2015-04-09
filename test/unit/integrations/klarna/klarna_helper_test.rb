@@ -12,7 +12,8 @@ class KlarnaHelperTest < Test::Unit::TestCase
       :country          => 'SE',
       :account_name     => 'Example Shop Name',
       :credential2      => 'Example shared secret',
-      :test             => false
+      :test             => false,
+      :checkout_token   => 'abc123'
     }
 
     @helper = Klarna::Helper.new(@order_id, @credential1, @options)
@@ -33,6 +34,7 @@ class KlarnaHelperTest < Test::Unit::TestCase
     assert_field 'purchase_currency', @options[:currency]
     assert_field 'merchant_id', @credential1
     assert_field 'platform_type', @helper.application_id
+    assert_field 'checkout_token', @options[:token]
   end
 
   def test_customer_fields
