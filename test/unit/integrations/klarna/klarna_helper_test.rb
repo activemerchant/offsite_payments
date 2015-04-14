@@ -34,7 +34,7 @@ class KlarnaHelperTest < Test::Unit::TestCase
     assert_field 'purchase_currency', @options[:currency]
     assert_field 'merchant_id', @credential1
     assert_field 'platform_type', @helper.application_id
-    assert_field 'checkout_token', @options[:token]
+    assert_field 'checkout_token', @options[:checkout_token]
   end
 
   def test_customer_fields
@@ -74,7 +74,7 @@ class KlarnaHelperTest < Test::Unit::TestCase
   def test_merchant_digest
     @helper = valid_helper
 
-    assert_field 'merchant_digest', "nWTZcuM5KgpzEkPSTe/54yIT3kwe3cqm6Ane79iDAYc="
+    assert_field 'merchant_digest', "Efs6wr3Fhg4eGfQGMpelqTblLlXBzSCMz9fLUR9Bt74="
   end
 
   def test_line_item
