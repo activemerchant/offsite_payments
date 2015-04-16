@@ -27,7 +27,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 
     gem 'offsite_payments'
 
-[API documentation](http://rubydoc.info/github/Shopify/offsite_payments/master/file/README.md).
+[API documentation](http://www.rubydoc.info/github/Shopify/offsite_payments/master).
 
 ## Supported Integrations
 
