@@ -9,6 +9,16 @@ as a Rails plugin. It should also work as a stand alone Ruby library, but much o
 
 Offsite Payments has been in production use (originally as part of the [ActiveMerchant](https://github.com/Shopify/active_merchant) project) since June 2006. It is maintained by the [Shopify](http://www.shopify.com) team, with much help from an ever-growing set of contributors.
 
+The addition of your gateway to offsite_payments does not guarantee placement within Shopify. In order to have your gateway considered, please send an email to payment-integrations@shopify.com with **Offsite Payments Integration** in the subject. Be sure to include:
+
+1. Name, URL & description of the payment provider you wish to integrate
+2. Markets served by this integration
+3. List of major supported payment methods
+4. Your most recent Certificate of PCI Compliance
+5. Reason that the [Universal API](https://github.com/Shopify/offsite_payments/blob/master/lib/offsite_payments/integrations/universal.rb)* cannot be used for your integration.
+
+*The Universal API defines a standard set of requests and callbacks that can be used to integrate with Shopify. A sample app and documentation are hosted here. This is the route Shopify recommends for all future integrations. 
+
 ## Installation
 
 ### From Git
