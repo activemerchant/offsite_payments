@@ -218,7 +218,7 @@ module OffsitePayments #:nodoc:
         end
 
         def gross_cents
-          params["cart"]["total_price_including_tax"]
+          params["order_amount"]
         end
 
         def status
