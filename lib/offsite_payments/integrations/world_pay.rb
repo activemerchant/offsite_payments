@@ -1,3 +1,4 @@
+require 'ipaddr'
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module WorldPay
@@ -228,6 +229,12 @@ module OffsitePayments #:nodoc:
         # WorldPay supports the passing of custom parameters through to the callback script
         def custom_params
           return @custom_params ||= read_custom_params
+        end
+
+        # Check if the request comes from IP range 195.35.90.0 – 195.35.91.255
+        def valid_sender?(ip)
+          return true if OffsitePayments.mode == :test 
+          IPAddr.new("195.35.90.0/23").include?(IPAddr.new(ip))
         end
 
         private
