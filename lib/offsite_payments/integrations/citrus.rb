@@ -84,7 +84,7 @@ module OffsitePayments
             else
               case transaction_status.downcase
               when 'success' then 'Completed'
-              when 'canceled' then 'Cancelled'
+              when 'canceled' then 'Failed'
               end
             end
           else
@@ -219,7 +219,7 @@ module OffsitePayments
         end
 
         def cancelled?
-          @notification.status == 'Cancelled'
+          @notification.status == 'Failed'
         end
       end
     end
