@@ -53,6 +53,10 @@ module OffsitePayments #:nodoc:
       false
     end
 
+    def failure?
+      status.downcase == "failed"
+    end
+
     def iso_currency
       ActiveUtils::CurrencyCode.standardize(currency)
     end
