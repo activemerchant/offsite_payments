@@ -118,6 +118,7 @@ module OffsitePayments #:nodoc:
           # however it does echo any other param so we send it twice.
           add_field 'X-CURRENCY', @currency
           add_field 'X-TEST', @test.to_s
+          add_field 'ORDER_ID', order + @timestamp.to_i.to_s
         end
 
         def form_fields
@@ -154,7 +155,7 @@ module OffsitePayments #:nodoc:
         # Realex Required Fields
         mapping :currency,         'CURRENCY'
 
-        mapping :order,            'ORDER_ID'
+        mapping :order,            'CHECKOUT_ID'
         mapping :amount,           'AMOUNT'
         mapping :notify_url,       'MERCHANT_RESPONSE_URL'
         mapping :return_url,       'MERCHANT_RETURN_URL'
@@ -181,7 +182,7 @@ module OffsitePayments #:nodoc:
         end
 
         def item_id
-          order_id
+          checkout_id
         end
 
         def transaction_id
@@ -221,6 +222,10 @@ module OffsitePayments #:nodoc:
 
         def merchant_id
           params['MERCHANT_ID']
+        end
+
+        def checkout_id
+          params['CHECKOUT_ID']
         end
 
         def order_id
