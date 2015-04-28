@@ -32,6 +32,26 @@ class CoinbaseNotificationTest < Test::Unit::TestCase
     assert !@coinbase.acknowledge
   end
 
+  def test_params_with_empty_data
+    coinbase = Coinbase::Notification.new('')
+    assert_empty coinbase.params
+  end
+
+  def test_params_with_invalid_data
+    coinbase = Coinbase::Notification.new('{"invalid": json}')
+    assert_empty coinbase.params
+  end
+
+  def test_acknowledgement_with_empty_data
+    Net::HTTP.any_instance.expects(:request).returns(stub(body: ''))
+    refute @coinbase.acknowledge
+  end
+
+  def test_acknowledgement_with_invalid_data
+    Net::HTTP.any_instance.expects(:request).returns(stub(body: '{"invalid": json}'))
+    refute @coinbase.acknowledge
+  end
+
   private
 
   def http_raw_data
