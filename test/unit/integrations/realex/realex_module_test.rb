@@ -4,7 +4,7 @@ class RealexModuleTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def test_helper_method
-    assert_instance_of Realex::Helper, Realex.helper(123, 'test')
+    assert_instance_of Realex::Helper, Realex.helper('123', 'test')
   end
 
   def test_return_method
