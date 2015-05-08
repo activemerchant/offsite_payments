@@ -1,6 +1,6 @@
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
-    module Realex
+    module RealexOffsite
       mattr_accessor :production_url
       mattr_accessor :test_url
       self.production_url = 'https://epage.payandshop.com/epage.cgi'
