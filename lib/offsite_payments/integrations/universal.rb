@@ -93,6 +93,8 @@ module OffsitePayments #:nodoc:
         mapping :transaction_type, 'x_transaction_type'
         mapping :description,      'x_description'
         mapping :invoice,          'x_invoice'
+        mapping :credential3,      'x_credential3'
+        mapping :credential4,      'x_credential4'
 
         mapping :customer, :first_name => 'x_customer_first_name',
                            :last_name  => 'x_customer_last_name',
