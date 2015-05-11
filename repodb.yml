@@ -1,0 +1,11 @@
+# repodb metadata: see https://github.com/Shopify/repodb for help
+classification: gamma
+oncall:
+  - payments
+deploy_urls:
+  - https://shipit.shopify.com/shopify/offsite_payments/rubygems
+playbook_urls:
+  - https://github.com/Shopify/offsite_payments/blob/master/README.md
+  - http://www.rubydoc.info/github/Shopify/offsite_payments/master
+ci_urls:
+  - https://travis-ci.org/Shopify/offsite_payments/
