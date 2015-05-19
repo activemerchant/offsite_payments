@@ -60,8 +60,7 @@ module OffsitePayments #:nodoc:
         end
 
         def amount=(money)
-          #Molpay minimum amount is 1.01
-          if money.is_a?(String) or money.to_f < 1.01
+          if money.is_a?(String)
             raise ArgumentError, "money amount must be either a Money object or a positive integer."
           end
           add_field mappings[:amount], sprintf("%.2f", money.to_f)
@@ -141,6 +140,10 @@ module OffsitePayments #:nodoc:
           gross.blank? && auth_code.blank? && error_code.blank? && error_desc.blank? && security_key.blank?
         end
 
+        def status_orig
+          params['status']
+        end
+
         def status
           params['status'] == '00' ? 'Completed' : 'Failed'
         end
@@ -158,7 +161,8 @@ module OffsitePayments #:nodoc:
         protected
 
         def generate_signature
-          Digest::MD5.hexdigest("#{gross}#{account}#{item_id}#{@options[:credential2]}")
+          key0 = Digest::MD5.hexdigest("#{transaction_id}#{item_id}#{status_orig}#{account}#{gross}#{currency}")
+          Digest::MD5.hexdigest("#{received_at}#{account}#{key0}#{auth_code}#{@options[:credential2]}")
         end
       end
 
