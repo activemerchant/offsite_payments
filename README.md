@@ -17,7 +17,7 @@ The addition of your gateway to offsite_payments does not guarantee placement wi
 4. Your most recent Certificate of PCI Compliance
 5. Reason that the [Universal API](https://github.com/Shopify/offsite_payments/blob/master/lib/offsite_payments/integrations/universal.rb)* cannot be used for your integration.
 
-*The Universal API defines a standard set of requests and callbacks that can be used to integrate with Shopify. A sample app and documentation are hosted here. This is the route Shopify recommends for all future integrations. 
+*The Universal API defines a standard set of requests and callbacks that can be used to integrate with Shopify. A sample app and documentation are hosted [here](https://github.com/Shopify/offsite-gateway-sim). The Universal API should be used for all integrations in which placement within Shopify is the desired outcome. 
 
 ## Installation
 
@@ -55,6 +55,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 * [ePay](http://www.epay.dk/epay-payment-solutions/)
 * [First Data](https://firstdata.zendesk.com/entries/407522-first-data-global-gateway-e4sm-payment-pages-integration-manual)
 * [HiTRUST](http://www.hitrust.com.hk/)
+* [MOLPay](http://www.molpay.com/v2/)
 * [Moneybookers](http://www.moneybookers.com)
 * [Nochex](http://www.nochex.com)
 * [PagSeguro](http://www.pagseguro.com.br/) - BR
@@ -63,6 +64,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 * [PayDollar](http://www.paydollar.com)
 * [Paysbuy](https://www.paysbuy.com/) - TH
 * [Platron](https://www.platron.ru/) - RU
+* [Realex](http://www.realexpayments.com)
 * [RBK Money](https://rbkmoney.ru/) - RU
 * [Robokassa](http://robokassa.ru/) - RU
 * [SagePay Form](http://www.sagepay.com/products_services/sage_pay_go/integration/form)
