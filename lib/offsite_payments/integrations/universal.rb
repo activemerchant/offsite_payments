@@ -50,6 +50,10 @@ module OffsitePayments #:nodoc:
           @forward_url = options[:forward_url]
           @key = options[:credential2]
           @currency = options[:currency]
+
+          # x_credential3 should not be included in the request when using the universal offsite dev kit.
+          options[:credential3] = nil if options[:credential3] == @forward_url
+
           super
           self.country = options[:country]
           self.account_name = options[:account_name]
