@@ -81,4 +81,10 @@ class MolpayHelperTest < Test::Unit::TestCase
     end
   end
 
+  def test_invalid_amount_below_min_amount
+    assert_raise ArgumentError do
+      @helper.amount = 0.00
+    end
+  end
+
 end
