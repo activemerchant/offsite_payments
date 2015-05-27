@@ -138,4 +138,12 @@ class UniversalHelperTest < Test::Unit::TestCase
 
     assert_field 'x_signature', expected_signature
   end
+
+  def test_credential3_not_sent_when_using_universal_offsite_dev_kit
+    @options[:credential3] = 'https://offsite-gateway-sim.herokuapp.com/'
+    @options[:forward_url] = 'https://offsite-gateway-sim.herokuapp.com/'
+    @helper = Universal::Helper.new(@order, @account, @options)
+
+    assert_field 'x_credential3', nil
+  end
 end
