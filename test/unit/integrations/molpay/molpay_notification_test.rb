@@ -66,7 +66,7 @@ class MolpayNotificationTest < Test::Unit::TestCase
                  'paydate'  => '2014-04-04 08:12:00',
                  'channel'  => 'maybank2u',
                  'status'   => '00',
-                 'skey'     => generate_signature
+                 'skey'     => '79afd80af7ea8be6e25acd0ec448f16b'
                }
 
     case mode
@@ -86,6 +86,8 @@ class MolpayNotificationTest < Test::Unit::TestCase
   end
 
   def generate_signature
-    Digest::MD5.hexdigest("#{@amount}#{@account}#{@orderid}#{@secret_key}")
+
+    key0 = Digest::MD5.hexdigest("#{@molpay.transaction_id}#{@molpay.item_id}#{@molpay.status_orig}#{@molpay.account}#{@molpay.gross}#{@molpay.currency}")
+    Digest::MD5.hexdigest("#{@molpay.received_at}#{@molpay.account}#{key0}#{@molpay.auth_code}#{@secret_key}")
   end
 end
