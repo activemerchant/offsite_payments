@@ -60,8 +60,8 @@ module OffsitePayments #:nodoc:
         end
 
         def amount=(money)
-          if money.is_a?(String) || money <= 0
-            raise ArgumentError, "money amount must be either a Money object or a positive integer."
+          unless money > 0
+            raise ArgumentError, "amount must be greater than $0.00."
           end
           add_field mappings[:amount], sprintf("%.2f", money.to_f)
         end

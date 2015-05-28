@@ -75,6 +75,11 @@ class MolpayHelperTest < Test::Unit::TestCase
     assert_field "amount", "5.00"
   end
 
+  def test_valid_integer_amount
+    @helper.amount = 5
+    assert_field "amount", "5.00"
+  end
+
   def test_invalid_amount_as_string
     assert_raise ArgumentError do
       @helper.amount = "5.00"
@@ -83,7 +88,7 @@ class MolpayHelperTest < Test::Unit::TestCase
 
   def test_invalid_amount_below_min_amount
     assert_raise ArgumentError do
-      @helper.amount = 0.00
+      @helper.amount = 0
     end
   end
 
