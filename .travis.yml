@@ -13,7 +13,3 @@ gemfile:
 - Gemfile.rails40
 - Gemfile.rails41
 - Gemfile.rails42
-
-notifications:
-  email:
-  - payments-dev@shopify.com
