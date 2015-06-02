@@ -1,6 +1,6 @@
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
-    module Paydollar
+    module Pesopay
       CURRENCY_MAP = {
           'AED' => '784',
           'AUD' => '036',
@@ -29,9 +29,9 @@ module OffsitePayments #:nodoc:
       def self.service_url
         case OffsitePayments.mode
         when :production
-          'https://www.paydollar.com/b2c2/eng/payment/payForm.jsp'
+          'https://www.pesopay.com/b2c2/eng/payment/payForm.jsp'
         when :test
-          'https://test.paydollar.com/b2cDemo/eng/payment/payForm.jsp'
+          'https://test.pesopay.com/b2cDemo/eng/payment/payForm.jsp'
         else
           raise StandardError, "Integration mode set to an invalid value: #{mode}"
         end
@@ -66,7 +66,7 @@ module OffsitePayments #:nodoc:
                     @fields[mappings[:currency]],
                     @fields[mappings[:amount]],
                     @fields['payType']]
-          Paydollar.sign(fields, @secret)
+          Pesopay.sign(fields, @secret)
         end
 
         def currency=(currency_code)
@@ -110,7 +110,7 @@ module OffsitePayments #:nodoc:
         end
 
         def acknowledge(authcode = nil)
-          # paydollar supports multiple signature keys, therefore we need to check if any
+          # pesopay supports multiple signature keys, therefore we need to check if any
           # of their signatures match ours
           hash = @params['secureHash']
           if !hash
@@ -130,7 +130,7 @@ module OffsitePayments #:nodoc:
                     @params['Cur'],
                     @params['Amt'],
                     @params['payerAuth']]
-          Paydollar.sign(fields, @options[:credential2])
+          Pesopay.sign(fields, @options[:credential2])
         end
       end
 
