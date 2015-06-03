@@ -122,6 +122,8 @@ module OffsitePayments #:nodoc:
         def parse(post)
           @raw = post.to_s
           @params = JSON.parse(post)['order']
+        rescue JSON::ParserError
+          @params = {}
         end
       end
 
