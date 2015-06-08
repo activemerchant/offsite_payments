@@ -17,7 +17,7 @@ module OffsitePayments #:nodoc:
       class Helper < OffsitePayments::Helper
         include ActiveUtils::RequiresParameters
 
-        SUPPORTED_CURRENCIES = ['MYR', 'USD', 'SGD', 'PHP', 'VND', 'IDR', 'AUD']
+        SUPPORTED_CURRENCIES = ['MYR', 'USD', 'SGD', 'PHP', 'VND', 'IDR', 'AUD', 'CNY', 'THB', 'GBP', 'EUR', 'HKD']
 
         # Defaults to en
         SUPPORTED_LANGUAGES = ['en', 'cn']
