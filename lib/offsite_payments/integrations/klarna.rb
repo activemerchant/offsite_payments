@@ -2,7 +2,7 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Klarna
       mattr_accessor :service_url
-      self.service_url = 'https://hpp-test.herokuapp.com/shopify/payment'
+      self.service_url = 'https://api.hostedcheckout.io'
 
       REQUIRED_FIELDS = %w(amount checkout_token merchant_base_uri merchant_checkout_uri merchant_confirmation_uri merchant_id merchant_terms_uri purchase_currency)
 
