@@ -4,61 +4,36 @@ class PaytmNotificationTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    @secret = 'kbzk1DSbJiV_O3p5'
-    @notification = Paytm::Notification.new(http_raw_data, :credential2 => @secret)
+    @paytm = Paytm::Notification.new(http_raw_data, credential1: 'WorldP64425807474247', credential2: 'kbzk1DSbJiV_O3p5', credential3: 'Retail', credential4: 'worldpressplg')
   end
 
   def test_accessors
-    assert_equal 'order-500', @notification.item_id
-    assert_equal 'USD', @notification.currency
-    assert_equal '123.45', @notification.gross
-    assert_equal 'blorb123', @notification.transaction_id
-    assert_equal 'Completed', @notification.status
-    assert_equal 'helloworld', @notification.message
-    assert @notification.test?
+    assert @paytm.complete?
+    assert_equal 'Completed', @paytm.status
+    assert_equal '494157', @paytm.transaction_id
+    assert_equal 'TXN_SUCCESS', @paytm.transaction_status
+    assert_equal '10.00', @paytm.gross
+    assert_equal 'INR', @paytm.currency
+    assert_equal true, @paytm.invoice_ok?('100PT012')
+    assert_equal true, @paytm.amount_ok?(BigDecimal.new('10.00'))
+    assert_equal 'CC', @paytm.type
+    assert_equal '100PT012', @paytm.invoice
+    assert_equal 'WorldP64425807474247', @paytm.account
+    assert_equal 'M9E4OLugj4L3TLLiof2BSO03hhQQLMucnVgtYuHi4wIVLB20dCXS632PRw0dTmnAa58R0kEuh9+V3bfQs4F/SrlmsmV+hvhb3Nui1zlnh/o=', @paytm.checksum
+    assert_equal true, @paytm.checksum_ok?
   end
 
   def test_compositions
-    assert_equal Money.from_amount(123.45, 'USD'), @notification.amount
+    assert_equal '10.00', @paytm.gross
   end
 
-  def test_acknowledge_valid_signature
-    assert @notification.acknowledge
-  end
-
-  def test_acknowledge_valid_signature_with_extra_parameter
-    @notification = Paytm::Notification.new(http_raw_data_extra_parameter, :credential2 => @secret)
-
-    assert @notification.acknowledge
-  end
-
-  def test_acknowledge_valid_uppercase_signature
-    @notification = Paytm::Notification.new(http_raw_data_uppercase_signature, :credential2 => @secret)
-
-    assert @notification.acknowledge
-  end
-
-  def test_acknowledge_invalid_signature
-    @notification = Paytm::Notification.new(http_raw_data_invalid_signature, :credential2 => @secret)
-
-    assert !@notification.acknowledge
+  def test_acknowledgement
+    assert @paytm.acknowledge
   end
 
   private
 
   def http_raw_data
-    'x_account_id=zork&x_reference=order-500&x_currency=USD&x_test=true&x_amount=123.45&x_gateway_reference=blorb123&x_timestamp=2014-03-24T12:15:41Z&x_result=completed&x_signature=DtfuqciPcF0p8/TgUyArPmPlH3DvCDmGPadyX37Rqfs=&x_message=helloworld'
-  end
-
-  def http_raw_data_extra_parameter
-    'utm_nooverride=1&x_account_id=zork&x_reference=order-500&x_currency=USD&x_test=true&x_amount=123.45&x_gateway_reference=blorb123&x_timestamp=2014-03-24T12:15:41Z&x_result=completed&x_signature=eX7sljlxRCm2p64J26o3VQitsbHfUdzYYNSnBgbMMl8='
-  end
-
-  def http_raw_data_uppercase_signature
-    'x_account_id=zork&x_reference=order-500&x_currency=USD&x_test=true&x_amount=123.45&x_gateway_reference=blorb123&x_timestamp=2014-03-24T12:15:41Z&x_result=completed&x_signature=eX7sljlxRCm2p64J26o3VQitsbHfUdzYYNSnBgbMMl8='
-  end
-
-  def http_raw_data_invalid_signature
-    'x_account_id=zork&x_reference=order-500&x_currency=USD&x_test=true&x_amount=123.45&x_gateway_reference=blorb123&x_timestamp=2014-03-24T12:15:41Z&x_result=completed&x_signature=ex7sljlxRom2p64J26o3VQitsbHfUdzYYNSnBgbmml8='
+    'MID=WorldP64425807474247&ORDERID=100PT012&TXNAMOUNT=10&CURRENCY=INR&TXNID=494157&BANKTXNID=201512236592678&STATUS=TXN_SUCCESS&RESPCODE=01&RESPMSG=Txn Successful&TXNDATE=2015-12-23 16:06:22.0&GATEWAYNAME=ICICI&BANKNAME=ICICI&PAYMENTMODE=CC&MERC_UNQ_REF=100PT012&CHECKSUMHASH=M9E4OLugj4L3TLLiof2BSO03hhQQLMucnVgtYuHi4wIVLB20dCXS632PRw0dTmnAa58R0kEuh9%2bV3bfQs4F/SrlmsmV%2bhvhb3Nui1zlnh/o='
   end
 end
