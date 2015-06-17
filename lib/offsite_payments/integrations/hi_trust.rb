@@ -31,7 +31,7 @@ module OffsitePayments #:nodoc:
           add_field('Type', 'Auth')
 
           # Capture the payment right away
-          add_field('depositflag', '0')
+          add_field('depositflag', options[:deposit_flag] || '0')
 
           # Disable auto query - who knows what it does?
           add_field('queryflag', '1')
