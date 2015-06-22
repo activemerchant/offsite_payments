@@ -1,5 +1,5 @@
-require 'offsite_payments/integrations/maldives_payment_gateway/helper'
-require 'offsite_payments/integrations/maldives_payment_gateway/notification'
+require 'money'
+require 'byebug'
 
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
@@ -33,33 +33,54 @@ module OffsitePayments #:nodoc:
 
         def generate_signature
           sha = Digest::SHA1.hexdigest(raw_signature_string)
-          Base64.encode64(sha)
+          Base64.encode64(sha).strip
         end
 
         def raw_signature_string
           raise NotImplementedError.new("must implement it on your decent class")
         end
 
-        def password
-          Rails.configuration.offsite_payments['account']['password']
+        def convert_amount(amount, exponent)
+          amount = amount.to_f
+          coefficient = coefficient(exponent)
+          amount = (amount * coefficient).to_i
+          puts amount
+          puts coefficient
+          amount.to_s.rjust(12, '0')
         end
 
-        def merchant_id
-          Rails.configuration.offsite_payments['account']['merchant_id']
+        def coefficient(exponent)
+          zeros = exponent.to_i
+          10 ** zeros
         end
 
-        def acquirer_id
-          Rails.configuration.offsite_payments['account']['acquirer_id']
+        def get_currency_iso_numeric(currency_code)
+          money = Money.new(100, currency_code)
+          if money
+            money.currency.iso_numeric
+          else
+            currency_code
+          end
         end
       end
 
       class Helper < OffsitePayments::Helper
         include Common
         def initialize(order, account, options = {})
-          super
+          options.assert_valid_keys(:currency, :amount, :merchant_id,
+                                    :acquirer_id, :response_url, :currency_exponent, :password, :test)
+          @fields             = {}
+          @raw_html_fields    = []
+          @test               = options.delete(:test)
 
-          add_field('Version', '1.0.0')
-          add_field('SignatureMethod', 'SHA1')
+          options.each_pair { |key, val| self.send("#{key}=", val) }
+
+          add_field(mappings[:version], '1.0.0')
+          add_field(mappings[:signature_method], 'SHA1')
+          add_field(mappings[:order_id], order)
+          add_field(mappings[:currency], get_currency_iso_numeric(currency))
+          add_field(mappings[:amount], convert_amount(amount, exponent).to_s)
+          add_field(mappings[:signature], generate_signature)
         end
         # This is the version of the MPG and currently it has to be set to 1.0.0.
         mapping :version, 'Version'
@@ -81,7 +102,7 @@ module OffsitePayments #:nodoc:
 
         # This is your own Order ID that will be used to match your Orders with
         # MPG transactions. It is recommended that this Order ID is always unique.
-        mapping :order_id, 'OrderID',
+        mapping :order_id, 'OrderID'
 
         # This is the signature method used to calculate the signature
         mapping :signature_method, 'SignatureMethod'
@@ -93,14 +114,28 @@ module OffsitePayments #:nodoc:
         # this Web Page will not be altered in transit. (MPG will verify this signature)
         mapping :signature, 'Signature'
 
-        def form_fields
-          @fields.merge(mappings[:signature], generate_signature)
-        end
+        mapping :password, 'Password'
 
         private
 
+        def currency
+          fields[mappings[:currency]]
+        end
+
+        def exponent
+          fields[mappings[:currency_exponent]]
+        end
+
+        def password
+          fields[mappings[:password]]
+        end
+
         def raw_signature_string
           [password, merchant_id, acquirer_id, order_id, amount, currency].join
+        end
+
+        def order_id
+          fields[mappings[:order_id]]
         end
 
         def merchant_id
@@ -111,21 +146,15 @@ module OffsitePayments #:nodoc:
           fields[mappings[:acquirer_id]]
         end
 
-        def order_id
-          fields[mappings[:order_id]]
-        end
-
         def amount
           fields[mappings[:amount]]
-        end
-
-        def currency
-          fields[mappings[:currency]]
         end
       end
 
       class Notification < OffsitePayments::Notification
         include Common
+
+        attr_reader :order_id, :merchant_id, :acquirer_id
 
         def response_code
           params['ResponseCode']
@@ -151,15 +180,15 @@ module OffsitePayments #:nodoc:
           response_code == '1'
         end
 
-        def acknowledge(order_id)
-          @order_id = order_id
+        def acknowledge(merchant_id, acquirer_id, order_id)
+          @order_id, @merchant_id, @acquirer_id = order_id, merchant_id, acquirer_id
           generate_signature == signature
         end
 
         private
 
         def raw_signature_string
-          [pasword, merchant_id, acquirer_id, @order_id].join
+          [pasword, merchant_id, acquirer_id, order_id].join
         end
 
         # Take the posted data and move the relevant data into a hash
