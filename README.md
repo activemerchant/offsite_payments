@@ -25,7 +25,7 @@ The addition of your gateway to offsite_payments does not guarantee placement wi
 
 You can check out the latest source from git:
 
-    git clone https://github.com/Shopify/offsite_payments.git
+    git clone https://github.com/activemerchant/offsite_payments.git
 
 ### From RubyGems
 
@@ -37,7 +37,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 
     gem 'offsite_payments'
 
-[API documentation](http://www.rubydoc.info/github/Shopify/offsite_payments/master).
+[API documentation](http://www.rubydoc.info/github/activemerchant/offsite_payments/master).
 
 ## Supported Integrations
 
