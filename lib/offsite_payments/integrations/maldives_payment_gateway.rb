@@ -28,32 +28,39 @@ module OffsitePayments #:nodoc:
         Notification.new(post)
       end
 
+      module Common
+        protected
+
+        def generate_signature
+          sha = Digest::SHA1.hexdigest(raw_signature_string)
+          Base64.encode64(sha)
+        end
+
+        def raw_signature_string
+          raise NotImplementedError.new("must implement it on your decent class")
+        end
+
+        def password
+          Rails.configuration.offsite_payments['account']['password']
+        end
+
+        def merchant_id
+          Rails.configuration.offsite_payments['account']['merchant_id']
+        end
+
+        def acquirer_id
+          Rails.configuration.offsite_payments['account']['acquirer_id']
+        end
+      end
+
       class Helper < OffsitePayments::Helper
-        # Replace with the real mapping
-        mapping :account, ''
-        mapping :amount, ''
+        include Common
+        def initialize(order, account, options = {})
+          super
 
-        mapping :order, ''
-
-        mapping :customer, :first_name => '',
-                           :last_name  => '',
-                           :email      => '',
-                           :phone      => ''
-
-        mapping :billing_address, :city     => '',
-                                  :address1 => '',
-                                  :address2 => '',
-                                  :state    => '',
-                                  :zip      => '',
-                                  :country  => ''
-
-        mapping :notify_url, ''
-        mapping :return_url, ''
-        mapping :cancel_return_url, ''
-        mapping :description, ''
-        mapping :tax, ''
-        mapping :shipping, ''
-
+          add_field('Version', '1.0.0')
+          add_field('SignatureMethod', 'SHA1')
+        end
         # This is the version of the MPG and currently it has to be set to 1.0.0.
         mapping :version, 'Version'
 
@@ -61,7 +68,7 @@ module OffsitePayments #:nodoc:
         mapping :merchant_id, 'MerId'
 
         # This is your Acquierer ID (will be provided by your MPG Provider)
-        mapping :acquierer_id, 'AcqID'
+        mapping :acquirer_id, 'AcqID'
 
         # This is the URL of a Web Page on your server where the response will be sent.
         mapping :response_url, 'MerRespURL'
@@ -80,94 +87,80 @@ module OffsitePayments #:nodoc:
         mapping :signature_method, 'SignatureMethod'
 
         # This is the total amount of the purchase
-        mapping :purchase_amount, 'PurchaseAmt'
+        mapping :amount, 'PurchaseAmt'
 
         # This is a digital signature that will verify that the contents of
         # this Web Page will not be altered in transit. (MPG will verify this signature)
         mapping :signature, 'Signature'
-      end
 
-      class Notification < OffsitePayments::Notification
-        def complete?
-          params['']
-        end
-
-        def item_id
-          params['']
-        end
-
-        def transaction_id
-          params['']
-        end
-
-        # When was this payment received by the client.
-        def received_at
-          params['']
-        end
-
-        def payer_email
-          params['']
-        end
-
-        def receiver_email
-          params['']
-        end
-
-        def security_key
-          params['']
-        end
-
-        # the money amount we received in X.2 decimal.
-        def gross
-          params['']
-        end
-
-        # Was this a test transaction?
-        def test?
-          params[''] == 'test'
-        end
-
-        def status
-          params['']
-        end
-
-        # Acknowledge the transaction to MaldivesPaymentGateway. This method has to be called after a new
-        # apc arrives. MaldivesPaymentGateway will verify that all the information we received are correct and will return a
-        # ok or a fail.
-        #
-        # Example:
-        #
-        #   def ipn
-        #     notify = MaldivesPaymentGatewayNotification.new(request.raw_post)
-        #
-        #     if notify.acknowledge
-        #       ... process order ... if notify.complete?
-        #     else
-        #       ... log possible hacking attempt ...
-        #     end
-        def acknowledge(authcode = nil)
-          payload = raw
-
-          uri = URI.parse(MaldivesPaymentGateway.notification_confirmation_url)
-
-          request = Net::HTTP::Post.new(uri.path)
-
-          request['Content-Length'] = "#{payload.size}"
-          request['User-Agent'] = "Active Merchant -- http://activemerchant.org/"
-          request['Content-Type'] = "application/x-www-form-urlencoded"
-
-          http = Net::HTTP.new(uri.host, uri.port)
-          http.verify_mode    = OpenSSL::SSL::VERIFY_NONE unless @ssl_strict
-          http.use_ssl        = true
-
-          response = http.request(request, payload)
-
-          # Replace with the appropriate codes
-          raise StandardError.new("Faulty MaldivesPaymentGateway result: #{response.body}") unless ["AUTHORISED", "DECLINED"].include?(response.body)
-          response.body == "AUTHORISED"
+        def form_fields
+          @fields.merge(mappings[:signature], generate_signature)
         end
 
         private
+
+        def raw_signature_string
+          [password, merchant_id, acquirer_id, order_id, amount, currency].join
+        end
+
+        def merchant_id
+          fields[mappings[:merchant_id]]
+        end
+
+        def acquirer_id
+          fields[mappings[:acquirer_id]]
+        end
+
+        def order_id
+          fields[mappings[:order_id]]
+        end
+
+        def amount
+          fields[mappings[:amount]]
+        end
+
+        def currency
+          fields[mappings[:currency]]
+        end
+      end
+
+      class Notification < OffsitePayments::Notification
+        include Common
+
+        def response_code
+          params['ResponseCode']
+        end
+
+        def reason_code
+          params['ReasonCode']
+        end
+
+        def reason_description
+          params['ReasonCodeDesc']
+        end
+
+        def reference_no
+          params['ReferenceNo']
+        end
+
+        def signature
+          params['Signature']
+        end
+
+        def transaction_approved?
+          response_code == '1'
+        end
+
+        def acknowledge(order_id)
+          @order_id = order_id
+          generate_signature == signature
+        end
+
+        private
+
+        def raw_signature_string
+          [pasword, merchant_id, acquirer_id, @order_id].join
+        end
 
         # Take the posted data and move the relevant data into a hash
         def parse(post)
