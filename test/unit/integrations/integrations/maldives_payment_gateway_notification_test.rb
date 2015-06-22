@@ -8,34 +8,36 @@ class MaldivesPaymentGatewayNotificationTest < Test::Unit::TestCase
   end
 
   def test_accessors
-    assert @maldives_payment_gateway.complete?
-    assert_equal "", @maldives_payment_gateway.status
-    assert_equal "", @maldives_payment_gateway.transaction_id
-    assert_equal "", @maldives_payment_gateway.item_id
-    assert_equal "", @maldives_payment_gateway.gross
-    assert_equal "", @maldives_payment_gateway.currency
-    assert_equal "", @maldives_payment_gateway.received_at
-    assert @maldives_payment_gateway.test?
+    assert @maldives_payment_gateway.transaction_approved?
+    assert_equal "1", @maldives_payment_gateway.reason_code
+    assert_equal "Transaction is approved.", @maldives_payment_gateway.reason_description
+    assert_equal "2362129422091", @maldives_payment_gateway.reference_no
+    assert_equal "7CxOGTzwdIB1CJpf12PgVTEoTkI=", @maldives_payment_gateway.signature
+    # assert @maldives_payment_gateway.test?
   end
 
-  def test_compositions
-    assert_equal Money.new(3166, 'USD'), @maldives_payment_gateway.amount
-  end
+
 
   # Replace with real successful acknowledgement code
   def test_acknowledgement
-
+    # assert_equal true, @maldives_payment_gateway.acknowledge('7796090001009', '407387', 'MPGORDID01154321', 'orange')
   end
 
-  def test_send_acknowledgement
-  end
-
-  def test_respond_to_acknowledge
-    assert @maldives_payment_gateway.respond_to?(:acknowledge)
-  end
 
   private
   def http_raw_data
-    ""
+    <<-RESP
+MerID: 7796090001009
+AcqID: 407387
+OrderID: MPGORDID01154321
+ResponseCode: 1
+ReasonCode: 1
+ReasonCodeDesc: Transaction is approved.
+ReferenceNo: 2362129422091
+PaddedCardNo: XXXXXXXXXXXX3955
+AuthCode: 189477
+Signature: 7CxOGTzwdIB1CJpf12PgVTEoTkI=
+SignatureMethod: SHA1
+RESP
   end
 end

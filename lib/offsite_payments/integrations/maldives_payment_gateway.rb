@@ -32,8 +32,7 @@ module OffsitePayments #:nodoc:
         protected
 
         def generate_signature
-          sha = Digest::SHA1.hexdigest(raw_signature_string)
-          Base64.encode64(sha).strip
+          Digest::SHA1.base64digest(raw_signature_string).strip
         end
 
         def raw_signature_string
@@ -154,7 +153,7 @@ module OffsitePayments #:nodoc:
       class Notification < OffsitePayments::Notification
         include Common
 
-        attr_reader :order_id, :merchant_id, :acquirer_id
+        attr_reader :order_id, :merchant_id, :acquirer_id, :password
 
         def response_code
           params['ResponseCode']
@@ -180,23 +179,24 @@ module OffsitePayments #:nodoc:
           response_code == '1'
         end
 
-        def acknowledge(merchant_id, acquirer_id, order_id)
-          @order_id, @merchant_id, @acquirer_id = order_id, merchant_id, acquirer_id
+        def acknowledge(merchant_id, acquirer_id, order_id, password)
+          @order_id, @merchant_id, @acquirer_id, @password = order_id, merchant_id, acquirer_id, password
+
           generate_signature == signature
         end
 
         private
 
         def raw_signature_string
-          [pasword, merchant_id, acquirer_id, order_id].join
+          [password, merchant_id, acquirer_id, order_id].join
         end
 
         # Take the posted data and move the relevant data into a hash
         def parse(post)
           @raw = post.to_s
-          for line in @raw.split('&')
-            key, value = *line.scan( %r{^([A-Za-z0-9_.-]+)\=(.*)$} ).flatten
-            params[key] = CGI.unescape(value.to_s) if key.present?
+          for line in @raw.split("\n")
+            key, value = *line.scan( %r{^([A-Za-z0-9_.-]+)\:(.*)$} ).flatten
+            params[key.strip] = CGI.unescape(value.to_s.strip) if key.present?
           end
         end
       end
