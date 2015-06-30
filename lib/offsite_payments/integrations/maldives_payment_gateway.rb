@@ -9,8 +9,7 @@ module OffsitePayments #:nodoc:
 .aspx"
 
       mattr_accessor :production_service_url
-      self.production_service_url = "https://bankofmaldives.com.mv/SENTRY/PayementGateway/Application/RedirectLink
-.aspx"
+      self.production_service_url = 'https://egateway.bankofmaldives.com.mv/SENTRY/PaymentGateway/Application/RedirectLink.aspx'
 
       mattr_accessor :service_url
       def self.service_url
