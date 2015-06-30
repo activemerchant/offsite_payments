@@ -243,6 +243,10 @@ litle:
   password: MERCHANT
   merchant_id: 101
 
+maldives_payment_gateway:
+  merchant_id: '7796090001009'
+  password: 'orange'
+  acquirer_id: '407387'
 # Working test credentials, no need to replace
 maxipago:
   login: "100"

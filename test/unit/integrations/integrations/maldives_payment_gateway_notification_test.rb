@@ -20,7 +20,7 @@ class MaldivesPaymentGatewayNotificationTest < Test::Unit::TestCase
 
   # Replace with real successful acknowledgement code
   def test_acknowledgement
-    # assert_equal true, @maldives_payment_gateway.acknowledge('7796090001009', '407387', 'MPGORDID01154321', 'orange')
+    assert_equal true, @maldives_payment_gateway.acknowledge('7796090001009', '407387', 'MPGORDID01154321', 'orange')
   end
 
 

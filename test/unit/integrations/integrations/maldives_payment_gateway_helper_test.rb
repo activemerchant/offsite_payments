@@ -4,8 +4,8 @@ class MaldivesPaymentGatewayHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    @helper = MaldivesPaymentGateway::Helper.new('MPGORDID01154321','cody@example.com', :amount => 12, :currency => 'MVR', :response_url => 'http://localhost',
-                                                  :merchant_id => '7796090001009', :password => 'orange', :acquirer_id => '407387', :currency_exponent => '2')  end
+    @helper = MaldivesPaymentGateway::Helper.new('MPGORDID01154321', fixtures(:maldives_payment_gateway), :amount => 12, :currency => 'MVR', :response_url => 'http://localhost',
+                                                   :currency_exponent => '2')  end
 
   def test_basic_helper_fields
     assert_field 'OrderID', 'MPGORDID01154321'

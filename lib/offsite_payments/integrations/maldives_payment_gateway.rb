@@ -1,5 +1,4 @@
 require 'money'
-require 'byebug'
 
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
@@ -36,15 +35,13 @@ module OffsitePayments #:nodoc:
         end
 
         def raw_signature_string
-          raise NotImplementedError.new("must implement it on your decent class")
+          raise NotImplementedError.new("must implement it in your class")
         end
 
         def convert_amount(amount, exponent)
           amount = amount.to_f
           coefficient = coefficient(exponent)
           amount = (amount * coefficient).to_i
-          puts amount
-          puts coefficient
           amount.to_s.rjust(12, '0')
         end
 
@@ -74,6 +71,9 @@ module OffsitePayments #:nodoc:
 
           options.each_pair { |key, val| self.send("#{key}=", val) }
 
+          @password = account[:password]
+          add_field(mappings[:merchant_id], account[:merchant_id])
+          add_field(mappings[:acquirer_id], account[:acquirer_id])
           add_field(mappings[:version], '1.0.0')
           add_field(mappings[:signature_method], 'SHA1')
           add_field(mappings[:order_id], order)
@@ -113,8 +113,6 @@ module OffsitePayments #:nodoc:
         # this Web Page will not be altered in transit. (MPG will verify this signature)
         mapping :signature, 'Signature'
 
-        mapping :password, 'Password'
-
         private
 
         def currency
@@ -126,7 +124,7 @@ module OffsitePayments #:nodoc:
         end
 
         def password
-          fields[mappings[:password]]
+          @password
         end
 
         def raw_signature_string
@@ -188,7 +186,7 @@ module OffsitePayments #:nodoc:
         private
 
         def raw_signature_string
-          [password, merchant_id, acquirer_id, order_id].join
+          [password, merchant_id, acquirer_id, order_id, response_code, reason_code].join
         end
 
         # Take the posted data and move the relevant data into a hash
