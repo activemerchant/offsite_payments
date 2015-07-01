@@ -4,22 +4,24 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module MaldivesPaymentGateway
 
-      mattr_accessor :test_service_url
-      self.test_service_url = "https://testgateway.bankofmaldives.com.mv/SENTRY/PayementGateway/Application/RedirectLink.aspx"
+      # mattr_accessor :test_service_url
+      # self.test_service_url = "https://testgateway.bankofmaldives.com.mv/SENTRY/PayementGateway/Application/RedirectLink.aspx"
 
-      mattr_accessor :production_service_url
-      self.production_service_url = 'https://egateway.bankofmaldives.com.mv/SENTRY/PaymentGateway/Application/RedirectLink.aspx'
+      # mattr_accessor :production_service_url
+      # self.production_service_url = 'https://egateway.bankofmaldives.com.mv/SENTRY/PaymentGateway/Application/RedirectLink.aspx'
 
       mattr_accessor :service_url
-      def self.service_url
-        mode = OffsitePayments.mode
-        case mode
-        when :production
-          self.production_service_url
-        when :test
-          self.test_service_url
-        end
-      end
+      self.service_url = 'https://egateway.bankofmaldives.com.mv/SENTRY/PaymentGateway/Application/RedirectLink.aspx'
+
+      # def self.service_url
+      #   mode = OffsitePayments.mode
+      #   case mode
+      #   when :production
+      #     self.production_service_url
+      #   when :test
+      #     self.test_service_url
+      #   end
+      # end
 
       def self.notification(post)
         Notification.new(post)
@@ -62,7 +64,7 @@ module OffsitePayments #:nodoc:
         include Common
         def initialize(order, account, options = {})
           options.assert_valid_keys(:currency, :amount, :merchant_id,
-                                    :acquirer_id, :response_url, :currency_exponent, :password, :test)
+                                    :acquirer_id, :response_url, :currency_exponent, :test)
           @fields             = {}
           @raw_html_fields    = []
           @test               = options.delete(:test)
