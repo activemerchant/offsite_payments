@@ -5,8 +5,7 @@ module OffsitePayments #:nodoc:
     module MaldivesPaymentGateway
 
       mattr_accessor :test_service_url
-      self.test_service_url = "https://testgateway.bankofmaldives.com.mv/SENTRY/PayementGateway/Application/RedirectLink
-.aspx"
+      self.test_service_url = "https://testgateway.bankofmaldives.com.mv/SENTRY/PayementGateway/Application/RedirectLink.aspx"
 
       mattr_accessor :production_service_url
       self.production_service_url = 'https://egateway.bankofmaldives.com.mv/SENTRY/PaymentGateway/Application/RedirectLink.aspx'
