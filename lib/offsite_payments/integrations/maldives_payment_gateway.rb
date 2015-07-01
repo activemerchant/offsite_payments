@@ -177,8 +177,11 @@ module OffsitePayments #:nodoc:
           response_code == '1'
         end
 
-        def acknowledge(merchant_id, acquirer_id, order_id, password)
-          @order_id, @merchant_id, @acquirer_id, @password = order_id, merchant_id, acquirer_id, password
+        def acknowledge(account, order_id)
+          @order_id = order_id
+          @merchant_id = account[:merchant_id]
+          @acquirer_id = account[:acquirer_id]
+          @password = account[:password]
 
           generate_signature == signature
         end
