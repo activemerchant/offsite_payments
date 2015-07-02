@@ -4,24 +4,8 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module MaldivesPaymentGateway
 
-      # mattr_accessor :test_service_url
-      # self.test_service_url = "https://testgateway.bankofmaldives.com.mv/SENTRY/PayementGateway/Application/RedirectLink.aspx"
-
-      # mattr_accessor :production_service_url
-      # self.production_service_url = 'https://egateway.bankofmaldives.com.mv/SENTRY/PaymentGateway/Application/RedirectLink.aspx'
-
       mattr_accessor :service_url
       self.service_url = 'https://egateway.bankofmaldives.com.mv/SENTRY/PaymentGateway/Application/RedirectLink.aspx'
-
-      # def self.service_url
-      #   mode = OffsitePayments.mode
-      #   case mode
-      #   when :production
-      #     self.production_service_url
-      #   when :test
-      #     self.test_service_url
-      #   end
-      # end
 
       def self.notification(post)
         Notification.new(post)
@@ -194,10 +178,10 @@ module OffsitePayments #:nodoc:
 
         # Take the posted data and move the relevant data into a hash
         def parse(post)
-          @raw = post.to_s
-          for line in @raw.split("\n")
-            key, value = *line.scan( %r{^([A-Za-z0-9_.-]+)\:(.*)$} ).flatten
-            params[key.strip] = CGI.unescape(value.to_s.strip) if key.present?
+          if post.is_a? Hash
+            params = post
+          else
+            raise TypeError.new('return parameter must be a hash')
           end
         end
       end
