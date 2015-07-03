@@ -179,9 +179,11 @@ module OffsitePayments #:nodoc:
         # Take the posted data and move the relevant data into a hash
         def parse(post)
           if post.is_a? Hash
-            params = post
+            @params = post
+          elsif post.is_a? String
+            @params = JSON.parse(post)
           else
-            raise TypeError.new('return parameter must be a hash')
+            raise TypeError.new('return parameter must be either a hash or json string')
           end
         end
       end
