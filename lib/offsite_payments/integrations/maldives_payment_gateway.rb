@@ -161,6 +161,18 @@ module OffsitePayments #:nodoc:
           response_code == '1'
         end
 
+        def merchant_order_id
+          params['OrderID']
+        end
+
+        def auth_code
+          params['AuthCode']
+        end
+
+        def padded_card_no
+          params['PaddedCardNo']
+        end
+
         def acknowledge(account, order_id)
           @order_id = order_id
           @merchant_id = account[:merchant_id]

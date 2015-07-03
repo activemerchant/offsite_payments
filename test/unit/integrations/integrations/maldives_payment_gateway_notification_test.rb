@@ -13,7 +13,8 @@ class MaldivesPaymentGatewayNotificationTest < Test::Unit::TestCase
     assert_equal "Transaction is approved.", @maldives_payment_gateway.reason_description
     assert_equal "2362129422091", @maldives_payment_gateway.reference_no
     assert_equal "7CxOGTzwdIB1CJpf12PgVTEoTkI=", @maldives_payment_gateway.signature
-    # assert @maldives_payment_gateway.test?
+    assert_equal "189477", @maldives_payment_gateway.auth_code
+    assert_equal "XXXXXXXXXXXX3955", @maldives_payment_gateway.padded_card_no
   end
 
 
