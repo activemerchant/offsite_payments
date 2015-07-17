@@ -12,7 +12,7 @@ class PayFastHelperTest < Test::Unit::TestCase
   end
 
   def assing_required_fields
-    @helper.item_name = 'ZOMG'
+    @helper.description = 'ZOMG'
     @helper.notify_url = 'http://test.com/pay_fast/paid'
   end
 

@@ -78,7 +78,7 @@ module OffsitePayments #:nodoc:
         def request_attributes
           [:merchant_id, :merchant_key, :return_url, :cancel_url,
            :notify_url, :name_first, :name_last, :email_address,
-           :payment_id, :amount, :item_name, :item_description,
+           :payment_id, :amount, :description,
            :custom_int1, :custom_int2, :custom_int3,
            :custom_int4, :custom_int5, :custom_str1, :custom_str2,
            :custom_str3, :custom_str4, :custom_str5, :email_confirmation,
@@ -127,7 +127,7 @@ module OffsitePayments #:nodoc:
         end
 
         def check_required_fields!
-          [:merchant_id, :merchant_key, :amount, :item_name].each do |required_field|
+          [:merchant_id, :merchant_key, :amount, :description].each do |required_field|
             raise ArgumentError, "Missing required field #{required_field}" if @fields[mappings[required_field]].nil?
           end
         end
@@ -142,8 +142,7 @@ module OffsitePayments #:nodoc:
         mapping :email_address, 'email_address'
         mapping :payment_id, 'm_payment_id'
         mapping :amount, 'amount'
-        mapping :item_name, 'item_name'
-        mapping :item_description, 'item_description'
+        mapping :description, 'item_name'
 
         mapping :customer, :first_name => 'name_first',
                            :last_name  => 'name_last',
