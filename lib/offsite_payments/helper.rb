@@ -16,7 +16,7 @@ module OffsitePayments #:nodoc:
     end
 
     def initialize(order, account, options = {})
-      options.assert_valid_keys([:amount, :currency, :test, :credential2, :credential3, :credential4, :country, :account_name, :description, :transaction_type, :authcode, :notify_url, :return_url, :redirect_param, :forward_url, :checkout_token, :deposit_flag])
+      options.assert_valid_keys([:amount, :currency, :test, :credential2, :credential3, :credential4, :country, :account_name, :description, :transaction_type, :authcode, :notify_url, :return_url, :redirect_param, :forward_url, :checkout_token])
       @fields             = {}
       @raw_html_fields    = []
       @test               = options[:test]
