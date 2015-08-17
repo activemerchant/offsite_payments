@@ -18,8 +18,12 @@ module OffsitePayments #:nodoc:
       # end
 
       module Common
+        def pay?
+          params["payment"].try(:[], "amount")
+        end
+
         def generate_signature_string
-          if params["payment"].try(:[], "amount")
+          if pay?
             "pay;#{params["pay_for"]};#{params["payment"]["amount"]};#{params["payment"]["way"]};#{params["balance"]["amount"]};#{params["balance"]["way"]};#{secret}"
           else
             "check;#{params['pay_for']};#{params['amount']};#{params['way']};#{params['mode']};#{secret}"
@@ -108,6 +112,10 @@ module OffsitePayments #:nodoc:
 
         def acknowledge(authcode = nil)
           (security_key == generate_signature)
+        end
+
+        def success_response
+          pay? ? success_pay_response : success_check_response
         end
 
         def success_check_response(*args)
