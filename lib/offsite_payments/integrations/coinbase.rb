@@ -81,7 +81,11 @@ module OffsitePayments #:nodoc:
         end
 
         def gross
-          "%.2f" % (params['total_native']['cents'].to_f / 100)
+          if params['total_original'].present?
+            "%.2f" % (params['total_original']['cents'].to_f / 100)
+          else
+            "%.2f" % (params['total_native']['cents'].to_f / 100)
+          end
         end
 
         def currency
@@ -118,6 +122,8 @@ module OffsitePayments #:nodoc:
         def parse(post)
           @raw = post.to_s
           @params = JSON.parse(post)['order']
+        rescue JSON::ParserError
+          @params = {}
         end
       end
 

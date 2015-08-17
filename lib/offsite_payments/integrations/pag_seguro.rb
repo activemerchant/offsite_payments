@@ -134,7 +134,7 @@ module OffsitePayments #:nodoc:
           when "401"
             raise ActionViewHelperError, "Token do PagSeguro inválido."
           else
-            raise ActiveMerchant::ResponseError, response
+            raise ActiveUtils::ResponseError, response
           end
         end
 

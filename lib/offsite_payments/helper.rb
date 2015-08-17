@@ -16,7 +16,7 @@ module OffsitePayments #:nodoc:
     end
 
     def initialize(order, account, options = {})
-      options.assert_valid_keys([:amount, :currency, :test, :credential2, :credential3, :credential4, :country, :account_name, :description, :transaction_type, :authcode, :notify_url, :return_url, :redirect_param, :forward_url])
+      options.assert_valid_keys([:amount, :currency, :test, :credential2, :credential3, :credential4, :country, :account_name, :description, :transaction_type, :authcode, :notify_url, :return_url, :redirect_param, :forward_url, :checkout_token])
       @fields             = {}
       @raw_html_fields    = []
       @test               = options[:test]
@@ -30,6 +30,7 @@ module OffsitePayments #:nodoc:
       self.notify_url     = options[:notify_url]
       self.return_url     = options[:return_url]
       self.redirect_param = options[:redirect_param]
+      self.checkout_token = options[:checkout_token]
     end
 
     def self.mapping(attribute, options = {})
@@ -90,9 +91,9 @@ module OffsitePayments #:nodoc:
     end
 
     def lookup_country_code(name_or_code, format = country_format)
-      country = ActiveMerchant::Country.find(name_or_code)
+      country = ActiveUtils::Country.find(name_or_code)
       country.code(format).to_s
-    rescue ActiveMerchant::InvalidCountryCodeError
+    rescue ActiveUtils::InvalidCountryCodeError
       name_or_code
     end
 

@@ -5,14 +5,7 @@ require "socket"
 
 require 'active_support/core_ext/class/delegating_attributes'
 
-require 'active_utils/common/network_connection_retries'
-require 'active_utils/common/connection'
-require 'active_utils/common/requires_parameters'
-require 'active_utils/common/country'
-require 'active_utils/common/error'
-require 'active_utils/common/post_data'
-require 'active_utils/common/posts_data'
-require 'active_utils/common/currency_code'
+require 'active_utils'
 
 require "offsite_payments/helper"
 require "offsite_payments/notification"

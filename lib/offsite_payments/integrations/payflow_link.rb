@@ -13,7 +13,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Helper < OffsitePayments::Helper
-        include ActiveMerchant::PostsData
+        include ActiveUtils::PostsData
 
         def initialize(order, account, options = {})
           super

@@ -10,7 +10,7 @@ module OffsitePayments #:nodoc:
       end
 
       def self.sign(fields, key)
-        Digest::HMAC.hexdigest(fields.sort.join, key, Digest::SHA256)
+        OpenSSL::HMAC.hexdigest(OpenSSL::Digest::SHA256.new, key, fields.sort.join)
       end
 
       class Helper < OffsitePayments::Helper
@@ -50,6 +50,10 @@ module OffsitePayments #:nodoc:
           @forward_url = options[:forward_url]
           @key = options[:credential2]
           @currency = options[:currency]
+
+          # x_credential3 should not be included in the request when using the universal offsite dev kit.
+          options[:credential3] = nil if options[:credential3] == @forward_url
+
           super
           self.country = options[:country]
           self.account_name = options[:account_name]
@@ -93,6 +97,8 @@ module OffsitePayments #:nodoc:
         mapping :transaction_type, 'x_transaction_type'
         mapping :description,      'x_description'
         mapping :invoice,          'x_invoice'
+        mapping :credential3,      'x_credential3'
+        mapping :credential4,      'x_credential4'
 
         mapping :customer, :first_name => 'x_customer_first_name',
                            :last_name  => 'x_customer_last_name',

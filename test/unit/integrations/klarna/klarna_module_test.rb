@@ -17,7 +17,9 @@ class KlarnaModuleTest < Test::Unit::TestCase
       'merchant_terms_uri' => 'http://some-webstore.se?URI=tc',
       'merchant_checkout_uri' => 'http://some-webstore.se?URI=checkout',
       'merchant_base_uri' => 'http://some-webstore.se?URI=home',
-      'merchant_confirmation_uri' => 'http://some-webstore.se?URI=confirmation'
+      'merchant_confirmation_uri' => 'http://some-webstore.se?URI=confirmation',
+      'checkout_token' => 'abc123',
+      'amount' => '10.00'
     }
 
     cart_items = [{:type => 'physical',
@@ -27,7 +29,7 @@ class KlarnaModuleTest < Test::Unit::TestCase
 
     shared_secret = 'example-shared-secret'
 
-    calculated_digest = "AB4kuszp2Y4laIP4pfbHTJTPAsR7gFRxh4ml5LEDZxg="
+    calculated_digest = "UBDBiHOMTjYawpj+zicesjg1aWUog44H+Y2nB8ZyfZs="
     assert_equal calculated_digest, Klarna.sign(fields, cart_items, shared_secret)
   end
 

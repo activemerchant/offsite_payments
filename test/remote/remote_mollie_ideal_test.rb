@@ -8,7 +8,7 @@ class RemoteMollieIdealTest < Test::Unit::TestCase
   end
 
   def test_authorization
-    assert_raises(ActiveMerchant::ResponseError) { MollieIdeal.retrieve_issuers('bad_api_key') }
+    assert_raises(ActiveUtils::ResponseError) { MollieIdeal.retrieve_issuers('bad_api_key') }
   end
 
   def test_retrieve_issuers
@@ -35,7 +35,7 @@ class RemoteMollieIdealTest < Test::Unit::TestCase
     assert_equal 'https://example.com/return', create_response['links']['redirectUrl']
     redirect_uri = URI.parse(create_response['links']['paymentUrl'])
     assert_equal 'https', redirect_uri.scheme
-    assert_equal 'www.mollie.nl', redirect_uri.host
+    assert_equal 'www.mollie.com', redirect_uri.host
 
     status_response = MollieIdeal.check_payment_status(@api_key, create_response['id'])
     assert_equal status_response, create_response

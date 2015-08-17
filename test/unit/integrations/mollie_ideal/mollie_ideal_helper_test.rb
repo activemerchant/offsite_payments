@@ -15,7 +15,7 @@ class MollieIdealHelperTest < Test::Unit::TestCase
 
     @helper = MollieIdeal::Helper.new('order-500','1234567', @required_options)
 
-    MollieIdeal::API.stubs(:new).with('1234567').returns(@mock_api = mock())
+    Mollie::API.stubs(:new).with('1234567').returns(@mock_api = mock())
   end
 
   def test_credential_based_url
@@ -35,7 +35,7 @@ class MollieIdealHelperTest < Test::Unit::TestCase
   def test_credential_based_url_errors
     @mock_api.expects(:post_request)
       .with('payments', :amount => 500, :description => 'Order #111', :method => 'ideal', :issuer => 'ideal_TESTNL99', :redirectUrl => 'https://return.com', :metadata => {:order => 'order-500'})
-      .raises(ActiveMerchant::ResponseError.new(stub(:code => "403", :message => "Internal Server Error", :body => '{"error": {"message": "bleh"}}')))
+      .raises(ActiveUtils::ResponseError.new(stub(:code => "403", :message => "Internal Server Error", :body => '{"error": {"message": "bleh"}}')))
 
     assert_raises ActionViewHelperError do
       @helper.credential_based_url
@@ -43,7 +43,7 @@ class MollieIdealHelperTest < Test::Unit::TestCase
   end
 
   def test_credential_based_url_server_errors
-    @mock_api.expects(:post_request).raises(ActiveMerchant::ResponseError.new(stub(:code => "503", :message => "Service Unavailable")))
+    @mock_api.expects(:post_request).raises(ActiveUtils::ResponseError.new(stub(:code => "503", :message => "Service Unavailable")))
 
     assert_raises ActionViewHelperError do
       @helper.credential_based_url

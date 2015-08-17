@@ -1,33 +1,7 @@
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module MollieIdeal
-      class API
-        include ActiveMerchant::PostsData
-
-        attr_reader :token
-
-        def initialize(token)
-          @token = token
-        end
-
-        def get_request(resource, params = nil)
-          uri = URI.parse(MOLLIE_API_V1_URI + resource)
-          uri.query = params.map { |k,v| "#{CGI.escape(k)}=#{CGI.escape(v)}}"}.join('&') if params
-          headers = { "Authorization" => "Bearer #{token}", "Content-Type" => "application/json" }
-          JSON.parse(ssl_get(uri.to_s, headers))
-        end
-
-        def post_request(resource, params = nil)
-          uri = URI.parse(MOLLIE_API_V1_URI + resource)
-          headers = { "Authorization" => "Bearer #{token}", "Content-Type" => "application/json" }
-          data = params.nil? ? nil : JSON.dump(params)
-          JSON.parse(ssl_post(uri.to_s, data, headers))
-        end
-      end
-
-      RedirectError = Class.new(ActiveMerchant::ActiveMerchantError)
-
-      MOLLIE_API_V1_URI = 'https://api.mollie.nl/v1/'.freeze
+      include Mollie
 
       mattr_accessor :live_issuers
       self.live_issuers = [
@@ -48,22 +22,6 @@ module OffsitePayments #:nodoc:
         ["TBM Bank", "ideal_TESTNL99"]
       ]
 
-      def self.notification(post, options = {})
-        Notification.new(post, options)
-      end
-
-      def self.return(post, options = {})
-        Return.new(post, options)
-      end
-
-      def self.live?
-        OffsitePayments.mode == :production
-      end
-
-      def self.requires_redirect_param?
-        true
-      end
-
       def self.redirect_param_label
         "Select your bank"
       end
@@ -80,6 +38,22 @@ module OffsitePayments #:nodoc:
           .map { |issuer| [issuer['name'], issuer['id']] }
       end
 
+      RedirectError = Class.new(ActiveUtils::ActiveUtilsError)
+
+      MOLLIE_API_V1_URI = 'https://api.mollie.nl/v1/'.freeze
+
+      def self.notification(post, options = {})
+        Notification.new(post, options)
+      end
+
+      def self.return(post, options = {})
+        Return.new(post, options)
+      end
+
+      def self.live?
+        OffsitePayments.mode == :production
+      end
+
       def self.create_payment(token, params)
         API.new(token).post_request('payments', params)
       end
@@ -88,12 +62,16 @@ module OffsitePayments #:nodoc:
         API.new(token).get_request("payments/#{payment_id}")
       end
 
+      def self.requires_redirect_param?
+        true
+      end
+
       class Helper < OffsitePayments::Helper
-        attr_reader :transaction_id, :redirect_paramaters, :token
+        attr_reader :transaction_id, :redirect_parameters, :token
 
         def initialize(order, account, options = {})
           @token = account
-          @redirect_paramaters = {
+          @redirect_parameters = {
             :amount => options[:amount],
             :description => options[:description],
             :issuer => options[:redirect_param],
@@ -102,7 +80,7 @@ module OffsitePayments #:nodoc:
             :metadata => { :order => order }
           }
 
-          @redirect_paramaters[:webhookUrl] = options[:notify_url] if options[:notify_url]
+          @redirect_parameters[:webhookUrl] = options[:notify_url] if options[:notify_url]
 
           super
 
@@ -136,8 +114,8 @@ module OffsitePayments #:nodoc:
         end
 
         def request_redirect
-          MollieIdeal.create_payment(token, redirect_paramaters)
-        rescue ActiveMerchant::ResponseError => e
+          MollieIdeal.create_payment(token, redirect_parameters)
+        rescue ActiveUtils::ResponseError => e
           case e.response.code
           when '401', '403', '422'
             error = JSON.parse(e.response.body)['error']['message']

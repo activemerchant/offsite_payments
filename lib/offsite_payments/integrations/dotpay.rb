@@ -75,9 +75,9 @@ module OffsitePayments #:nodoc:
         private
 
         def lookup_country_code(name_or_code, format = country_format)
-          country = ActiveMerchant::Country.find(name_or_code)
+          country = ActiveUtils::Country.find(name_or_code)
           country.code(format).to_s
-        rescue ActiveMerchant::InvalidCountryCodeError
+        rescue ActiveUtils::InvalidCountryCodeError
           name_or_code
         end
       end

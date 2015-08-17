@@ -12,8 +12,7 @@ class AuthorizeNetSimModuleTest < Test::Unit::TestCase
     payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0){|service|
       service.billing_address :address1 => 'address1', :address2 => 'line 2'
     }
-    all= ['<input id="x_address" name="x_address" type="hidden" value="address1 line 2" />']
-    check_inclusion all
+    assert hidden_field_set 'x_address', 'address1 line 2'
   end
 
   def test_lots_of_line_items_same_name
@@ -41,7 +40,7 @@ class AuthorizeNetSimModuleTest < Test::Unit::TestCase
   end
 
   def test_all_fields
-    payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0){|service|
+    payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0) do |service|
 
        service.setup_hash :transaction_key => '8CP6zJ7uD875J6tY',
            :order_timestamp => 1206836763
@@ -71,47 +70,37 @@ class AuthorizeNetSimModuleTest < Test::Unit::TestCase
       service.test_request 'true'
       service.shipping '25.0'
       service.add_shipping_as_line_item
-    }
-
-    all = '<INPUT TYPE=HIDDEN name="x_cust_id" value="8">
-      <INPUT TYPE=HIDDEN name="x_ship_to_last_name" value="g">
-      <INPUT TYPE=HIDDEN name="x_fp_timestamp" value="1206836763">
-      <INPUT TYPE=HIDDEN name="x_ship_to_first_name" value="g">
-      <INPUT TYPE=HIDDEN name="x_last_name" value="g">
-      <INPUT TYPE=HIDDEN name="x_amount" value="157.0">
-      <INPUT TYPE=HIDDEN name="x_ship_to_country" value="United States of America">
-      <INPUT TYPE=HIDDEN name="x_ship_to_zip" value="g">
-      <INPUT TYPE=HIDDEN name="x_zip" value="g">
-      <INPUT TYPE=HIDDEN name="x_country" value="United States of America">
-      <INPUT TYPE=HIDDEN name="x_duplicate_window" value="28800">
-      <INPUT TYPE=HIDDEN name="x_relay_response" value="TRUE">
-      <INPUT TYPE=HIDDEN name="x_ship_to_address" value="g">
-      <INPUT TYPE=HIDDEN name="x_first_name" value="g">
-      <INPUT TYPE=HIDDEN name="x_version" value="3.1">
-      <INPUT TYPE=HIDDEN name="x_invoice_num" value="516428355">
-      <INPUT TYPE=HIDDEN name="x_address" value="g">
-      <INPUT TYPE=HIDDEN name="x_login" value="8wd65QS">
-      <INPUT TYPE=HIDDEN name="x_phone" value="3">
-      <INPUT TYPE=HIDDEN name="x_relay_url" value="http://t/authorize_net_sim/payment_received_notification_sub_step">
-      <INPUT TYPE=HIDDEN name="x_fp_sequence" value="44">
-      <INPUT TYPE=HIDDEN name="x_show_form" value="PAYMENT_FORM">
-      <INPUT TYPE=HIDDEN name="x_header_html_payment_form" value="MyFavoritePal">
-      <INPUT TYPE=HIDDEN name="x_email" value="g@g.com">
-      <INPUT TYPE=HIDDEN name="x_fp_hash" value="31d572da4e9910b36e999d73925eb01c">
-      <INPUT TYPE=HIDDEN name="x_line_item" value="Item 1<|>beauty2 - ayoyo<|>beauty2 - ayoyo<|>1<|>0.0<|>N">
-      <INPUT TYPE=HIDDEN name="x_test_request" value="true">
-      <INPUT TYPE=HIDDEN name="x_freight" value="25.0"/>
-      <INPUT TYPE=HIDDEN name="x_line_item" value="Shipping<|>Shipping and Handling Cost<|>Shipping and Handling Cost<|>1<|>25.0<|>N">'
-
-    # clean it up a bit for parsing
-    @output_buffer.gsub!("type=\"hidden\" ", "")
-    for line in all.split("\n") do
-      line.strip!
-      if line =~ /(name=".*".*value=".*")/i
-        line = $1
-        assert @output_buffer.include?(line), 'didnt find' + line + 'in ' + @output_buffer
-      end
     end
+
+    assert hidden_field_set 'x_cust_id', '8'
+    assert hidden_field_set 'x_ship_to_last_name', 'g'
+    assert hidden_field_set 'x_fp_timestamp', '1206836763'
+    assert hidden_field_set 'x_ship_to_first_name', 'g'
+    assert hidden_field_set 'x_last_name', 'g'
+    assert hidden_field_set 'x_amount', '157.0'
+    assert hidden_field_set 'x_ship_to_country', 'United States of America'
+    assert hidden_field_set 'x_ship_to_zip', 'g'
+    assert hidden_field_set 'x_zip', 'g'
+    assert hidden_field_set 'x_country', 'United States of America'
+    assert hidden_field_set 'x_duplicate_window', '28800'
+    assert hidden_field_set 'x_relay_response', 'TRUE'
+    assert hidden_field_set 'x_ship_to_address', 'g'
+    assert hidden_field_set 'x_first_name', 'g'
+    assert hidden_field_set 'x_version', '3.1'
+    assert hidden_field_set 'x_invoice_num', '516428355'
+    assert hidden_field_set 'x_address', 'g'
+    assert hidden_field_set 'x_login', '8wd65QS'
+    assert hidden_field_set 'x_phone', '3'
+    assert hidden_field_set 'x_relay_url', 'http://t/authorize_net_sim/payment_received_notification_sub_step'
+    assert hidden_field_set 'x_fp_sequence', '44'
+    assert hidden_field_set 'x_show_form', 'PAYMENT_FORM'
+    assert hidden_field_set 'x_header_html_payment_form', 'MyFavoritePal'
+    assert hidden_field_set 'x_email', 'g@g.com'
+    assert hidden_field_set 'x_fp_hash', '31d572da4e9910b36e999d73925eb01c'
+    assert hidden_field_set 'x_test_request', 'true'
+    assert hidden_field_set 'x_freight', '25.0'
+    assert hidden_field_set 'x_line_item', 'Item 1<|>beauty2 - ayoyo<|>beauty2 - ayoyo<|>1<|>0.0<|>N'
+    assert hidden_field_set 'x_line_item', 'Shipping<|>Shipping and Handling Cost<|>Shipping and Handling Cost<|>1<|>25.0<|>N'
   end
 
   def check_inclusion(these_lines)
@@ -121,38 +110,38 @@ class AuthorizeNetSimModuleTest < Test::Unit::TestCase
   end
 
   def test_custom
-    payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0){|service|
+    payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0) do |service|
       service.add_custom_field 'abc', 'def'
-    }
-    all = ["<input id=\"abc\" name=\"abc\" type=\"hidden\" value=\"def\" />"]
-    check_inclusion all
+    end
+
+    assert hidden_field_set "abc", "def"
   end
 
   def test_shipping_and_tax_line_item
-    payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0){|service|
+    payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0) do |service|
       service.shipping 44.0
       service.tax 44.0
       service.add_shipping_as_line_item
       service.add_tax_as_line_item
-    }
-    all = ['<input id="x_line_item" name="x_line_item" type="hidden" value="Tax<|>Total Tax<|>Total Tax<|>1<|>44.0<|>N',
-    'input id="x_line_item" name="x_line_item" type="hidden" value="Shipping<|>Shipping and Handling Cost<|>Shipping and Handling Cost<|>1<|>44.0<|>N" />'
-    ]
-    check_inclusion all
+    end
+
+    assert hidden_field_set 'x_line_item', 'Tax<|>Total Tax<|>Total Tax<|>1<|>44.0<|>N'
+    assert hidden_field_set 'x_line_item', 'Shipping<|>Shipping and Handling Cost<|>Shipping and Handling Cost<|>1<|>44.0<|>N'
   end
 
   def test_shipping_large
-    payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0){|service|
-
-    service.ship_to_address :first_name => 'first', :last_name => 'last', :company => 'company1',
-      :city => 'city2', :state => 'TX', :zip => 84601, :country => 'US'
-    }
-     expected = "<input id=\"x_ship_to_city\" name=\"x_ship_to_city\" type=\"hidden\" value=\"city2\" />\n<input id=\"x_ship_to_last_name\" name=\"x_ship_to_last_name\" type=\"hidden\" value=\"last\" />\n<input id=\"x_ship_to_first_name\" name=\"x_ship_to_first_name\" type=\"hidden\" value=\"first\" />
-     <input id=\"x_ship_to_country\" name=\"x_ship_to_country\" type=\"hidden\" value=\"US\" />\n<input id=\"x_ship_to_zip\" name=\"x_ship_to_zip\" type=\"hidden\" value=\"84601\" />\n<input id=\"x_ship_to_company\" name=\"x_ship_to_company\" type=\"hidden\" value=\"company1\" />\n
-     <input id=\"x_ship_to_state\" name=\"x_ship_to_state\" type=\"hidden\" value=\"TX\" />\n"
-    for line in expected.split("\n") do
-      assert @output_buffer.include?(line.strip), 'expected but not found' + line
+    payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0) do |service|
+      service.ship_to_address :first_name => 'first', :last_name => 'last', :company => 'company1',
+        :city => 'city2', :state => 'TX', :zip => 84601, :country => 'US'
     end
+
+    assert hidden_field_set 'x_ship_to_city', 'city2'
+    assert hidden_field_set 'x_ship_to_country', 'US'
+    assert hidden_field_set 'x_ship_to_last_name', 'last'
+    assert hidden_field_set 'x_ship_to_first_name', 'first'
+    assert hidden_field_set 'x_ship_to_zip', '84601'
+    assert hidden_field_set 'x_ship_to_company', 'company1'
+    assert hidden_field_set 'x_ship_to_state', 'TX'
   end
 
   def test_line_item
@@ -182,11 +171,11 @@ class AuthorizeNetSimModuleTest < Test::Unit::TestCase
   end
 
   def test_ship_to
-      payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0){|service|
-        service.tax 4
-        service.ship_to_address :first_name => 'firsty'
-      }
-      assert @output_buffer.include? "<input id=\"x_ship_to_first_name\" name=\"x_ship_to_first_name\" type=\"hidden\" value=\"firsty\" />"
+    payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0) do |service|
+      service.tax 4
+      service.ship_to_address :first_name => 'firsty'
+    end
+    assert hidden_field_set 'x_ship_to_first_name', 'firsty'
   end
 
   def test_normal_fields
@@ -213,20 +202,29 @@ class AuthorizeNetSimModuleTest < Test::Unit::TestCase
 
     }
 
-    expected = "<input id=\"x_cust_id\" name=\"x_cust_id\" type=\"hidden\" value=\"8\" />
 
-    <input id=\"x_city\" name=\"x_city\" type=\"hidden\" value=\"city1\" />
-      <input id=\"x_fp_timestamp\" name=\"x_fp_timestamp\" type=\"hidden\" value=\"1206836763\" />
-    <input id=\"x_last_name\" name=\"x_last_name\" type=\"hidden\" value=\"Fauser\" />\n<input id=\"x_amount\" name=\"x_amount\" type=\"hidden\" value=\"157.0\" />
-    <input id=\"x_country\" name=\"x_country\" type=\"hidden\" value=\"United States of America\" />\n<input id=\"x_zip\" name=\"x_zip\" type=\"hidden\" value=\"90210\" />\n<input id=\"x_duplicate_window\" name=\"x_duplicate_window\" type=\"hidden\" value=\"28800\" />
-    \n<input id=\"x_relay_response\" name=\"x_relay_response\" type=\"hidden\" value=\"TRUE\" />\n<input id=\"x_first_name\" name=\"x_first_name\" type=\"hidden\" value=\"Cody\" />\n<input id=\"x_type\" name=\"x_type\" type=\"hidden\" value=\"AUTH_CAPTURE\" />\n<input id=\"x_version\" name=\"x_version\" type=\"hidden\" value=\"3.1\" />\n<input id=\"x_login\" name=\"x_login\" type=\"hidden\" value=\"8wd65QS\" />\n<input id=\"x_invoice_num\" name=\"x_invoice_num\" type=\"hidden\" value=\"#1000\" />\n<input id=\"x_phone\" name=\"x_phone\" type=\"hidden\" value=\"(555)555-5555\" />\n<input id=\"x_fp_sequence\" name=\"x_fp_sequence\" type=\"hidden\" value=\"44\" />\n<input id=\"x_show_form\" name=\"x_show_form\" type=\"hidden\" value=\"PAYMENT_FORM\" />
-    <input id=\"x_state\" name=\"x_state\" type=\"hidden\" value=\"UT\" />\n<input id=\"x_email\" name=\"x_email\" type=\"hidden\" value=\"g@g.com\" />\n<input id=\"x_fp_hash\" name=\"x_fp_hash\" type=\"hidden\" value=\"31d572da4e9910b36e999d73925eb01c\" />
-    <input id=\"x_tax\" name=\"x_tax\" type=\"hidden\" value=\"31.00\" />
-    <input id=\"x_freight\" name=\"x_freight\" type=\"hidden\" value=\"30.00\" />".split("\n")
-
-    expected.each do |line|
-      assert @output_buffer.include?(line.strip), 'missing field' + line + ' in' + "\n"
-    end
+    assert hidden_field_set 'x_cust_id', '8'
+    assert hidden_field_set 'x_city', 'city1'
+    assert hidden_field_set 'x_fp_timestamp', '1206836763'
+    assert hidden_field_set 'x_last_name', 'Fauser'
+    assert hidden_field_set 'x_amount', '157.0'
+    assert hidden_field_set 'x_zip', '90210'
+    assert hidden_field_set 'x_country', 'United States of America'
+    assert hidden_field_set 'x_duplicate_window', '28800'
+    assert hidden_field_set 'x_relay_response', 'TRUE'
+    assert hidden_field_set 'x_first_name', 'Cody'
+    assert hidden_field_set 'x_type', 'AUTH_CAPTURE'
+    assert hidden_field_set 'x_version', '3.1'
+    assert hidden_field_set 'x_login', '8wd65QS'
+    assert hidden_field_set 'x_invoice_num', '#1000'
+    assert hidden_field_set 'x_phone', '(555)555-5555'
+    assert hidden_field_set 'x_fp_sequence', '44'
+    assert hidden_field_set 'x_show_form', 'PAYMENT_FORM'
+    assert hidden_field_set 'x_state', 'UT'
+    assert hidden_field_set 'x_email', 'g@g.com'
+    assert hidden_field_set 'x_fp_hash', '31d572da4e9910b36e999d73925eb01c'
+    assert hidden_field_set 'x_tax', '31.00'
+    assert hidden_field_set 'x_freight', '30.00'
   end
 
   def test_test_mode

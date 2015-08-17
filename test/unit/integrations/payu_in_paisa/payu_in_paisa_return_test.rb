@@ -16,6 +16,20 @@ class PayuInPaisaReturnTest < Test::Unit::TestCase
     assert_equal 'Completed', @payu.status('4ba4afe87f7e73468f2a','10.00')
   end
 
+  def test_success_with_floating_point_error
+    bad_data = http_raw_data_success.gsub('amount=10.00', 'amount=2337.2960000000003')
+    payu_return = PayuInPaisa::Return.new(bad_data, credential1: 'merchant_id', credential2: 'secret')
+
+    assert payu_return.success?
+  end
+
+  def test_success_with_stripped_trailing_digit
+    bad_data = http_raw_data_success.gsub('amount=10.00', 'amount=10.0')
+    payu_return = PayuInPaisa::Return.new(bad_data, credential1: 'merchant_id', credential2: 'secret')
+
+    assert payu_return.success?
+  end
+
   def test_failure_is_successful
     setup_failed_return
     assert_equal 'Failed', @payu.status('8ae1034d1abf47fde1cf', '10.00')
@@ -32,7 +46,7 @@ class PayuInPaisaReturnTest < Test::Unit::TestCase
     assert notification.complete?
     assert_equal 'Completed', notification.status
     assert notification.invoice_ok?('4ba4afe87f7e73468f2a')
-    assert notification.amount_ok?(BigDecimal.new('10.00'),BigDecimal.new('0.00'))
+    assert notification.amount_ok?(BigDecimal.new('10.00'), BigDecimal.new('0.00'))
     assert_equal "success", notification.transaction_status
     assert_equal '403993715508030204', @payu.notification.transaction_id
     assert_equal 'CC', @payu.notification.type

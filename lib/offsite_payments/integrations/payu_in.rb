@@ -116,7 +116,7 @@ module OffsitePayments #:nodoc:
 
         # Order amount should be equal to gross - discount
         def amount_ok?( order_amount, order_discount = BigDecimal.new( '0.0' ) )
-          BigDecimal.new( gross ) == order_amount && BigDecimal.new( discount.to_s ) == order_discount
+          BigDecimal.new( original_gross ) == order_amount && BigDecimal.new( discount.to_s ) == order_discount
         end
 
         # Status of transaction return from the PayU. List of possible values:
@@ -162,8 +162,12 @@ module OffsitePayments #:nodoc:
         end
 
         # original amount send by merchant
-        def gross
+        def original_gross
           params['amount']
+        end
+
+        def gross
+          parse_and_round_gross_amount(params['amount'])
         end
 
         # This is discount given to user - based on promotion set by merchants.
@@ -225,13 +229,19 @@ module OffsitePayments #:nodoc:
         end
 
         def checksum_ok?
-          checksum_fields = [transaction_status, *user_defined.reverse, customer_email, customer_first_name, product_info, gross, invoice]
+          checksum_fields = [transaction_status, *user_defined.reverse, customer_email, customer_first_name, product_info, original_gross, invoice]
 
           unless Digest::SHA512.hexdigest([@secret_key, *checksum_fields, @merchant_id].join("|")) == checksum
             @message = 'Return checksum not matching the data provided'
             return false
           end
           true
+        end
+
+        private
+        def parse_and_round_gross_amount(amount)
+          rounded_amount = (amount.to_f * 100.0).round
+          sprintf("%.2f", rounded_amount / 100.00)
         end
       end
 
