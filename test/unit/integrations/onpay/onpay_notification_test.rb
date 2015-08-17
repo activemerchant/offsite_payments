@@ -9,7 +9,7 @@ class OnpayNotificationTest < Test::Unit::TestCase
   end
 
   def test_check_accessors
-    #assert_equal "500.00", @onpay_check.gross
+    assert_equal "500.0", @onpay_check.gross
     assert_equal "55446",  @onpay_check.item_id
     assert_equal BigDecimal.new("500"), @onpay_check.amount
   end
@@ -18,6 +18,13 @@ class OnpayNotificationTest < Test::Unit::TestCase
     assert @onpay_check.acknowledge
   end
 
+  def test_check_response
+    response = JSON.parse(@onpay_check.success_check_response)
+
+    assert_equal 'f6f250cd7d29ac9947ed97ddaeebb7934849d21e', response['signature']
+    assert_equal '55446', response['pay_for']
+    assert_equal true, response['status']
+  end
 
   def test_check_respond_to_acknowledge
     assert @onpay_check.respond_to?(:acknowledge)
@@ -28,15 +35,22 @@ class OnpayNotificationTest < Test::Unit::TestCase
     assert !@onpay_check.acknowledge
   end
 
-
   def test_pay_accessors
-    #assert_equal "500.00", @onpay_check.gross
+    assert_equal "500.0", @onpay_check.gross
     assert_equal "55446",  @onpay_pay.item_id
     assert_equal BigDecimal.new("3378.39"), @onpay_pay.amount
   end
 
   def test_pay_acknowledgement
     assert @onpay_pay.acknowledge
+  end
+
+  def test_pay_response
+    response = JSON.parse(@onpay_pay.success_pay_response)
+
+    assert_equal 'a25de68f9516e91ce8782b11abcd5801d7af20f4', response['signature']
+    assert_equal '55446', response['pay_for']
+    assert_equal true, response['status']
   end
 
 

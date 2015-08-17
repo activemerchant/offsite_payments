@@ -13,9 +13,9 @@ module OffsitePayments #:nodoc:
         Notification.new(query_string, options)
       end
 
-      def self.return(query_string)
-        Return.new(query_string)
-      end
+      # def self.return(query_string)
+      #   Return.new(query_string)
+      # end
 
       module Common
         def generate_signature_string
@@ -110,21 +110,38 @@ module OffsitePayments #:nodoc:
           (security_key == generate_signature)
         end
 
-        def success_response(*args)
-          {:nothing => true}
+        def success_check_response(*args)
+          {
+            "status":true,
+            "pay_for":item_id,
+            "signature":check_response_signature
+          }.to_json
+        end
+
+        def success_pay_response(*args)
+          {
+            "status":true,
+            "pay_for":item_id,
+            "signature":pay_response_signature
+          }.to_json
+        end
+
+        def check_response_signature_string
+          "check;true;#{item_id};#{secret}"
+        end
+
+        def check_response_signature
+          Digest::SHA1.hexdigest(check_response_signature_string)
+        end
+
+        def pay_response_signature_string
+          "pay;true;#{item_id};#{secret}"
+        end
+
+        def pay_response_signature
+          Digest::SHA1.hexdigest(pay_response_signature_string)
         end
       end
-
-      class Return < OffsitePayments::Return
-        def item_id
-          @params['pay_for']
-        end
-
-        def amount
-          @params['amount']
-        end
-      end
-
 
     end
   end

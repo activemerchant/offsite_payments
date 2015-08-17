@@ -11,8 +11,4 @@ class OnpayModuleTest < Test::Unit::TestCase
     assert_instance_of Onpay::Notification, Onpay.notification('{}')
   end
 
-  def test_return_method
-    assert_instance_of Onpay::Return, Onpay.return('{}')
-  end
-
 end
