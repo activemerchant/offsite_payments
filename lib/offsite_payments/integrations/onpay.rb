@@ -118,6 +118,10 @@ module OffsitePayments #:nodoc:
           pay? ? success_pay_response : success_check_response
         end
 
+        def fail_response
+          pay? ? fail_pay_response : fail_check_response
+        end
+
         def success_check_response(*args)
           {
             "status":true,
@@ -134,20 +138,36 @@ module OffsitePayments #:nodoc:
           }.to_json
         end
 
-        def check_response_signature_string
-          "check;true;#{item_id};#{secret}"
+        def fail_check_response(*args)
+          {
+            "status":false,
+            "pay_for":item_id,
+            "signature":check_response_signature(false)
+          }.to_json
         end
 
-        def check_response_signature
-          Digest::SHA1.hexdigest(check_response_signature_string)
+        def fail_pay_response(*args)
+          {
+            "status":false,
+            "pay_for":item_id,
+            "signature":pay_response_signature(false)
+          }.to_json
         end
 
-        def pay_response_signature_string
-          "pay;true;#{item_id};#{secret}"
+        def check_response_signature_string(res)
+          "check;#{res};#{item_id};#{secret}"
         end
 
-        def pay_response_signature
-          Digest::SHA1.hexdigest(pay_response_signature_string)
+        def check_response_signature(res = true)
+          Digest::SHA1.hexdigest(check_response_signature_string(res))
+        end
+
+        def pay_response_signature_string(res)
+          "pay;#{res};#{item_id};#{secret}"
+        end
+
+        def pay_response_signature(res = true)
+          Digest::SHA1.hexdigest(pay_response_signature_string(res))
         end
       end
 
