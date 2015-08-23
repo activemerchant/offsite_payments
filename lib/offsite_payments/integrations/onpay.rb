@@ -19,7 +19,7 @@ module OffsitePayments #:nodoc:
 
       module Common
         def pay?
-          params["payment"].try(:[], "amount")
+          !params["payment"].try(:[], "amount").nil?
         end
 
         def generate_signature_string
