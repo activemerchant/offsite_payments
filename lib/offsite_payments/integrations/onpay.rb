@@ -98,6 +98,10 @@ module OffsitePayments #:nodoc:
           params['pay_for']
         end
 
+        def payment_id
+          params["payment"].try(:[], 'id')
+        end
+
         def gross
           (params['amount'] || params['balance'].try(:[], 'amount')).to_s
         end
