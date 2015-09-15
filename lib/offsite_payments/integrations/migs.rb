@@ -2,9 +2,6 @@ module OffsitePayments
   module Integrations #:nodoc:
     module Migs
 
-      autoload :Helper, 'active_merchant/billing/integrations/migs/helper.rb'
-      autoload :Return, 'active_merchant/billing/integrations/migs/return.rb'
-
       # Overwrite this if you want to change the ANS production url
       mattr_accessor :production_url
       self.production_url = 'https://migs.mastercard.com.au/vpcpay'
