@@ -7,7 +7,7 @@ module OffsitePayments
       self.production_url = 'https://migs.mastercard.com.au/vpcpay'
 
       def self.service_url
-        mode = ActiveMerchant::Billing::Base.integration_mode
+        mode = OffsitePayments.mode
         case mode
         when :production
           self.production_url
