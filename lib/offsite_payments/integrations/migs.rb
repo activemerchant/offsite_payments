@@ -24,8 +24,6 @@ module OffsitePayments
       end
 
       class Helper < OffsitePayments::Helper
-        include RequiresParameters
-
         ELECTRON = /^(424519|42496[23]|450875|48440[6-8]|4844[1-5][1-5]|4917[3-5][0-9]|491880)\d{10}(\d{3})?$/
 
         # WARNING
@@ -179,9 +177,7 @@ module OffsitePayments
                               :brand              => 'vpc_card'
       end
 
-      class Return < OffsitePayments::Integrations::Return
-        include RequiresParameters
-
+      class Return < OffsitePayments::Return
         def initialize(query_string, options = {})
           requires!(options, :secret)
           super
