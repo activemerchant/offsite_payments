@@ -179,7 +179,6 @@ module OffsitePayments
 
       class Return < OffsitePayments::Return
         def initialize(query_string, options = {})
-          requires!(options, :secret)
           super
           @valid = secure_hash_matches?
         end
