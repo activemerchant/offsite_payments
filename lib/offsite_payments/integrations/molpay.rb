@@ -4,8 +4,8 @@ module OffsitePayments #:nodoc:
       mattr_accessor :acknowledge_url
       self.acknowledge_url = 'https://www.onlinepayment.com.my/MOLPay/API/chkstat/returnipn.php'
 
-      def self.notification(post)
-        Notification.new(post)
+      def self.notification(post, options = {})
+        Notification.new(post, options)
       end
 
       def self.return(query_string, options={})
