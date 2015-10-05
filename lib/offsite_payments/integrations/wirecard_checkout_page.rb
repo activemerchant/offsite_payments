@@ -260,7 +260,7 @@ module OffsitePayments #:nodoc:
 
         # the money amount we received in X.2 decimal.
         def gross
-          params['amount']
+          params['amount'].sub(',', '.')
         end
 
         # Was this a test transaction?
