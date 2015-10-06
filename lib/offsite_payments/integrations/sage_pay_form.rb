@@ -68,19 +68,14 @@ module OffsitePayments #:nodoc:
 
       class Helper < OffsitePayments::Helper
         include Encryption
-        attr_reader :timestamp
-
-        def initialize(order, account, options = {})
-          super
-          @timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-          add_field 'VendorTxCode', "#{order}#{@timestamp}"
-        end
 
         mapping :credential2, 'EncryptKey'
 
         mapping :account, 'Vendor'
         mapping :amount, 'Amount'
         mapping :currency, 'Currency'
+
+        mapping :order, 'VendorTxCode'
 
         mapping :customer,
           :first_name => 'BillingFirstnames',

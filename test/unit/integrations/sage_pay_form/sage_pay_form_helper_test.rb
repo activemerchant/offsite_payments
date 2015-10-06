@@ -24,7 +24,7 @@ class SagePayFormHelperTest < Test::Unit::TestCase
     assert_equal 5, @helper.fields.size
     assert_field 'Vendor', 'cody@example.com'
     assert_field 'Amount', '5.00'
-    assert_field 'VendorTxCode', 'order-500' + @helper.timestamp
+    assert_field 'VendorTxCode', 'order-500'
   end
 
   def test_customer_fields
