@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.2.0 (October 14, 2015)
+- Bump active_utils dependency. [lucasuyezu]
+
 ### Version 2.1.0 (January 16, 2015)
 
 - **Change:** network exceptions now use ActiveUtils instead of ActiveMerchant as namespace,
