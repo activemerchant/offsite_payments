@@ -36,7 +36,7 @@ class MolpayHelperTest < Test::Unit::TestCase
   end
 
   def test_supported_currency
-    ['MYR', 'USD', 'SGD', 'PHP', 'VND', 'IDR', 'AUD'].each do |cur|
+    ['MYR', 'USD', 'SGD', 'PHP', 'VND', 'IDR', 'AUD', 'CNY', 'THB', 'GBP', 'EUR', 'HKD'].each do |cur|
       @helper.currency cur
       assert_field "cur", cur 
     end
@@ -64,6 +64,11 @@ class MolpayHelperTest < Test::Unit::TestCase
   def test_return_url
     @helper.return_url "http://www.example.com"
     assert_field "returnurl", "http://www.example.com"
+  end
+  
+  def test_notify_url
+    @helper.notify_url "http://www.example.com"
+    assert_field "callbackurl", "http://www.example.com"
   end
 
   def test_signature

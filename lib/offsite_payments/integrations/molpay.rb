@@ -4,8 +4,8 @@ module OffsitePayments #:nodoc:
       mattr_accessor :acknowledge_url
       self.acknowledge_url = 'https://www.onlinepayment.com.my/MOLPay/API/chkstat/returnipn.php'
 
-      def self.notification(post)
-        Notification.new(post)
+      def self.notification(post, options = {})
+        Notification.new(post, options)
       end
 
       def self.return(query_string, options={})
@@ -24,19 +24,20 @@ module OffsitePayments #:nodoc:
 
         SERVICE_URL = 'https://www.onlinepayment.com.my/MOLPay/pay/'.freeze
 
-        mapping :account, 'merchantid'
-        mapping :amount, 'amount'
-        mapping :order, 'orderid'
-        mapping :customer, :name  => 'bill_name',
-                           :email => 'bill_email',
-                           :phone => 'bill_mobile'
+        mapping :account,             'merchantid'
+        mapping :amount,              'amount'
+        mapping :order,               'orderid'
+        mapping :customer, :name  =>  'bill_name',
+                           :email =>  'bill_email',
+                           :phone =>  'bill_mobile'
 
-        mapping :description, 'bill_desc'
-        mapping :language, 'langcode'
-        mapping :country, 'country'
-        mapping :currency, 'cur'
-        mapping :return_url, 'returnurl'
-        mapping :signature, 'vcode'
+        mapping :description,         'bill_desc'
+        mapping :language,            'langcode'
+        mapping :country,             'country'
+        mapping :currency,            'cur'
+        mapping :return_url,          'returnurl'
+        mapping :notify_url,          'callbackurl'
+        mapping :signature,           'vcode'
 
         attr_reader :amount_in_cents, :verify_key, :channel
 

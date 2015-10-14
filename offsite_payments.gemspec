@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.author = 'Tobias Luetke'
   s.email = 'tobi@shopify.com'
-  s.homepage = 'https://github.com/Shopify/offsite_payments'
+  s.homepage = 'https://github.com/activemerchant/offsite_payments'
 
   s.files = Dir['CHANGELOG', 'README.md', 'MIT-LICENSE', 'lib/**/*']
   s.require_path = 'lib'
