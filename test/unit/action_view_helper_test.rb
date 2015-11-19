@@ -38,9 +38,7 @@ if "".respond_to? :html_safe?
     include ActionView::Helpers::TextHelper
   end
 
-  ::MissingSourceFile::REGEXPS << [/^cannot load such file -- (.+)$/i, 1]
   class PaymentServiceController < ActionController::Base
-
     def payment_action
       render :inline => "<% payment_service_for('order-1','test', :service => :bogus){} %>"
     end
