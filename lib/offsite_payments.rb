@@ -3,8 +3,6 @@ require 'cgi'
 require "timeout"
 require "socket"
 
-require 'active_support/core_ext/class/delegating_attributes'
-
 require 'active_utils'
 
 require "offsite_payments/helper"
