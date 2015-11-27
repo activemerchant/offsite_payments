@@ -33,9 +33,15 @@ class MolpayNotificationTest < Test::Unit::TestCase
     molpay = Molpay::Notification.new(http_raw_data(:test), :credential2 => @secret_key)
     assert molpay.test?
   end
-  
+
   def test_acknowledgement
     assert @molpay.acknowledge
+  end
+
+  def test_result_pending
+    molpay = Molpay::Notification.new("status=22")
+    assert !molpay.complete?
+    assert_equal "Pending", molpay.status
   end
 
   def test_unsuccessful_acknowledge_due_to_signature
@@ -82,7 +88,6 @@ class MolpayNotificationTest < Test::Unit::TestCase
       r = ['amount','appcode','error_code', 'error_desc', 'skey']
       basedata.reject{|k| r.include?(k)}.collect {|k,v| "#{k}=#{CGI.escape(v.to_s)}"}.join('&')
     end
-    
   end
 
   def generate_signature
