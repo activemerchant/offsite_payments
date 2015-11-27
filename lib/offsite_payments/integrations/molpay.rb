@@ -146,7 +146,16 @@ module OffsitePayments #:nodoc:
         end
 
         def status
-          params['status'] == '00' ? 'Completed' : 'Failed'
+          case params['status']
+            when '00'
+              'Completed'
+            when '11'
+              'Failed'
+            when '22'
+              'Pending'
+            else
+              'unknown'
+          end
         end
 
         def acknowledge(authcode = nil)
