@@ -14,10 +14,6 @@ class MolpayReturnTest < Test::Unit::TestCase
     assert @molpay.success?
   end
   
-  def test_pending?
-    assert @molpay.pending?
-  end
-  
   def test_failed?
     molpay = Molpay::Return.new('', :credential2 => @secret)
 
