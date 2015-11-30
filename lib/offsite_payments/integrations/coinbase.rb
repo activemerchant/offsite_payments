@@ -105,7 +105,6 @@ module OffsitePayments #:nodoc:
         # apc arrives. Coinbase will verify that all the information we received are correct
         # and will return a ok or a fail.
         def acknowledge(authcode = {})
-
           uri = URI.parse(Coinbase.notification_confirmation_url % transaction_id)
 
           response = Coinbase.do_request(uri, @options[:credential1], @options[:credential2])
@@ -114,6 +113,7 @@ module OffsitePayments #:nodoc:
           posted_order = @params
           parse(response)
 
+          return false unless @params
           %w(id custom total_native status).all? { |param| posted_order[param] == @params[param] }
         end
 
