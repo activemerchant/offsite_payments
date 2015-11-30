@@ -86,7 +86,18 @@ module OffsitePayments #:nodoc:
 
       class Notification < OffsitePayments::Notification
         include ActiveUtils::PostsData
-
+        
+        def status
+          case params['status']
+            when '00'
+              'Completed'
+            when '11'
+              'Failed'
+            when '22'
+              'Pending'
+          end
+        end
+        
         def complete?
           status == 'Completed'
         end
@@ -145,19 +156,6 @@ module OffsitePayments #:nodoc:
           params['status']
         end
 
-        def status
-          case params['status']
-            when '00'
-              'Completed'
-            when '11'
-              'Failed'
-            when '22'
-              'Pending'
-            else
-              'unknown'
-          end
-        end
-
         def acknowledge(authcode = nil)
           payload = raw + '&treq=1'
           ssl_post(Molpay.acknowledge_url, payload,
@@ -184,6 +182,10 @@ module OffsitePayments #:nodoc:
 
         def success?
           @notification.acknowledge
+        end
+        
+        def pending?
+          params['status'] == "22"
         end
       end
     end
