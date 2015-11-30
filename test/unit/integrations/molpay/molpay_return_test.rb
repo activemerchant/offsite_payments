@@ -20,7 +20,7 @@ class MolpayReturnTest < Test::Unit::TestCase
     refute molpay.success?
   end
   
-  def test_pending
+  def test_pending?
     assert @molpay.pending?
   end
 
