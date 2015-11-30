@@ -21,9 +21,10 @@ class MolpayReturnTest < Test::Unit::TestCase
   end
   
   def test_pending?
-    assert @molpay.pending?
+    molpay = Molpay::Return.new('status=22', :credential2 => @secret)
+    assert molpay.pending?
   end
-
+  
   private
 
   def query_data
