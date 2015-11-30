@@ -19,6 +19,11 @@ class MolpayReturnTest < Test::Unit::TestCase
 
     refute molpay.success?
   end
+  
+  def test_pending?
+    assert !@molpay.success?
+    assert_equal "Pending", @molpay.status
+  end
 
   private
 
