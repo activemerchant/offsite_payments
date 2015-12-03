@@ -37,6 +37,12 @@ class MolpayNotificationTest < Test::Unit::TestCase
   def test_acknowledgement
     assert @molpay.acknowledge
   end
+  
+  def test_result_pending
+    molpay = Molpay::Notification.new("status=22")
+    assert !molpay.complete?
+    assert_equal "Pending", molpay.status
+  end
 
   def test_unsuccessful_acknowledge_due_to_signature
     molpay = Molpay::Notification.new(http_raw_data(:invalid_skey), :credential2 => @secret_key)
