@@ -185,7 +185,7 @@ module OffsitePayments #:nodoc:
         end
         
         def pending?
-          status == 'Pending'
+          @notification.status == 'Pending'
         end
       end
     end
