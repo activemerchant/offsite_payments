@@ -185,7 +185,7 @@ module OffsitePayments #:nodoc:
         end
         
         def pending?
-          params['status'] == "22"
+          status == 'Pending'
         end
       end
     end
