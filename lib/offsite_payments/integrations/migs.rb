@@ -76,8 +76,8 @@ module OffsitePayments
           brand = params[:brand].to_sym
           params.delete(:brand)
 
-          exp_month = sprintf("%.2i", params[:expiry_month])
-          exp_year = sprintf("%.4i", params[:expiry_year])
+          exp_month = sprintf("%.2i", Integer(params[:expiry_month], 10))
+          exp_year = sprintf("%.4i", Integer(params[:expiry_year], 10))
           params.delete(:expiry_month)
           params.delete(:expiry_year)
 
