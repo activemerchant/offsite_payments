@@ -74,7 +74,7 @@ module OffsitePayments #:nodoc:
         def initialize(order, account, options={})
           super
           @identifier = rand(0..99999).to_s.rjust(5, '0')
-          add_field 'VendorTxCode', "#{order};#{@identifier}"
+          add_field 'VendorTxCode', "#{order}-#{@identifier}"
         end
 
         mapping :credential2, 'EncryptKey'
@@ -252,7 +252,7 @@ module OffsitePayments #:nodoc:
 
         # Vendor-supplied code (:order mapping).
         def item_id
-          params['VendorTxCode'].split(';').first
+          params['VendorTxCode'].rpartition('-').first
         end
 
         # Internal SagePay code, typically "{LONG-UUID}".
