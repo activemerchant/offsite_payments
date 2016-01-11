@@ -85,7 +85,7 @@ module OffsitePayments
         end
 
         def credential_based_url
-          options = TransactionBuilder.new(@options).to_hash
+          options = TransactionBuilder.new(@options, self).to_hash
           Interface.new(@login, @password).credential_based_url(options)
         end
       end
@@ -93,14 +93,15 @@ module OffsitePayments
       class TransactionBuilder
         SUPPORTED_CURRENCIES = ['AUD', 'NZD']
 
-        def initialize(options)
-          @reference    = options.fetch(:order)
-          @timeout      = options[:timeout] # or defaults
-          @success_url  = options.fetch(:success_url, options.fetch(:return_url))
-          @failure_url  = options.fetch(:failure_url, options.fetch(:return_url))
-          @homepage_url = options.fetch(:homepage_url)
-          self.amount   = options.fetch(:amount)
-          self.currency = options.fetch(:currency)
+        def initialize(options, helper)
+          @reference        = options.fetch(:order)
+          @timeout          = options[:timeout] # or defaults
+          @success_url      = options.fetch(:success_url, options.fetch(:return_url))
+          @failure_url      = options.fetch(:failure_url, options.fetch(:return_url))
+          @notification_url = helper.notify_url
+          @homepage_url     = options.fetch(:homepage_url)
+          self.amount       = options.fetch(:amount)
+          self.currency     = options.fetch(:currency)
         end
 
         def amount=(amount)
@@ -125,6 +126,7 @@ module OffsitePayments
             MerchantReference:   @reference,
             SuccessURL:          @success_url,
             FailureURL:          @failure_url,
+            NotificationUrl:     @notification_url,
             MerchantHomepageURL: @homepage_url,
             Timeout:             @timeout,
             MerchantDateTime:    current_time
