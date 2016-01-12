@@ -135,6 +135,8 @@ module OffsitePayments
       end
 
       def test?
+        # TEST prefix defines if login is for test system, see page 37 of:
+        # https://anz.com.au/australia/business/merchant/pdf/MIGSProductGuide.pdf
         @options[:login].start_with?('TEST')
       end
 
