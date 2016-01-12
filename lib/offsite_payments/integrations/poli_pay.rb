@@ -134,6 +134,8 @@ module OffsitePayments
         end
       end
 
+      # See
+      # http://www.polipaymentdeveloper.com/gettransaction#gettransaction_response
       class Notification < OffsitePayments::Notification
         def initialize(params, options = {})
           token = params.fetch('token')
