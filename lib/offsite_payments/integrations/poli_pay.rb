@@ -5,18 +5,6 @@ module OffsitePayments
         Notification.new(post, options)
       end
 
-      def self.base_url
-        "https://poliapi.apac.paywithpoli.com/api"
-      end
-
-      def self.token_url
-        "#{base_url}/Transaction/Initiate"
-      end
-
-      def self.query_url(token)
-        "#{base_url}/Transaction/GetTransaction?token=#{CGI.escape(token)}"
-      end
-
       def self.return(query_string, options = {})
         Return.new(query_string, options)
       end
@@ -28,34 +16,13 @@ module OffsitePayments
       class Interface
         include ActiveUtils::PostsData # ssl_get/post
 
+        def base_url
+          "https://poliapi.apac.paywithpoli.com/api"
+        end
+
         def initialize(login, password)
           @login = login
           @password = password
-        end
-
-        def query(token)
-          raise ArgumentError, "Token must be specified" if token.blank?
-          url = self.class.parent.query_url(token)
-          raw_response = ssl_get(url, standard_headers)
-          parse_response(raw_response)
-        rescue ActiveUtils::ResponseError => e
-          RequestError.new(:token, e)
-        end
-
-        def credential_based_url(options)
-          url = self.class.parent.token_url
-          raw_response = ssl_post(url, options.to_json, standard_headers)
-          result = parse_response(raw_response)
-          result['NavigateURL']
-        rescue ActiveUtils::ResponseError => e
-          RequestError.new(:token, e)
-        end
-
-        def financial_institutions
-          url = "#{self.class.parent.base_url}/Entity/GetFinancialInstitutions"
-          raw_response = ssl_get(url, standard_headers)
-          result = parse_response(raw_response)
-          result.map { |attr| FinancialInstitution.new(attr) }
         end
 
         private
@@ -73,6 +40,87 @@ module OffsitePayments
         end
       end
 
+      class UrlInterface < Interface
+        def url
+          "#{base_url}/Transaction/Initiate"
+        end
+
+        def call(options)
+          raw_response = ssl_post(url, options.to_json, standard_headers)
+          result = parse_response(raw_response)
+          result['NavigateURL']
+        rescue ActiveUtils::ResponseError => e
+          raise UrlRequestError.new(e)
+        end
+
+        class UrlRequestError < RequestError
+          ERRORS = {
+            '14050' => "A transaction-specific error has occurred",
+            '14053' => "The amount specified exceeds the individual transaction limit set by the merchant",
+            '14054' => "The amount specified will cause the daily transaction limit to be exceeded",
+            '14055' => "General failure to initiate a transaction",
+            '14056' => "Error in merchant-defined data",
+            '14057' => "One or more values specified have failed a validation check",
+            '14058' => "The monetary amount specified is invalid",
+            '14059' => "A URL provided for one or more fields was not formatted correctly",
+            '14060' => "The currency code supplied is not supported by POLi or the specific merchant",
+            '14061' => "The MerchantReference field contains invalid characters",
+            '14062' => "One or more fields that are mandatory did not have values specified",
+            '14099' => "An unexpected error has occurred within transaction functionality"
+          }
+        end
+      end
+
+      class QueryInterface < Interface
+        def url(token)
+          "#{base_url}/Transaction/GetTransaction?token=#{CGI.escape(token)}"
+        end
+
+        def call(token)
+          raise ArgumentError, "Token must be specified" if token.blank?
+          raw_response = ssl_get(url(token), standard_headers)
+          parse_response(raw_response)
+        rescue ActiveUtils::ResponseError => e
+          raise QueryRequestError.new(e)
+        end
+
+        class QueryRequestError < RequestError
+          ERRORS = {
+            '14050' => "Transaction was initiated by another merchant or another transaction-based error",
+            '14051' => "The transaction was not found",
+            '14052' => "The token provided was incomplete, corrupted or doesn't exist"
+          }
+        end
+      end
+
+      class FinancialInstitutionsInterface < Interface
+        def url
+          "#{base_url}/Entity/GetFinancialInstitutions"
+        end
+
+        def call
+          raw_response = ssl_get(url, standard_headers)
+          result = parse_response(raw_response)
+          result.map { |attr| FinancialInstitution.new(attr) }
+        end
+
+        # See
+        # http://www.polipaymentdeveloper.com/ficode#getfinancialinstitutions_response
+        class FinancialInstitution
+          attr_reader :name, :code
+
+          def initialize(attr)
+             @name   = attr.fetch('Name')
+             @code   = attr.fetch('Code')
+             @online = attr.fetch('Online')
+          end
+
+          def online?
+            !!@online
+          end
+        end
+      end
+
       class Helper < OffsitePayments::Helper
         attr_reader :token_parameters
 
@@ -86,7 +134,7 @@ module OffsitePayments
 
         def credential_based_url
           options = TransactionBuilder.new(@options, self).to_hash
-          Interface.new(@login, @password).credential_based_url(options)
+          UrlInterface.new(@login, @password).call(options)
         end
       end
 
@@ -139,7 +187,7 @@ module OffsitePayments
       class Notification < OffsitePayments::Notification
         def initialize(params, options = {})
           token = params.fetch('token')
-          @params = Interface.new(options[:login], options[:password]).query(token)
+          @params = QueryInterface.new(options[:login], options[:password]).call(token)
         end
 
         def acknowledge
@@ -206,46 +254,8 @@ module OffsitePayments
           !!@success
         end
 
-        ERRORS = {
-          query: {
-            '14050' => "Transaction was initiated by another merchant or another transaction-based error",
-            '14051' => "The transaction was not found",
-            '14052' => "The token provided was incomplete, corrupted or doesn't exist"
-          },
-          token: {
-            '14050' => "A transaction-specific error has occurred",
-            '14053' => "The amount specified exceeds the individual transaction limit set by the merchant",
-            '14054' => "The amount specified will cause the daily transaction limit to be exceeded",
-            '14055' => "General failure to initiate a transaction",
-            '14056' => "Error in merchant-defined data",
-            '14057' => "One or more values specified have failed a validation check",
-            '14058' => "The monetary amount specified is invalid",
-            '14059' => "A URL provided for one or more fields was not formatted correctly",
-            '14060' => "The currency code supplied is not supported by POLi or the specific merchant",
-            '14061' => "The MerchantReference field contains invalid characters",
-            '14062' => "One or more fields that are mandatory did not have values specified",
-            '14099' => "An unexpected error has occurred within transaction functionality"
-          }
-        }
-
         def error_code_text
-          ERRORS[@api_call][@error_code.to_s]
-        end
-      end
-
-      # See
-      # http://www.polipaymentdeveloper.com/ficode#getfinancialinstitutions_response
-      class FinancialInstitution
-        attr_reader :name, :code
-
-        def initialize(attr)
-           @name   = attr.fetch('Name')
-           @code   = attr.fetch('Code')
-           @online = attr.fetch('Online')
-        end
-
-        def online?
-          !!@online
+          ERRORS[@error_code.to_s]
         end
       end
     end
