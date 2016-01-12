@@ -168,7 +168,9 @@ module OffsitePayments
           @params['TransactionRefNo']
         end
 
-        def message # only when error
+        # There is only a message on failure
+        # http://www.polipaymentdeveloper.com/initiate#initiatetransaction_response
+        def message
           @params['ErrorMessage']
         end
       end
@@ -229,6 +231,8 @@ module OffsitePayments
         end
       end
 
+      # See
+      # http://www.polipaymentdeveloper.com/ficode#getfinancialinstitutions_response
       class FinancialInstitution
         attr_reader :name, :code
 
