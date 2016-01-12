@@ -22,7 +22,7 @@ class PoliPayModuleTest < Test::Unit::TestCase
   def test_bad_password
     options = transaction_options
     options[:credential2] = 'wrong'
-    helper = PoliPay::Helper.new('22FART', @options[:login], options)
+    helper = PoliPay::Helper.new('22TEST', @options[:login], options)
     response = helper.credential_based_url
 
     assert_equal PoliPay::RequestError, response.class
@@ -33,7 +33,7 @@ class PoliPayModuleTest < Test::Unit::TestCase
 
   def test_required_fields
     options = transaction_options.except(:homepage_url)
-    helper = PoliPay::Helper.new('22FART', @options[:login], options)
+    helper = PoliPay::Helper.new('22TEST', @options[:login], options)
     assert_raise KeyError.new('key not found: :homepage_url') do
       helper.credential_based_url
     end
@@ -42,7 +42,7 @@ class PoliPayModuleTest < Test::Unit::TestCase
   def test_url_generation
     interface = PoliPay::Interface.new(@options[:login], @options[:password])
     response = interface.credential_based_url(
-      MerchantReference: '22FART',
+      MerchantReference: '22TEST',
       Amount: 1.0,
       CurrencyCode: 'AUD'
     )
@@ -54,13 +54,13 @@ class PoliPayModuleTest < Test::Unit::TestCase
                  'specified',
                  response.error_code_text
     assert_equal "Failed to initiate transaction for merchant 'S6101959' " +
-                 "with reference '22FART': The Success URL was not specified",
+                 "with reference '22TEST': The Success URL was not specified",
                  response.error_message
   end
 
   def test_generates_url
     options = transaction_options
-    helper = PoliPay::Helper.new('22FART', @options[:login], options)
+    helper = PoliPay::Helper.new('22TEST', @options[:login], options)
     url = helper.credential_based_url
 
     expected_base_url = "https://txn.apac.paywithpoli.com/?Token="
