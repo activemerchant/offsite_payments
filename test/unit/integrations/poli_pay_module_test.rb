@@ -13,8 +13,8 @@ class PoliPayModuleTest < Test::Unit::TestCase
     {
       amount:       157.0,
       currency:     'AUD',
-      return_url:   "http://www.sealink.com.au/polipay_return",
-      homepage_url: 'http://www.sealink.com.au',
+      return_url:   "http://example.org/return",
+      homepage_url: 'http://example.org',
       credential2:   @options[:password]
     }
   end
