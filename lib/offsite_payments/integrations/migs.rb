@@ -143,6 +143,17 @@ module OffsitePayments
         @options[:login].start_with?('TEST')
       end
 
+      class SecureHash
+        require 'digest/md5' # Used in add_secure_hash
+
+        def self.calculate(secure_hash, post)
+          post_without_secure_hash = post.reject{|k, v| k == :SecureHash}
+          sorted_values = post_without_secure_hash.sort_by(&:to_s).map(&:last)
+          input = secure_hash + sorted_values.join
+          Digest::MD5.hexdigest(input).upcase
+        end
+      end
+
       private
 
       class CreditCardType
@@ -218,17 +229,6 @@ module OffsitePayments
 
         def format(number)
           sprintf("%.2i", number.to_i)[-2..-1]
-        end
-      end
-
-      class SecureHash
-        require 'digest/md5' # Used in add_secure_hash
-
-        def self.calculate(secure_hash, post)
-          post_without_secure_hash = post.reject{|k, v| k == :SecureHash}
-          sorted_values = post_without_secure_hash.sort_by(&:to_s).map(&:last)
-          input = secure_hash + sorted_values.join
-          Digest::MD5.hexdigest(input).upcase
         end
       end
     end
