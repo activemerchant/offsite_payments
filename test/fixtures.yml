@@ -462,6 +462,10 @@ plugnpay:
   login: LOGIN
   password: PASSWORD
 
+poli_pay:
+  login: S6102300 # activemerchant test account
+  password: ActiveMerchant$1
+
 # Working credentials, no need to replace
 psigate:
   login: teststore
