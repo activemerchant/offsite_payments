@@ -34,7 +34,7 @@ module OffsitePayments
         # * <tt>:unique_id</tt> -- Unique id of transaction to find.
         #   If not supplied one will be generated.
         def credential_based_url
-          cents = @options[:cents]
+          cents = @options.fetch(:cents)
           options = @options
           builder = TransactionBuilder.new(@credentials)
           builder.add_invoice(options)
