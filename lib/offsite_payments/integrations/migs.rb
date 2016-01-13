@@ -35,15 +35,14 @@ module OffsitePayments
         #   If not supplied one will be generated.
         def credential_based_url
           cents = @options.fetch(:cents)
-          options = @options
           builder = TransactionBuilder.new(@credentials)
-          builder.add_invoice(options)
-          builder.add_creditcard_type(options[:card_type]) if options[:card_type]
+          builder.add_invoice(@options)
+          builder.add_creditcard_type(@options[:card_type]) if @options[:card_type]
           builder.add_amount(cents)
-          builder.add_standard_parameters('pay', options[:unique_id])
+          builder.add_standard_parameters('pay', @options[:unique_id])
           post = builder.post.merge(
-            :Locale => options[:locale] || 'en',
-            :ReturnURL => options.fetch(:return_url)
+            Locale: @options[:locale] || 'en',
+            ReturnURL: @options.fetch(:return_url)
           )
           post[:SecureHash] = SecureHash.calculate(@secure_hash, post)
 
