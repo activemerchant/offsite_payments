@@ -13,8 +13,8 @@ module OffsitePayments
 
       class Helper < OffsitePayments::Helper
         def initialize(order, account, options = {})
-          @credentials = { login: account, password: options.fetch(:credential2) }
-          @secure_hash = options.fetch(:secure_hash)
+          @credentials = { login: account, password: options.fetch(:credential1) }
+          @secure_hash = options.fetch(:credential2)
           @options = options.merge(order_id: order)
         end
 
