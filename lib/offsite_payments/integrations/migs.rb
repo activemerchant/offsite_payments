@@ -7,11 +7,11 @@ module OffsitePayments
         Return.new(query_string, options)
       end
 
-      def self.base_url
-        'https://migs.mastercard.com.au/vpcpay'
-      end
-
       class Helper < OffsitePayments::Helper
+        def self.base_url
+          'https://migs.mastercard.com.au/vpcpay'
+        end
+
         def initialize(order, account, options = {})
           @credentials = { login: account, password: options.fetch(:credential1) }
           @secure_hash = options.fetch(:credential2)
@@ -47,7 +47,7 @@ module OffsitePayments
           )
           post[:SecureHash] = SecureHash.calculate(@secure_hash, post)
 
-          self.class.parent.base_url + '?' + post_data(post)
+          self.class.base_url + '?' + post_data(post)
         end
 
         private
