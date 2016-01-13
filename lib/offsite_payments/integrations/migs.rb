@@ -97,12 +97,15 @@ module OffsitePayments
           return true unless success?
 
           # Check SecureHash only on success (not returned otherwise)
-          expected_secure_hash = SecureHash.calculate(@options[:secure_hash], @response)
           unless @response[:SecureHash] == expected_secure_hash
             raise SecurityError, "Secure Hash mismatch, response may be tampered with"
           end
 
           true
+        end
+
+        def expected_secure_hash
+          SecureHash.calculate(@options[:secure_hash], @response)
         end
 
         def gross
