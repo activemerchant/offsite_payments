@@ -64,11 +64,9 @@ module OffsitePayments
         end
 
         def parse
-          hash = {}
-          @params.each do |key, value|
+          @params.map.with_object({}) { |(key, value), hash|
             hash[key.gsub('vpc_', '').to_sym] = value
-          end
-          hash
+          }
         end
 
         def avs_response_code
