@@ -146,8 +146,7 @@ module OffsitePayments
           @login    = account
           @password = options.fetch(:password)
           @options  = options.except(:password).merge(order: order)
-          options.delete(:homepage_url) # must delete or super below crashes
-          super(order, account, options.except(:password))
+          super(order, account, options.except(:homepage_url, :password))
         end
 
         def credential_based_url
