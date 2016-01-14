@@ -57,7 +57,7 @@ module OffsitePayments
           end
 
           def errors
-            ERRORS
+            fail NotImplementedError, "This method must be implemented on the subclass"
           end
 
           def error_code_text
