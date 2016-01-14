@@ -55,6 +55,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 * [ePay](http://www.epay.dk/epay-payment-solutions/)
 * [First Data](https://firstdata.zendesk.com/entries/407522-first-data-global-gateway-e4sm-payment-pages-integration-manual)
 * [HiTRUST](http://www.hitrust.com.hk/)
+* [MasterCard Internet Gateway Service (MiGS)](https://en.wikipedia.org/wiki/Mastercard_Internet_Gateway_Service) - AU, AE, BD, BN, EG, HK, ID, IN, JO, KW, LB, LK, MU, MV, MY, NZ, OM, PH, QA, SA, SG, TT, VN
 * [MOLPay](http://www.molpay.com/v2/) - MY, SG, ID, TH, VN, PH, CN, AU
 * [Moneybookers](http://www.moneybookers.com)
 * [Nochex](http://www.nochex.com)
