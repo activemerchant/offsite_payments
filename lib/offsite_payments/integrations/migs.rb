@@ -144,7 +144,7 @@ module OffsitePayments
         require 'digest/md5' # Used in add_secure_hash
 
         def self.calculate(secure_hash, post)
-          post_without_secure_hash = post.reject{|k, v| k == :SecureHash}
+          post_without_secure_hash = post.reject { |k, _v| k == :SecureHash }
           sorted_values = post_without_secure_hash.sort_by(&:to_s).map(&:last)
           input = secure_hash + sorted_values.join
           Digest::MD5.hexdigest(input).upcase
@@ -176,9 +176,9 @@ module OffsitePayments
         %w(master           MC Mastercard       MasterCard),
         %w(na               PL PrivateLabelCard Private\ Label\ Card),
         %w(visa             VC Visa             Visa\ Card')
-      ].map do |am_code, migs_code, migs_long_code, name|
+      ].map { |am_code, migs_code, migs_long_code, name|
         CreditCardType.new(am_code, migs_code, migs_long_code, name)
-      end
+      }
 
       class TransactionBuilder
         attr_reader :post
