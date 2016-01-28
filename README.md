@@ -1,6 +1,7 @@
 # Offsite Payments
 [![Build Status](https://travis-ci.org/activemerchant/offsite_payments.png?branch=master)](https://travis-ci.org/activemerchant/offsite_payments)
 [![Code Climate](https://codeclimate.com/github/activemerchant/offsite_payments.png)](https://codeclimate.com/github/activemerchant/offsite_payments)
+[![Coverage Status](https://coveralls.io/repos/activemerchant/offsite_payments/badge.png)](https://coveralls.io/r/activemerchant/offsite_payments)
 
 Offsite Payments is an extraction from the ecommerce system [Shopify](http://www.shopify.com). Shopify's requirements for a simple and unified API to handle dozens of different offsite payment pages (often called hosted payment pages) with very different exposed APIs was the chief principle in designing the library.
 

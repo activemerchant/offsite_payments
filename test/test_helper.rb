@@ -1,5 +1,7 @@
 require 'bundler/setup'
 
+require 'coverage_loader'
+
 require 'test/unit'
 require 'mocha/test_unit'
 
@@ -20,6 +22,11 @@ require 'action_dispatch/testing/test_process'
 require 'offsite_payments'
 require 'offsite_payments/action_view_helper'
 require 'offsite_payments/integrations'
+
+# require all integrations to measure coverage
+Dir[File.dirname(__FILE__) + '/integrations/*.rb'].each do |f|
+  require f
+end
 
 OffsitePayments.mode = :test
 

@@ -35,4 +35,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('mocha', '~> 1.0')
   s.add_development_dependency('rails', '>= 3.2.14')
   s.add_development_dependency('thor')
+  s.add_development_dependency('simplecov')
+  s.add_development_dependency('simplecov-rcov')
+  s.add_development_dependency('coveralls')
 end
