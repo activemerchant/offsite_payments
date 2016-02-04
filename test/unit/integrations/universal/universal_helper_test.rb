@@ -112,6 +112,30 @@ class UniversalHelperTest < Test::Unit::TestCase
     assert_field 'x_customer_shipping_phone',      '(416) 123-4567'
   end
 
+  def test_billing_address_fields
+    @helper.billing_address :first_name => 'John',
+                            :last_name  => 'Doe',
+                            :city       => 'Toronto',
+                            :company    => 'Shopify Toronto',
+                            :address1   => '241 Spadina Ave',
+                            :address2   => 'Front Entrance',
+                            :state      => 'ON',
+                            :zip        => 'M5T 3A8',
+                            :country    => 'CA',
+                            :phone      => '(416) 123-4567'
+
+    assert_field 'x_customer_billing_first_name', 'John'
+    assert_field 'x_customer_billing_last_name',  'Doe'
+    assert_field 'x_customer_billing_city',       'Toronto'
+    assert_field 'x_customer_billing_company',    'Shopify Toronto'
+    assert_field 'x_customer_billing_address1',   '241 Spadina Ave'
+    assert_field 'x_customer_billing_address2',   'Front Entrance'
+    assert_field 'x_customer_billing_state',      'ON'
+    assert_field 'x_customer_billing_zip',        'M5T 3A8'
+    assert_field 'x_customer_billing_country',    'CA'
+    assert_field 'x_customer_billing_phone',      '(416) 123-4567'
+  end
+
   def test_url_fields
     @helper.notify_url 'https://zork.com/notify'
     @helper.return_url 'https://zork.com/return'
