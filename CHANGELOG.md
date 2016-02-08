@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.3.0 (February 8, 2016)
+- Release 2.3.0
+
 ### Version 2.2.0 (October 14, 2015)
 - Bump active_utils dependency. [lucasuyezu]
 
