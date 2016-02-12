@@ -30,7 +30,6 @@ module OffsitePayments #:nodoc:
       end
 
       class Helper < OffsitePayments::Helper
-        # Replace with the real mapping
         mapping :account,     'customerNumber'
         mapping :amount,      'sum'
         mapping :order,       'orderNumber'
@@ -39,6 +38,9 @@ module OffsitePayments #:nodoc:
 
         mapping :success_url, 'shopSuccessURL'
         mapping :fail_url,    'shopFailURL'
+
+        mapping :scid,        'scid'
+        mapping :shop_id,     'shopId'
       end
 
       class Notification < OffsitePayments::Notification
