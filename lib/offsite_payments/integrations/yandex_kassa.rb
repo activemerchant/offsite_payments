@@ -54,7 +54,7 @@ module OffsitePayments #:nodoc:
         end
 
         def generate_signature(shop_password)
-          Digest::MD5.hexdigest((signature_string << shop_password).join(','))
+          Digest::MD5.hexdigest((signature_string << shop_password).join(';'))
         end
 
         def request_datetime
