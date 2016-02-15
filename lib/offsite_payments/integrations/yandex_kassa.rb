@@ -6,7 +6,7 @@ module OffsitePayments #:nodoc:
       self.test_url = 'https://demomoney.yandex.ru/eshop.xml'
 
       mattr_accessor :production_url
-      self.production_url = ''
+      self.production_url = 'https://money.yandex.ru/eshop.xml'
 
       def self.service_url
         mode = OffsitePayments.mode
