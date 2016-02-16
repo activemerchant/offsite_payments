@@ -48,18 +48,18 @@ module OffsitePayments #:nodoc:
         include Common
         def initialize(order, account, options = {})
           options.assert_valid_keys(:currency, :amount, :merchant_id,
-                                    :acquirer_id, :response_url, :currency_exponent, :test)
+                                    :acquirer_id, :response_url, :currency_exponent, :version)
           @fields             = {}
           @raw_html_fields    = []
-          @test               = options.delete(:test)
+          default_values = {version: '1.0.0'}
+          options = default_values.merge(options)
 
           options.each_pair { |key, val| self.send("#{key}=", val) }
 
           @password = account[:password]
+          add_field(mappings[:signature_method], 'SHA1')
           add_field(mappings[:merchant_id], account[:merchant_id])
           add_field(mappings[:acquirer_id], account[:acquirer_id])
-          add_field(mappings[:version], '1.0.0')
-          add_field(mappings[:signature_method], 'SHA1')
           add_field(mappings[:order_id], order)
           add_field(mappings[:currency], get_currency_iso_numeric(currency))
           add_field(mappings[:amount], convert_amount(amount, exponent).to_s)
