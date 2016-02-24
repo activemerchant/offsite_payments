@@ -118,51 +118,32 @@ module OffsitePayments #:nodoc:
           else
             'unknown'
           end
-#          params['']
         end
-
-#        def currency
-#          shop_sum_currency_paycash
-#        end
 
         def item_id
           shop_article_id
-#          params['']
         end
 
         def transaction_id
           shop_invoice_id
-#          params['']
         end
 
         # When was this payment received by the client.
         def received_at
           request_datetime
-#          params['']
         end
-
-#        def payer_email
-#          params['']
-#        end
-
-#        def receiver_email
-#          params['']
-#        end
 
         def security_key
           md5.to_s.downcase
-#          params['']
         end
 
         # the money amount we received in X.2 decimal.
         def gross
           shop_sum_amount.to_f
-#          params['']
         end
 
         def status
           'success'
-#          params['']
         end
 
         # Acknowledge the transaction to YandexKassa. This method has to be called after a new
@@ -181,37 +162,8 @@ module OffsitePayments #:nodoc:
         #     end
         def acknowledge(authcode = nil)
           (security_key == generate_signature(authcode))
-#          payload = raw
-#
-#          uri = URI.parse(YandexKassa.notification_confirmation_url)
-#
-#          request = Net::HTTP::Post.new(uri.path)
-#
-#          request['Content-Length'] = "#{payload.size}"
-#          request['User-Agent'] = "Active Merchant -- http://activemerchant.org/"
-#          request['Content-Type'] = "application/x-www-form-urlencoded"
-#
-#          http = Net::HTTP.new(uri.host, uri.port)
-#          http.verify_mode    = OpenSSL::SSL::VERIFY_NONE unless @ssl_strict
-#          http.use_ssl        = true
-#
-#          response = http.request(request, payload)
-#
-#          # Replace with the appropriate codes
-#          raise StandardError.new("Faulty YandexKassa result: #{response.body}") unless ["AUTHORISED", "DECLINED"].include?(response.body)
-#          response.body == "AUTHORISED"
         end
 
-#        private
-#
-#        # Take the posted data and move the relevant data into a hash
-#        def parse(post)
-#          @raw = post.to_s
-#          for line in @raw.split('&')
-#            key, value = *line.scan( %r{^([A-Za-z0-9_.-]+)\=(.*)$} ).flatten
-#            params[key] = CGI.unescape(value.to_s) if key.present?
-#          end
-#        end
       end
     end
   end
