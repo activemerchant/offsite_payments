@@ -73,14 +73,6 @@ module OffsitePayments #:nodoc:
           add_field 'x_amount', format_amount(amount, @currency)
         end
 
-        def shipping(amount)
-          add_field 'x_amount_shipping', format_amount(amount, @currency)
-        end
-
-        def tax(amount)
-          add_field 'x_amount_tax', format_amount(amount, @currency)
-        end
-
         def sign_fields
           @fields.merge!('x_signature' => generate_signature)
         end
