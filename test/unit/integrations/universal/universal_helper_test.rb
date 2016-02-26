@@ -34,8 +34,6 @@ class UniversalHelperTest < Test::Unit::TestCase
   end
 
   def test_core_fields
-    @helper.shipping 6.78
-    @helper.tax 0
     @helper.description 'Box of Red Wine'
     @helper.invoice 'Invoice #1A'
 
@@ -44,8 +42,6 @@ class UniversalHelperTest < Test::Unit::TestCase
     assert_field 'x_credential4', @credential4
     assert_field 'x_currency', @currency
     assert_field 'x_amount', '123.45'
-    assert_field 'x_amount_shipping', '6.78'
-    assert_field 'x_amount_tax', '0.00'
     assert_field 'x_reference', @order
     assert_field 'x_shop_country', @country
     assert_field 'x_shop_name', @account_name
@@ -67,13 +63,9 @@ class UniversalHelperTest < Test::Unit::TestCase
   def test_special_currency_formatting
     @options[:currency] = 'COU'
     @helper = Universal::Helper.new(@order, @account, @options)
-    @helper.shipping 6.78
-    @helper.tax 0
 
     assert_field 'x_currency', 'COU'
     assert_field 'x_amount', '123.4500'
-    assert_field 'x_amount_shipping', '6.7800'
-    assert_field 'x_amount_tax', '0.0000'
   end
 
   def test_customer_fields
