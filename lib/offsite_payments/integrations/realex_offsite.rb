@@ -81,6 +81,7 @@ module OffsitePayments #:nodoc:
             return (amount.to_f * multiple.to_f).to_i
           else
             return amount
+          end
         end
 
         # Realex returns currency amount as an integer
