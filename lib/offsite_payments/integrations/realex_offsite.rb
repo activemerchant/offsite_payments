@@ -71,13 +71,16 @@ module OffsitePayments #:nodoc:
         end
 
         # Realex accepts currency amounts as an integer in the lowest value
-        # e.g. 
+        # e.g.
         #     format_amount(110.56, 'GBP')
         #     => 11056
         def format_amount(amount, currency)
-          units = CURRENCY_SPECIAL_MINOR_UNITS[currency] || 2
-          multiple = 10**units
-          return (amount.to_f * multiple.to_f).to_i
+          if amount.is_a? Float
+            units = CURRENCY_SPECIAL_MINOR_UNITS[currency] || 2
+            multiple = 10**units
+            return (amount.to_f * multiple.to_f).to_i
+          else
+            return amount
         end
 
         # Realex returns currency amount as an integer
