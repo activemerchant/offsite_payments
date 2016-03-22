@@ -215,9 +215,13 @@ module OffsitePayments #:nodoc:
           format_amount_as_float(params['AMOUNT'], currency)
         end
 
+
         def complete?
           verified? && status == 'Completed'
         end
+
+        # alias success?
+        alias_method :success? :complete?
 
         # Fields for Realex signature verification
         def timestamp
