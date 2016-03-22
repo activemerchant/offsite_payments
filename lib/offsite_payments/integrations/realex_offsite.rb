@@ -220,8 +220,9 @@ module OffsitePayments #:nodoc:
           verified? && status == 'Completed'
         end
 
-        # alias success?
-        alias_method :success?, :complete?
+        def success?
+          status == 'Completed'
+        end
 
         # Fields for Realex signature verification
         def timestamp
@@ -239,6 +240,7 @@ module OffsitePayments #:nodoc:
         def order_id
           params['ORDER_ID']
         end
+        alias_method :transaction_id, :order_id
 
         def result
           params['RESULT']
@@ -255,6 +257,7 @@ module OffsitePayments #:nodoc:
         def authcode
           params['AUTHCODE']
         end
+        alias_method :authorization_code, :authcode
 
         def signature
           params['SHA1HASH']
