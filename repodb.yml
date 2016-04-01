@@ -5,7 +5,7 @@ oncall:
 deploy_urls:
   - https://shipit.shopify.com/shopify/offsite_payments/rubygems
 playbook_urls:
-  - https://github.com/Shopify/offsite_payments/blob/master/README.md
-  - http://www.rubydoc.info/github/Shopify/offsite_payments/master
+  - https://github.com/activemerchant/offsite_payments/blob/master/README.md
+  - http://www.rubydoc.info/github/activemerchant/offsite_payments/master
 ci_urls:
   - https://travis-ci.org/Shopify/offsite_payments/

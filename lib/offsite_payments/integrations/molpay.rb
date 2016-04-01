@@ -4,8 +4,8 @@ module OffsitePayments #:nodoc:
       mattr_accessor :acknowledge_url
       self.acknowledge_url = 'https://www.onlinepayment.com.my/MOLPay/API/chkstat/returnipn.php'
 
-      def self.notification(post)
-        Notification.new(post)
+      def self.notification(post, options = {})
+        Notification.new(post, options)
       end
 
       def self.return(query_string, options={})
@@ -24,19 +24,20 @@ module OffsitePayments #:nodoc:
 
         SERVICE_URL = 'https://www.onlinepayment.com.my/MOLPay/pay/'.freeze
 
-        mapping :account, 'merchantid'
-        mapping :amount, 'amount'
-        mapping :order, 'orderid'
-        mapping :customer, :name  => 'bill_name',
-                           :email => 'bill_email',
-                           :phone => 'bill_mobile'
+        mapping :account,             'merchantid'
+        mapping :amount,              'amount'
+        mapping :order,               'orderid'
+        mapping :customer, :name  =>  'bill_name',
+                           :email =>  'bill_email',
+                           :phone =>  'bill_mobile'
 
-        mapping :description, 'bill_desc'
-        mapping :language, 'langcode'
-        mapping :country, 'country'
-        mapping :currency, 'cur'
-        mapping :return_url, 'returnurl'
-        mapping :signature, 'vcode'
+        mapping :description,         'bill_desc'
+        mapping :language,            'langcode'
+        mapping :country,             'country'
+        mapping :currency,            'cur'
+        mapping :return_url,          'returnurl'
+        mapping :notify_url,          'callbackurl'
+        mapping :signature,           'vcode'
 
         attr_reader :amount_in_cents, :verify_key, :channel
 
@@ -85,6 +86,17 @@ module OffsitePayments #:nodoc:
 
       class Notification < OffsitePayments::Notification
         include ActiveUtils::PostsData
+
+        def status
+          case params['status']
+            when '00'
+              'Completed'
+            when '11'
+              'Failed'
+            when '22'
+              'Pending'
+          end
+        end
 
         def complete?
           status == 'Completed'
@@ -144,10 +156,6 @@ module OffsitePayments #:nodoc:
           params['status']
         end
 
-        def status
-          params['status'] == '00' ? 'Completed' : 'Failed'
-        end
-
         def acknowledge(authcode = nil)
           payload = raw + '&treq=1'
           ssl_post(Molpay.acknowledge_url, payload,
@@ -174,6 +182,10 @@ module OffsitePayments #:nodoc:
 
         def success?
           @notification.acknowledge
+        end
+
+        def pending?
+          @notification.status == 'Pending'
         end
       end
     end

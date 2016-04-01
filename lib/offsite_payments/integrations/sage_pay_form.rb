@@ -69,13 +69,19 @@ module OffsitePayments #:nodoc:
       class Helper < OffsitePayments::Helper
         include Encryption
 
+        attr_reader :identifier
+
+        def initialize(order, account, options={})
+          super
+          @identifier = rand(0..99999).to_s.rjust(5, '0')
+          add_field 'VendorTxCode', "#{order}-#{@identifier}"
+        end
+
         mapping :credential2, 'EncryptKey'
 
         mapping :account, 'Vendor'
         mapping :amount, 'Amount'
         mapping :currency, 'Currency'
-
-        mapping :order, 'VendorTxCode'
 
         mapping :customer,
           :first_name => 'BillingFirstnames',
@@ -246,7 +252,7 @@ module OffsitePayments #:nodoc:
 
         # Vendor-supplied code (:order mapping).
         def item_id
-          params['VendorTxCode']
+          params['VendorTxCode'].rpartition('-').first
         end
 
         # Internal SagePay code, typically "{LONG-UUID}".

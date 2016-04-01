@@ -17,18 +17,18 @@ Gem::Specification.new do |s|
 
   s.author = 'Tobias Luetke'
   s.email = 'tobi@shopify.com'
-  s.homepage = 'https://github.com/Shopify/offsite_payments'
+  s.homepage = 'https://github.com/activemerchant/offsite_payments'
 
   s.files = Dir['CHANGELOG', 'README.md', 'MIT-LICENSE', 'lib/**/*']
   s.require_path = 'lib'
 
-  s.add_dependency('activesupport', '>= 3.2.14', '< 5.0.0')
+  s.add_dependency('activesupport', '>= 3.2.14', '< 5.1')
   s.add_dependency('i18n', '~> 0.5')
   s.add_dependency('money', '< 7.0.0')
   s.add_dependency('builder', '>= 2.1.2', '< 4.0.0')
-  s.add_dependency('active_utils', '~> 3.0.0')
+  s.add_dependency('active_utils', '~> 3.2.0')
   s.add_dependency('nokogiri', "~> 1.4")
-  s.add_dependency('actionpack', ">= 3.2.20", "< 5.0.0")
+  s.add_dependency('actionpack', ">= 3.2.20", "< 5.1")
 
   s.add_development_dependency('rake')
   s.add_development_dependency('test-unit', '~> 3.0')

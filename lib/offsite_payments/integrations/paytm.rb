@@ -400,7 +400,7 @@ module OffsitePayments #:nodoc:
         end
 
         def transaction_id
-          @notification.transaction_id
+          @notification.transaction_id 
         end
 
         def status( order_id, order_amount )
