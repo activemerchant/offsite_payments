@@ -189,11 +189,12 @@ module OffsitePayments #:nodoc:
       mattr_accessor :test_url
       mattr_accessor :production_url
 
-      #self.test_url = 'https://pguat.paytm.com/oltp-web/processTransaction'
+      self.test_url = 'https://pguat.paytm.com/oltp-web/processTransaction'
       self.production_url = 'https://secure.paytm.in/oltp-web/processTransaction'
 
       def self.service_url
-         self.production_url
+         #self.production_url
+		 OffsitePayments.mode == :production ? self.production_url : self.test_url
       end
 
       def self.notification(post, options = {})
