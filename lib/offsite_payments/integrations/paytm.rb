@@ -120,23 +120,7 @@ module OffsitePayments #:nodoc:
     if key.empty?
       return false
     end
-    salt = new_pg_generate_salt(salt_length)
-    keys = params.keys
-    str = nil
-    keys = keys.sort
-    keys.each do |k|
-      if str.nil?
-        str = params[k].to_s
-        next
-      end
-      str = str + '|'  + params[k].to_s
-    end
-    str = str + '|' + salt
-    check_sum = Digest::SHA256.hexdigest(str)
-    check_sum = check_sum + salt
-    ### encrypting checksum ###
-    check_sum = new_pg_encrypt_variable(check_sum, key)
-    return check_sum
+    
   end
   
   def new_pg_verify_checksum(params, check_sum, key, salt_length = 4)
@@ -206,7 +190,35 @@ module OffsitePayments #:nodoc:
       end
 
       def self.checksum(params, secret_key )
-        return new_pg_checksum(params,secret_key)
+			#salt = SecureRandom.urlsafe_base64(4*(3.0/4.0))
+			salt = '1234'
+			keys = params.keys
+			str = nil
+			keys = keys.sort
+			keys.each do |k|
+			  if str.nil?
+				str = params[k].to_s
+				next
+			  end
+			  str = str + '|'  + params[k].to_s
+			end
+			str = str + '|' + salt
+			check_sum = Digest::SHA256.hexdigest(str)
+			check_sum = check_sum + salt
+			
+			### encrypting checksum ###
+			aes = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
+			aes.encrypt
+			aes.key = secret_key
+			aes.iv = '@@@@&&&&####$$$$'
+			
+			encrypted_data = nil
+			encrypted_data = aes.update(check_sum.to_s) + aes.final
+			encrypted_data = Base64.encode64(encrypted_data)
+			
+			check_sum = encrypted_data
+			#new_pg_encrypt_variable(check_sum, key)
+			return check_sum
       end
 
       class Helper < OffsitePayments::Helper
