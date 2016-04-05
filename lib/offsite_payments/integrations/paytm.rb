@@ -15,7 +15,7 @@ module OffsitePayments #:nodoc:
       self.production_url = 'https://secure.paytm.in/oltp-web/processTransaction'
 
       def self.service_url
-        OffsitePayments.mode == :production ? production_url : test_url
+        OffsitePayments.mode == :production ? self.production_url : self.test_url
       end
 
       def self.notification(post, options = {})
