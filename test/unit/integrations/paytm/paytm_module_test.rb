@@ -138,7 +138,7 @@ class PaytmModuleTest < Test::Unit::TestCase
 			### encrypting checksum ###
 			aes = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
 			aes.encrypt
-			aes.key = secret_key
+			aes.key = @secret_key
 			aes.iv = '@@@@&&&&####$$$$'
 			
 			encrypted_data = nil
