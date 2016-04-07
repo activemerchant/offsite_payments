@@ -12,7 +12,7 @@ class PaytmNotificationTest < Test::Unit::TestCase
     assert_equal "Completed", @paytm.status
     assert_equal "494157", @paytm.transaction_id
     assert_equal "TXN_SUCCESS", @paytm.transaction_status
-    assert_equal "10", @paytm.gross
+    assert_equal "10.00", @paytm.gross
     assert_equal "INR", @paytm.currency
     assert_equal true, @paytm.invoice_ok?('100PT012')
     assert_equal true, @paytm.amount_ok?(BigDecimal.new('10.00'),BigDecimal.new('0.00'))
