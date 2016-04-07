@@ -2,10 +2,172 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Paytm
 	
-	require 'openssl'
+	  require 'openssl'
 	  require 'base64'
 	  require 'digest'
-	  require 'securerandom'  
+	  require 'securerandom'
+	
+	def new_pg_encrypt(params)
+		if (params.class != Hash) || (params.keys == [])
+		  return false
+		end
+		if !params.has_key?(:key)
+		  return false
+		end
+		encrypted_data = Hash[]
+		key = params.delete(:key)
+		keys = params.keys
+		aes = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
+		begin
+		  keys.each do |k|
+			data = params[k]
+			aes.encrypt
+			aes.key = key
+			aes.iv = '@@@@&&&&####$$$$'
+			encrypted_k = aes.update(k.to_s) + aes.final
+			encrypted_k = Base64.encode64(encrypted_k.to_s)
+			aes.encrypt
+			aes.key = key
+			aes.iv = '@@@@&&&&####$$$$'
+			encrypted_data[encrypted_k] = aes.update(data.to_s) + aes.final
+			encrypted_data[encrypted_k] = Base64.encode64(encrypted_data[encrypted_k])
+		  end
+		rescue Exception => e
+		  return false
+		end
+		return encrypted_data
+	end
+  
+  
+	  def new_pg_encrypt_variable(data, key)
+		aes = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
+		aes.encrypt
+		aes.key = key
+		aes.iv = '@@@@&&&&####$$$$'
+		encrypted_data = nil
+		begin
+		  encrypted_data = aes.update(data.to_s) + aes.final
+		  encrypted_data = Base64.encode64(encrypted_data)
+		rescue Exception => e
+		  return false
+		end
+		return encrypted_data
+	  end 
+  
+  
+  def new_pg_decrypt(params)
+    if (params.class != Hash) || (params.keys == [])
+      return false
+    end
+    if !params.has_key?(:key)
+      return false
+    end
+    decrypted_data = Hash[]
+    key = params.delete(:key)
+    keys = params.keys
+    aes = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
+    begin
+      keys.each do |k|
+        data = params[k]
+        aes.decrypt
+        aes.key = key
+        aes.iv = '@@@@&&&&####$$$$'
+        decrypted_k = Base64.decode64(k.to_s)
+        decrypted_k = aes.update(decrypted_k.to_s) + aes.final
+        if data.empty?
+          decrypted_data[decrypted_k] = ""
+          next
+        end
+        aes.decrypt
+        aes.key = key
+        aes.iv = '@@@@&&&&####$$$$'
+        data = Base64.decode64(data)
+        decrypted_data[decrypted_k] = aes.update(data) + aes.final
+      end
+    rescue Exception => e
+      return false
+    end
+    return decrypted_data
+  end
+  
+  
+  def new_pg_decrypt_variable(data, key)
+    aes = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
+    aes.decrypt
+    aes.key = key
+    aes.iv = '@@@@&&&&####$$$$'
+    decrypted_data = nil
+    begin
+      decrypted_data = Base64.decode64(data.to_s)
+      decrypted_data = aes.update(decrypted_data) + aes.final
+    rescue Exception => e
+      return false
+    end
+    return decrypted_data
+  end
+
+
+  def new_pg_generate_salt(length)
+    salt = SecureRandom.urlsafe_base64(length*(3.0/4.0))
+    return salt.to_s
+  end
+  
+  
+  def new_pg_checksum(params, key, salt_length = 4)
+    if params.class != Hash
+      return false
+    end
+    if key.empty?
+      return false
+    end
+    
+  end
+  
+  def new_pg_verify_checksum(params, check_sum, key, salt_length = 4)
+    
+    if params.class != Hash
+      return false
+    end
+
+    if key.empty?
+      return false
+    end
+
+    if check_sum.nil? || check_sum.empty?
+      return false
+    end
+
+    generated_check_sum = nil
+    check_sum = new_pg_decrypt_variable(check_sum, key)
+
+    if check_sum == false
+      return false
+    end
+    begin
+      salt = check_sum[(check_sum.length-salt_length), (check_sum.length)]
+      keys = params.keys
+      str = nil
+      keys = keys.sort
+      keys.each do |k|
+        if str.nil?
+          str = params[k].to_s
+          next
+        end
+        str = str + '|' + params[k].to_s
+      end
+      str = str + '|' + salt
+      generated_check_sum = Digest::SHA256.hexdigest(str)
+      generated_check_sum = generated_check_sum + salt
+    rescue Exception => e
+      return false
+    end
+    
+    if check_sum == generated_check_sum
+      return true
+    else
+      return false
+    end
+  end
 	
 	
       mattr_accessor :test_url
@@ -101,170 +263,6 @@ module OffsitePayments #:nodoc:
           :var9 => 'udf9',
           :var10 => 'udf10'
         }
-		
-		
-		
-		
-		
-		
-		
-	
-		def new_pg_encrypt(params)
-			if (params.class != Hash) || (params.keys == [])
-			  return false
-			end
-			if !params.has_key?(:key)
-			  return false
-			end
-			encrypted_data = Hash[]
-			key = params.delete(:key)
-			keys = params.keys
-			aes = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
-			begin
-			  keys.each do |k|
-				data = params[k]
-				aes.encrypt
-				aes.key = key
-				aes.iv = '@@@@&&&&####$$$$'
-				encrypted_k = aes.update(k.to_s) + aes.final
-				encrypted_k = Base64.encode64(encrypted_k.to_s)
-				aes.encrypt
-				aes.key = key
-				aes.iv = '@@@@&&&&####$$$$'
-				encrypted_data[encrypted_k] = aes.update(data.to_s) + aes.final
-				encrypted_data[encrypted_k] = Base64.encode64(encrypted_data[encrypted_k])
-			  end
-			rescue Exception => e
-			  return false
-			end
-			return encrypted_data
-		end
-  
-  
-		def new_pg_encrypt_variable(data, key)
-			aes = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
-			aes.encrypt
-			aes.key = key
-			aes.iv = '@@@@&&&&####$$$$'
-			encrypted_data = nil
-			begin
-			  encrypted_data = aes.update(data.to_s) + aes.final
-			  encrypted_data = Base64.encode64(encrypted_data)
-			rescue Exception => e
-			  return false
-			end
-			return encrypted_data
-		  end 
-  
-  
-	  def new_pg_decrypt(params)
-		if (params.class != Hash) || (params.keys == [])
-		  return false
-		end
-		if !params.has_key?(:key)
-		  return false
-		end
-		decrypted_data = Hash[]
-		key = params.delete(:key)
-		keys = params.keys
-		aes = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
-		begin
-		  keys.each do |k|
-			data = params[k]
-			aes.decrypt
-			aes.key = key
-			aes.iv = '@@@@&&&&####$$$$'
-			decrypted_k = Base64.decode64(k.to_s)
-			decrypted_k = aes.update(decrypted_k.to_s) + aes.final
-			if data.empty?
-			  decrypted_data[decrypted_k] = ""
-			  next
-			end
-			aes.decrypt
-			aes.key = key
-			aes.iv = '@@@@&&&&####$$$$'
-			data = Base64.decode64(data)
-			decrypted_data[decrypted_k] = aes.update(data) + aes.final
-		  end
-		rescue Exception => e
-		  return false
-		end
-		return decrypted_data
-	  end
-  
-	  
-	  def new_pg_decrypt_variable(data, key)
-		aes = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
-		aes.decrypt
-		aes.key = key
-		aes.iv = '@@@@&&&&####$$$$'
-		decrypted_data = nil
-		begin
-		  decrypted_data = Base64.decode64(data.to_s)
-		  decrypted_data = aes.update(decrypted_data) + aes.final
-		rescue Exception => e
-		  return false
-		end
-		return decrypted_data
-	  end
-
-
-	  def new_pg_generate_salt(length)
-		salt = SecureRandom.urlsafe_base64(length*(3.0/4.0))
-		return salt.to_s
-	  end
-  
-  
-	def new_pg_checksum(params, key, salt_length = 4)
-		if params.class != Hash
-		  return false
-		end
-		if key.empty?
-		  return false
-		end
-		
-	  end
-	  
-	  def new_pg_verify_checksum(params, check_sum, key, salt_length = 4)		
-		if params.class != Hash
-		  return false
-		end
-		if key.empty?
-		  return false
-		end
-		if check_sum.nil? || check_sum.empty?
-		  return false
-		end
-		generated_check_sum = nil
-		check_sum = new_pg_decrypt_variable(check_sum, key)
-		if check_sum == false
-		  return false
-		end
-		begin
-		  salt = check_sum[(check_sum.length-salt_length), (check_sum.length)]
-		  keys = params.keys
-		  str = nil
-		  keys = keys.sort
-		  keys.each do |k|
-			if str.nil?
-			  str = params[k].to_s
-			  next
-			end
-			str = str + '|' + params[k].to_s
-		  end
-		  str = str + '|' + salt
-		  generated_check_sum = Digest::SHA256.hexdigest(str)
-		  generated_check_sum = generated_check_sum + salt
-		rescue Exception => e
-		  return false
-		end
-		
-		if check_sum == generated_check_sum
-		  return true
-		else
-		  return false
-		end
-	  end		
 
         def initialize(order, account, options = {})
           super
@@ -320,7 +318,7 @@ module OffsitePayments #:nodoc:
 
         # Order amount should be equal to gross - discount
         def amount_ok?( order_amount, order_discount = BigDecimal.new( '0.0' ) )
-          BigDecimal.new( original_gross ) == order_amount && BigDecimal.new( discount.to_s ) == order_discount
+          BigDecimal.new( original_gross ) == order_amount
         end
 
         # Status of transaction return from the Paytm. List of possible values:
@@ -388,7 +386,7 @@ module OffsitePayments #:nodoc:
         end
 
         def checksum_ok?
-			if new_pg_verify_checksum(params, checksum, @secret_key)
+			if Paytm.new_pg_verify_checksum(params, checksum, @secret_key)
 				if params['RESPCODE'] == '01'
 					return true
 				else
