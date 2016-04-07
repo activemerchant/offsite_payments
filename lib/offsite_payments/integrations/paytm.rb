@@ -386,8 +386,38 @@ module OffsitePayments #:nodoc:
         end
 
         def checksum_ok?
-			if Paytm.new_pg_verify_checksum(params, checksum, @secret_key)
-				if params['RESPCODE'] == '01'
+			check_sum = checksum
+			if check_sum.nil? || check_sum.empty?
+			  return false
+			end
+			generated_check_sum = nil			
+			aes = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
+			aes.decrypt
+			aes.key = @secret_key
+			aes.iv = '@@@@&&&&####$$$$'
+			decrypted_data = nil			
+		    decrypted_data = Base64.decode64(check_sum.to_s)
+			decrypted_data = aes.update(decrypted_data) + aes.final
+			check_sum  = decrypted_data
+			if check_sum == false
+			  return false
+			end
+			salt = check_sum[(check_sum.length-4), (check_sum.length)]
+			keys = params.keys
+			str = nil
+			keys = keys.sort
+			keys.each do |k|
+				if str.nil?
+					 str = params[k].to_s
+				next
+				end
+				str = str + '|' + params[k].to_s
+			end
+			str = str + '|' + salt
+			generated_check_sum = Digest::SHA256.hexdigest(str)
+			generated_check_sum = generated_check_sum + salt			
+			if check_sum == generated_check_sum
+			    if params['RESPCODE'] == '01'
 					return true
 				else
 					@message = 'Payment failed'
