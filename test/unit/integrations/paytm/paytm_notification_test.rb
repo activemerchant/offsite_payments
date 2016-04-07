@@ -10,7 +10,7 @@ class PaytmNotificationTest < Test::Unit::TestCase
   def test_accessors
     assert @paytm.complete?
     assert_equal "Completed", @paytm.status
-    assert_equal "100PT012", @paytm.transaction_id
+    assert_equal "494157", @paytm.transaction_id
     assert_equal "TXN_SUCCESS", @paytm.transaction_status
     assert_equal "10", @paytm.gross
     assert_equal "INR", @paytm.currency
