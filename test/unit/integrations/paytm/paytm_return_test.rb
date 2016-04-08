@@ -31,25 +31,25 @@ class PaytmReturnTest < Test::Unit::TestCase
 
     assert notification.complete?
     assert_equal 'Completed', notification.status
-    assert notification.invoice_ok?('4ba4afe87f7e73468f2a')
+    assert notification.invoice_ok?('100PT012')
     assert notification.amount_ok?(BigDecimal.new('10.00'),BigDecimal.new('0.00'))
     assert_equal "TXN_SUCCESS", notification.transaction_status
     assert_equal '403993715508030204', @paytm.notification.transaction_id
     assert_equal 'CC', @paytm.notification.type
     assert_equal 'INR', notification.currency
-    assert_equal '4ba4afe87f7e73468f2a', notification.invoice
+    assert_equal '100PT012', notification.invoice
     assert_equal 'merchant_id', notification.account
     assert_equal '10.00', notification.gross
-    assert_equal '0.00', notification.discount
+    #assert_equal '0.00', notification.discount
     #assert_equal nil, notification.offer_description
     #assert_equal 'Product Info', notification.product_info
-    assert_equal 'test@example.com', notification.customer_email
-    assert_equal '9999999999', notification.customer_phone
-    assert_equal 'paytm-Admin', notification.customer_first_name
-    assert_equal '', notification.customer_last_name
+    #assert_equal 'test@example.com', notification.customer_email
+    #assert_equal '9999999999', notification.customer_phone
+    #assert_equal 'paytm-Admin', notification.customer_first_name
+    #assert_equal '', notification.customer_last_name
     #assert_equal ["", "", "", "", "", "", "", "", "", ""], notification.user_defined
     assert_equal checksum, notification.checksum
-    assert_equal '01', notification.message
+    assert_equal 'Txn Successful', notification.message
     assert notification.checksum_ok?
   end
 

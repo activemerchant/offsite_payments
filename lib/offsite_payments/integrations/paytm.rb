@@ -386,7 +386,9 @@ module OffsitePayments #:nodoc:
         end
 
         def checksum_ok?
+			
 			check_sum = checksum.gsub("\n","")
+			check_sum = check_sum.gsub(" ","+")
 			if check_sum.nil?
 			  return false
 			end
@@ -402,13 +404,17 @@ module OffsitePayments #:nodoc:
 			if check_sum == false
 			  return false
 			end
+			PaytmResponseParams = ["SUBS_ID","MID","BANKTXNID","TXNAMOUNT","CURRENCY","STATUS","RESPCODE","RESPMSG","TXNDATE","GATEWAYNAME","BANKNAME","PAYMENTMODE","PROMO_CAMP_ID","PROMO_STATUS","PROMO_RESPCODE","ORDERID","TXNID","REFUNDAMOUNT","REFID"]
 			salt = check_sum[(check_sum.length-4), (check_sum.length)]
 			keys = params.keys
 			str = nil
 			keys = keys.sort
 			keys.each do |k|
-				if str.nil?
-					 str = params[k].to_s
+				if PaytmResponseParams.include?(k):                    
+					if str.nil?
+						 str = params[k].to_s
+						 next
+					end
 				next
 				end
 				str = str + '|' + params[k].to_s
@@ -418,6 +424,7 @@ module OffsitePayments #:nodoc:
 			generated_check_sum = generated_check_sum + salt			
 			if check_sum == generated_check_sum
 			    if params['RESPCODE'] == '01'
+					@message = params['RESPMSG']
 					return true
 				else
 					@message = 'Payment failed'
