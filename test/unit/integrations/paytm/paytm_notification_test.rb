@@ -20,10 +20,10 @@ class PaytmNotificationTest < Test::Unit::TestCase
     assert_equal "100PT012", @paytm.invoice
     assert_equal "WorldP64425807474247", @paytm.account
     #assert_equal "0.00", @paytm.discount
-    assert_equal "test@example.com", @paytm.customer_email
-    assert_equal "9999999999", @paytm.customer_phone
-    assert_equal "paytm-Admin", @paytm.customer_first_name
-    assert_equal "", @paytm.customer_last_name
+    #assert_equal "test@example.com", @paytm.customer_email
+    #assert_equal "9999999999", @paytm.customer_phone
+    #assert_equal "paytm-Admin", @paytm.customer_first_name
+    #assert_equal "", @paytm.customer_last_name
     assert_equal "UgTNNLvjnFi/vxElGKstkBHJGbNCWDi+9pTnz5PhgpYefo89+HfI3fGdmkwhRCjLVKw/CIebMnER62PxVj2p2RDkZCOKXvr3JxOr75/AoLY=", @paytm.checksum
     #assert_equal "E000", @paytm.message
     assert_equal true, @paytm.checksum_ok?
