@@ -386,7 +386,7 @@ module OffsitePayments #:nodoc:
         end
 
         def checksum_ok?
-			check_sum = checksum
+			check_sum = checksum.gsub("\n")
 			if check_sum.nil? || check_sum.empty?
 			  return false
 			end
