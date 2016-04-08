@@ -25,7 +25,7 @@ class PaytmNotificationTest < Test::Unit::TestCase
     #assert_equal "paytm-Admin", @paytm.customer_first_name
     #assert_equal "", @paytm.customer_last_name
     assert_equal "UgTNNLvjnFi/vxElGKstkBHJGbNCWDi+9pTnz5PhgpYefo89+HfI3fGdmkwhRCjLVKw/CIebMnER62PxVj2p2RDkZCOKXvr3JxOr75/AoLY=", @paytm.checksum
-    assert_equal "Txn Successful", @paytm.message
+    #assert_equal "Txn Successful", @paytm.message
     assert_equal true, @paytm.checksum_ok?
   end
 
