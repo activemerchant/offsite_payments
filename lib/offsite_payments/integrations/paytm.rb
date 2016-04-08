@@ -415,9 +415,8 @@ module OffsitePayments #:nodoc:
 						 str = params[k].to_s
 						 next
 					end
-				next
-				end
-				str = str + '|' + params[k].to_s
+					str = str + '|' + params[k].to_s
+				end				
 			end
 			str = str + '|' + salt
 			generated_check_sum = Digest::SHA256.hexdigest(str)
