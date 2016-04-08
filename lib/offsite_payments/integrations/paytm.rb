@@ -294,6 +294,8 @@ module OffsitePayments #:nodoc:
       end
 
       class Notification < OffsitePayments::Notification
+	  
+		PaytmResponseParams = ['SUBS_ID','MID','BANKTXNID','TXNAMOUNT','CURRENCY','STATUS','RESPCODE','RESPMSG','TXNDATE','GATEWAYNAME','BANKNAME','PAYMENTMODE','PROMO_CAMP_ID','PROMO_STATUS','PROMO_RESPCODE','ORDERID','TXNID','REFUNDAMOUNT','REFID']
         def initialize(post, options = {})
           super(post, options)
           @merchant_id = options[:credential1]
@@ -404,7 +406,7 @@ module OffsitePayments #:nodoc:
 			if check_sum == false
 			  return false
 			end
-			PaytmResponseParams = ["SUBS_ID","MID","BANKTXNID","TXNAMOUNT","CURRENCY","STATUS","RESPCODE","RESPMSG","TXNDATE","GATEWAYNAME","BANKNAME","PAYMENTMODE","PROMO_CAMP_ID","PROMO_STATUS","PROMO_RESPCODE","ORDERID","TXNID","REFUNDAMOUNT","REFID"]
+			
 			salt = check_sum[(check_sum.length-4), (check_sum.length)]
 			keys = params.keys
 			str = nil
