@@ -410,7 +410,7 @@ module OffsitePayments #:nodoc:
 			str = nil
 			keys = keys.sort
 			keys.each do |k|
-				if PaytmResponseParams.include?(k):                    
+				if PaytmResponseParams.include?(k)                    
 					if str.nil?
 						 str = params[k].to_s
 						 next
