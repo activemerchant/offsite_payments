@@ -376,7 +376,7 @@ module OffsitePayments #:nodoc:
                
 
         def checksum
-          params['CHECKSUMHASH']
+          params['CHECKSUMHASH'].gsub(" ","+")
         end
 
         def message
