@@ -34,7 +34,7 @@ class PaytmReturnTest < Test::Unit::TestCase
     assert notification.invoice_ok?('100PT012')
     assert notification.amount_ok?(BigDecimal.new('10.00'),BigDecimal.new('0.00'))
     assert_equal "TXN_SUCCESS", notification.transaction_status
-    assert_equal '403993715508030204', @paytm.notification.transaction_id
+    assert_equal '494157', @paytm.notification.transaction_id
     assert_equal 'CC', @paytm.notification.type
     assert_equal 'INR', notification.currency
     assert_equal '100PT012', notification.invoice
