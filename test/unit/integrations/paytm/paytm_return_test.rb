@@ -38,7 +38,7 @@ class PaytmReturnTest < Test::Unit::TestCase
     assert_equal 'DC', @paytm.notification.type
     assert_equal 'INR', notification.currency
     assert_equal '100PT012', notification.invoice
-    assert_equal 'merchant_id', notification.account
+    assert_equal 'WorldP64425807474247', notification.account
     assert_equal '10.00', notification.gross
     #assert_equal '0.00', notification.discount
     #assert_equal nil, notification.offer_description

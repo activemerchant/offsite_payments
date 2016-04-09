@@ -463,7 +463,7 @@ module OffsitePayments #:nodoc:
         end
 
         def success?
-          status( @params['txnid'], @params['amount'] ) == 'Completed'
+          status( @params['ORDERID'], @params['TXNAMOUNT'] ) == 'Completed'
         end
 
         def message
