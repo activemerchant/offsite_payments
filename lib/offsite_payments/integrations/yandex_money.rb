@@ -8,7 +8,7 @@ module OffsitePayments #:nodoc:
       # https://money.yandex.ru/joinups
 
       # Shop example:
-      # https://github.com/yandex-money/shopify-active-merchant-shop-example
+      # https://github.com/yurijmi/yandex_money_offsite_payments_demo
 
       mattr_accessor :production_url, :test_url
 
