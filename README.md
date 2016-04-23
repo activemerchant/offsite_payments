@@ -74,7 +74,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 * [WebMoney](http://www.webmoney.ru) - RU
 * [WebPay](http://webpay.by/)
 * [WorldPay](http://www.worldpay.com)
-* [YandexMoney](https://kassa.yandex.ru)
+* [YandexMoney](https://kassa.yandex.ru) - RU
 
 ## Misc.
 
