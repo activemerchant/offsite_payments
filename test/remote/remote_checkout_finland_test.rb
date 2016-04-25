@@ -6,9 +6,9 @@ class RemoteCheckoutFinlandTest < Test::Unit::TestCase
 
   def setup
     @stamp = Time.now.to_i.to_s # Unique identifier for the payment with all information
-    @stamp2 = (Time.now.to_i+1000).to_s # Unique identifier for the payment with minimal
+    @stamp2 = (Time.now.to_i+1000).to_s # Unique identifier for the payment with minimal information
     @amount = "200" # Amount in cents
-    @currency = "EUR"
+    @currency = "EUR" # Currency code
     @credential = "375917" # Account number
     @credential2 = "SAIPPUAKAUPPIAS" # Account secret
   end
@@ -16,10 +16,10 @@ class RemoteCheckoutFinlandTest < Test::Unit::TestCase
   def test_valid_payment_page_minimal_fields
     payment_page = submit %(
         <% payment_service_for('#{@stamp}', '#{@credential}', :service => :checkout_finland, :amount => #{@amount}, :currency => '#{@currency}',:credential2 => '#{@credential2}') do |service| %>
-          <% service.language = 'FI' %>
-          <% service.reference = '123123123' %>
-          <% service.content = '1' %>
-          <% service.delivery_date = '20140110' %>
+          <% service.language = 'FI' %> # Payment page language 2 character ISO code.
+          <% service.reference = '123123123' %> # Payment reference number. 20 digits max.
+          <% service.content = '1' %> # '1' for normal and '2' for adult payments.
+          <% service.delivery_date = '20140110' %> # Delivery date in the form of YYYYMMDD
           <% service.notify_url = 'http://example.org/return' %>
           <% service.reject_url = 'http://example.org/return' %>
           <% service.return_url = 'http://example.org/return' %>
