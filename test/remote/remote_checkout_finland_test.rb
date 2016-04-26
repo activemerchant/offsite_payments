@@ -20,10 +20,10 @@ class RemoteCheckoutFinlandTest < Test::Unit::TestCase
           <% service.reference = '123123123' %> # Payment reference number. 20 digits max.
           <% service.content = '1' %> # '1' for normal and '2' for adult payments.
           <% service.delivery_date = '20140110' %> # Delivery date in the form of YYYYMMDD
-          <% service.notify_url = 'http://example.org/return' %>
-          <% service.reject_url = 'http://example.org/return' %>
-          <% service.return_url = 'http://example.org/return' %>
-          <% service.cancel_return_url = 'http://example.org/return' %>
+          <% service.notify_url = 'http://example.org/return' %> # Notify URL
+          <% service.reject_url = 'http://example.org/return' %> # Reject URL
+          <% service.return_url = 'http://example.org/return' %> # Return URL
+          <% service.cancel_return_url = 'http://example.org/return' %> # Cancel URL
         <% end %>
       )
 
@@ -35,12 +35,12 @@ class RemoteCheckoutFinlandTest < Test::Unit::TestCase
   def test_valid_payment_page_all_fields
     payment_page = submit %(
         <% payment_service_for('#{@stamp2}', '#{@credential}', :service => :checkout_finland, :amount => #{@amount}, :currency => '#{@currency}',:credential2 => '#{@credential2}') do |service| %>
-          <% service.customer :first_name => "Tero",
+          <% service.customer :first_name => "Tero", # Optional customer information
             :last_name => 'Testaaja',
             :phone => '0800 552 010',
             :email => 'support@checkout.fi' %>
           <% service.language = 'FI' %>
-          <% service.billing_address :address1 => 'Testikatu 1 A 10',
+          <% service.billing_address :address1 => 'Testikatu 1 A 10', # Optional billing address
             :city => 'Helsinki',
             :zip => '00100',
             :country => 'FIN' %>
