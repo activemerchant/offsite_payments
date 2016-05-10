@@ -4,8 +4,23 @@ require 'offsite_payments/integrations/payment_highway/notification'
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module PaymentHighway
-      mattr_accessor :service_url
-      self.service_url = 'https://www.example.com'
+      mattr_accessor :test_url
+      self.test_url = "https://v1-hub-staging.sph-test-solinor.com"
+
+      mattr_accessor :production_url
+      self.production_url = "https.//example.com"
+
+      def self.service_url
+        mode = OffsitePayments.mode
+        case mode
+        when :production
+          self.production_url
+        when :test
+          self.test_url
+        else
+          raise StandardError, "Integration mode set to an invalid value: #{mode}"
+        end
+      end
 
       def self.notification(post)
         Notification.new(post)
