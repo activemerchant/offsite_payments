@@ -4,8 +4,7 @@ module OffsitePayments #:nodoc:
       class Helper < OffsitePayments::Helper
         def initialize(order, merchantnumber, options = {})
           super
-          add_field("sph-account", ENV['SPH_ACCOUNT'])
-          add_field("sph-merchant", ENV['SPH_MERCHANT'])
+          add_field("sph-merchant", merchantnumber)
           add_field("sph-request-id", generate_request_id)
           add_field("sph-currency", options.fetch(:currency))
           add_field("sph-timestamp", Time.now.utc.xmlschema)
@@ -32,6 +31,9 @@ module OffsitePayments #:nodoc:
         mapping :tax, ''
         mapping :shipping, ''
         mapping :language, "language"
+        mapping :sph_account, "sph-account"
+        mapping :account_key, "sph-account-key"
+        mapping :account_secret, "sph-account-secret"
 
         def form_fields
           @fields.merge("signature" => generate_signature)
@@ -60,7 +62,7 @@ module OffsitePayments #:nodoc:
         end
 
         private def account_secret
-          ENV['ACCOUNT_SECRET']
+          @fields['sph-account-secret']
         end
 
         private def success_url

@@ -4,18 +4,17 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    ENV['SPH_ACCOUNT'] = "test"
-    ENV['SPH_MERCHANT'] = "test_merchantId"
-    ENV['ACCOUNT_KEY'] = "testKey"
-    ENV['ACCOUNT_SECRET'] = "testSecret"
     SecureRandom.expects(:uuid).returns("super-uuid")
 
-    @helper = PaymentHighway::Helper.new('order-500','cody@example.com', {
+    @helper = PaymentHighway::Helper.new('order-500','test_merchantId', {
       amount: 500,
       currency: 'EUR',
     })
     @helper.description "Description"
     @helper.language "fi"
+    @helper.sph_account = "test"
+    @helper.account_key = "testKey"
+    @helper.account_secret = "testSecret"
   end
 
   def test_basic_helper_fields
@@ -23,6 +22,8 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
     assert_field "sph-order", 'order-500'
     assert_field "sph-account", 'test'
     assert_field "sph-merchant", 'test_merchantId'
+    assert_field "sph-account-key", 'testKey'
+    assert_field "sph-account-secret", 'testSecret'
     assert_field "sph-request-id", 'super-uuid'
     assert_field "sph-currency", 'EUR'
     assert_field "sph-timestamp", @helper.fields["sph-timestamp"]
@@ -31,7 +32,7 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
   end
 
   def test_signature
-    assert_equal generate_signature(@helper.fields["sph-timestamp"], ENV['SPH_ACCOUNT'], ENV['SPH_MERCHANT'], ENV['ACCOUNT_SECRET']), @helper.generate_signature
+    assert_equal generate_signature(@helper.fields["sph-timestamp"], 'test', 'test_merchantId', 'testSecret'), @helper.generate_signature
   end
 
   #def test_customer_fields
