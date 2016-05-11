@@ -9,12 +9,12 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
     @helper = PaymentHighway::Helper.new('order-500','test_merchantId', {
       amount: 500,
       currency: 'EUR',
+      credential2: "test", #sph-account,
+      credential3: "testKey", #sph-account-key
+      credential4: "testSecret" #sph-account-secret
     })
     @helper.description "Description"
     @helper.language "fi"
-    @helper.sph_account = "test"
-    @helper.account_key = "testKey"
-    @helper.account_secret = "testSecret"
   end
 
   def test_basic_helper_fields

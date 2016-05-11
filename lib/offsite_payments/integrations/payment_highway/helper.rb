@@ -31,9 +31,10 @@ module OffsitePayments #:nodoc:
         mapping :tax, ''
         mapping :shipping, ''
         mapping :language, "language"
-        mapping :sph_account, "sph-account"
-        mapping :account_key, "sph-account-key"
-        mapping :account_secret, "sph-account-secret"
+
+        mapping :credential2, "sph-account"
+        mapping :credential3, "sph-account-key"
+        mapping :credential4, "sph-account-secret"
 
         def form_fields
           @fields.merge("signature" => generate_signature)
