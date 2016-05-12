@@ -8,6 +8,7 @@ module OffsitePayments #:nodoc:
           add_field("sph-request-id", generate_request_id)
           add_field("sph-currency", options.fetch(:currency))
           add_field("sph-timestamp", Time.now.utc.xmlschema)
+          @secret = options.fetch(:credential4)
         end
         # Replace with the real mapping
         mapping :account, "sph-account"
@@ -34,7 +35,6 @@ module OffsitePayments #:nodoc:
 
         mapping :credential2, "sph-account"
         mapping :credential3, "sph-account-key"
-        mapping :credential4, "sph-account-secret"
         mapping :success_url, "sph-success-url"
         mapping :failure_url, "sph-failure-url"
         mapping :cancel_url, "sph-cancel-url"
@@ -58,15 +58,11 @@ module OffsitePayments #:nodoc:
           contents << "sph-cancel-url=#{@fields["sph-cancel-url"]}"
           contents << "language=#{@fields['language']}"
           contents << "description=#{@fields['description']}"
-          OpenSSL::HMAC.hexdigest('sha256', account_secret, contents.join("\n"))
+          OpenSSL::HMAC.hexdigest('sha256', @secret, contents.join("\n"))
         end
 
         private def generate_request_id
           SecureRandom.uuid
-        end
-
-        private def account_secret
-          @fields['sph-account-secret']
         end
       end
     end

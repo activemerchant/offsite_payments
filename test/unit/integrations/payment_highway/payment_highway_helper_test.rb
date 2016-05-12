@@ -26,7 +26,6 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
     assert_field "sph-account", 'test'
     assert_field "sph-merchant", 'test_merchantId'
     assert_field "sph-account-key", 'testKey'
-    assert_field "sph-account-secret", 'testSecret'
     assert_field "sph-request-id", 'super-uuid'
     assert_field "sph-currency", 'EUR'
     assert_field "sph-timestamp", @helper.fields["sph-timestamp"]
