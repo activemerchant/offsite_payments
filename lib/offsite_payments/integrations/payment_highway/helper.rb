@@ -35,6 +35,9 @@ module OffsitePayments #:nodoc:
         mapping :credential2, "sph-account"
         mapping :credential3, "sph-account-key"
         mapping :credential4, "sph-account-secret"
+        mapping :success_url, "sph-success-url"
+        mapping :failure_url, "sph-failure-url"
+        mapping :cancel_url, "sph-cancel-url"
 
         def form_fields
           @fields.merge("signature" => generate_signature)
@@ -50,9 +53,9 @@ module OffsitePayments #:nodoc:
           contents << "sph-amount=#{@fields["sph-amount"]}"
           contents << "sph-currency=#{@fields["sph-currency"]}"
           contents << "sph-timestamp=#{@fields["sph-timestamp"]}"
-          contents << "sph-success-url=#{success_url}"
-          contents << "sph-failure-url=#{failure_url}"
-          contents << "sph-cancel-url=#{cancel_url}"
+          contents << "sph-success-url=#{@fields["sph-success-url"]}"
+          contents << "sph-failure-url=#{@fields["sph-failure-url"]}"
+          contents << "sph-cancel-url=#{@fields["sph-cancel-url"]}"
           contents << "language=#{@fields['language']}"
           contents << "description=#{@fields['description']}"
           OpenSSL::HMAC.hexdigest('sha256', account_secret, contents.join("\n"))
@@ -64,22 +67,6 @@ module OffsitePayments #:nodoc:
 
         private def account_secret
           @fields['sph-account-secret']
-        end
-
-        private def success_url
-          "#{service_url}/success"
-        end
-
-        private def failure_url
-          "#{service_url}/failure"
-        end
-
-        private def cancel_url
-          "#{service_url}/cancel"
-        end
-
-        private def service_url
-          OffsitePayments::Integrations::PaymentHighway.service_url
         end
       end
     end

@@ -15,6 +15,9 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
     })
     @helper.description "Description"
     @helper.language "fi"
+    @helper.success_url "https://example.com/success"
+    @helper.failure_url "https://example.com/failure"
+    @helper.cancel_url "https://example.com/cancel"
   end
 
   def test_basic_helper_fields
@@ -82,9 +85,9 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
     contents << "sph-amount=500"
     contents << "sph-currency=EUR"
     contents << "sph-timestamp=#{timestamp}"
-    contents << "sph-success-url=https://v1-hub-staging.sph-test-solinor.com/success"
-    contents << "sph-failure-url=https://v1-hub-staging.sph-test-solinor.com/failure"
-    contents << "sph-cancel-url=https://v1-hub-staging.sph-test-solinor.com/cancel"
+    contents << "sph-success-url=https://example.com/success"
+    contents << "sph-failure-url=https://example.com/failure"
+    contents << "sph-cancel-url=https://example.com/cancel"
     contents << "language=fi"
     contents << "description=Description"
     OpenSSL::HMAC.hexdigest('sha256', account_secret, contents.join("\n"))
