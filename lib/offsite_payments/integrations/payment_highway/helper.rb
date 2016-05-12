@@ -59,6 +59,7 @@ module OffsitePayments #:nodoc:
           contents << "language=#{@fields['language']}"
           contents << "description=#{@fields['description']}"
           OpenSSL::HMAC.hexdigest('sha256', @secret, contents.join("\n"))
+          "SPH1 #{@fields['sph-account-key']} #{OpenSSL::HMAC.hexdigest('sha256', @secret, contents.join("\n"))}"
         end
 
         private def generate_request_id

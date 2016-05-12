@@ -34,7 +34,7 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
   end
 
   def test_signature
-    assert_equal generate_signature(@helper.fields["sph-timestamp"], 'test', 'test_merchantId', 'testSecret'), @helper.generate_signature
+    assert_equal generate_signature(@helper.fields["sph-timestamp"], 'test', 'test_merchantId', 'testKey', 'testSecret'), @helper.generate_signature
   end
 
   #def test_customer_fields
@@ -74,7 +74,7 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
     #@helper.billing_address :street => 'My Street'
     #assert_equal fields, @helper.fields
   #end
-  private def generate_signature timestamp, account, merchant, account_secret
+  private def generate_signature timestamp, account, merchant, account_key, account_secret
     contents = ["POST"]
     contents << "/form/view/pay_with_card"
     contents << "sph-account=#{account}"
@@ -89,6 +89,6 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
     contents << "sph-cancel-url=https://example.com/cancel"
     contents << "language=fi"
     contents << "description=Description"
-    OpenSSL::HMAC.hexdigest('sha256', account_secret, contents.join("\n"))
+    "SPH1 #{account_key} #{OpenSSL::HMAC.hexdigest('sha256', account_secret, contents.join("\n"))}"
   end
 end
