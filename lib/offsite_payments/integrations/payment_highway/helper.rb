@@ -8,6 +8,7 @@ module OffsitePayments #:nodoc:
           add_field("sph-request-id", generate_request_id)
           add_field("sph-currency", options.fetch(:currency))
           add_field("sph-timestamp", Time.now.utc.xmlschema)
+          @account_key = options.fetch(:credential3)
           @secret = options.fetch(:credential4)
         end
         # Replace with the real mapping
@@ -34,7 +35,6 @@ module OffsitePayments #:nodoc:
         mapping :language, "language"
 
         mapping :credential2, "sph-account"
-        mapping :credential3, "sph-account-key"
         mapping :success_url, "sph-success-url"
         mapping :failure_url, "sph-failure-url"
         mapping :cancel_url, "sph-cancel-url"
@@ -47,19 +47,16 @@ module OffsitePayments #:nodoc:
           contents = ["POST"]
           contents << "/form/view/pay_with_card"
           contents << "sph-account=#{@fields["sph-account"]}"
+          contents << "sph-amount=#{@fields["sph-amount"]}"
+          contents << "sph-cancel-url=#{@fields["sph-cancel-url"]}"
+          contents << "sph-currency=#{@fields["sph-currency"]}"
+          contents << "sph-failure-url=#{@fields["sph-failure-url"]}"
           contents << "sph-merchant=#{@fields["sph-merchant"]}"
           contents << "sph-order=#{@fields["sph-order"]}"
           contents << "sph-request-id=#{@fields["sph-request-id"]}"
-          contents << "sph-amount=#{@fields["sph-amount"]}"
-          contents << "sph-currency=#{@fields["sph-currency"]}"
-          contents << "sph-timestamp=#{@fields["sph-timestamp"]}"
           contents << "sph-success-url=#{@fields["sph-success-url"]}"
-          contents << "sph-failure-url=#{@fields["sph-failure-url"]}"
-          contents << "sph-cancel-url=#{@fields["sph-cancel-url"]}"
-          contents << "language=#{@fields['language']}"
-          contents << "description=#{@fields['description']}"
-          OpenSSL::HMAC.hexdigest('sha256', @secret, contents.join("\n"))
-          "SPH1 #{@fields['sph-account-key']} #{OpenSSL::HMAC.hexdigest('sha256', @secret, contents.join("\n"))}"
+          contents << "sph-timestamp=#{@fields["sph-timestamp"]}"
+          "SPH1 #{@account_key} #{OpenSSL::HMAC.hexdigest('sha256', @secret, contents.join("\n"))}"
         end
 
         private def generate_request_id

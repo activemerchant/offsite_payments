@@ -25,7 +25,6 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
     assert_field "sph-order", 'order-500'
     assert_field "sph-account", 'test'
     assert_field "sph-merchant", 'test_merchantId'
-    assert_field "sph-account-key", 'testKey'
     assert_field "sph-request-id", 'super-uuid'
     assert_field "sph-currency", 'EUR'
     assert_field "sph-timestamp", @helper.fields["sph-timestamp"]
@@ -34,6 +33,8 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
   end
 
   def test_signature
+    puts @helper.generate_signature
+
     assert_equal generate_signature(@helper.fields["sph-timestamp"], 'test', 'test_merchantId', 'testKey', 'testSecret'), @helper.generate_signature
   end
 
@@ -78,17 +79,15 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
     contents = ["POST"]
     contents << "/form/view/pay_with_card"
     contents << "sph-account=#{account}"
+    contents << "sph-amount=500"
+    contents << "sph-cancel-url=https://example.com/cancel"
+    contents << "sph-currency=EUR"
+    contents << "sph-failure-url=https://example.com/failure"
     contents << "sph-merchant=#{merchant}"
     contents << "sph-order=order-500"
     contents << "sph-request-id=super-uuid"
-    contents << "sph-amount=500"
-    contents << "sph-currency=EUR"
-    contents << "sph-timestamp=#{timestamp}"
     contents << "sph-success-url=https://example.com/success"
-    contents << "sph-failure-url=https://example.com/failure"
-    contents << "sph-cancel-url=https://example.com/cancel"
-    contents << "language=fi"
-    contents << "description=Description"
+    contents << "sph-timestamp=#{timestamp}"
     "SPH1 #{account_key} #{OpenSSL::HMAC.hexdigest('sha256', account_secret, contents.join("\n"))}"
   end
 end
