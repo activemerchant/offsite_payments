@@ -46,16 +46,17 @@ module OffsitePayments #:nodoc:
         def generate_signature
           contents = ["POST"]
           contents << "/form/view/pay_with_card"
-          contents << "sph-account=#{@fields["sph-account"]}"
-          contents << "sph-amount=#{@fields["sph-amount"]}"
-          contents << "sph-cancel-url=#{@fields["sph-cancel-url"]}"
-          contents << "sph-currency=#{@fields["sph-currency"]}"
-          contents << "sph-failure-url=#{@fields["sph-failure-url"]}"
-          contents << "sph-merchant=#{@fields["sph-merchant"]}"
-          contents << "sph-order=#{@fields["sph-order"]}"
-          contents << "sph-request-id=#{@fields["sph-request-id"]}"
-          contents << "sph-success-url=#{@fields["sph-success-url"]}"
-          contents << "sph-timestamp=#{@fields["sph-timestamp"]}"
+          contents << "sph-account:#{@fields["sph-account"]}"
+          contents << "sph-amount:#{@fields["sph-amount"]}"
+          contents << "sph-cancel-url:#{@fields["sph-cancel-url"]}"
+          contents << "sph-currency:#{@fields["sph-currency"]}"
+          contents << "sph-failure-url:#{@fields["sph-failure-url"]}"
+          contents << "sph-merchant:#{@fields["sph-merchant"]}"
+          contents << "sph-order:#{@fields["sph-order"]}"
+          contents << "sph-request-id:#{@fields["sph-request-id"]}"
+          contents << "sph-success-url:#{@fields["sph-success-url"]}"
+          contents << "sph-timestamp:#{@fields["sph-timestamp"]}"
+          contents << ""
           "SPH1 #{@account_key} #{OpenSSL::HMAC.hexdigest('sha256', @secret, contents.join("\n"))}"
         end
 

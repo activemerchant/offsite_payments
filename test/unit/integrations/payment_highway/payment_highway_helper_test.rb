@@ -78,16 +78,17 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
   private def generate_signature timestamp, account, merchant, account_key, account_secret
     contents = ["POST"]
     contents << "/form/view/pay_with_card"
-    contents << "sph-account=#{account}"
-    contents << "sph-amount=500"
-    contents << "sph-cancel-url=https://example.com/cancel"
-    contents << "sph-currency=EUR"
-    contents << "sph-failure-url=https://example.com/failure"
-    contents << "sph-merchant=#{merchant}"
-    contents << "sph-order=order-500"
-    contents << "sph-request-id=super-uuid"
-    contents << "sph-success-url=https://example.com/success"
-    contents << "sph-timestamp=#{timestamp}"
+    contents << "sph-account:#{account}"
+    contents << "sph-amount:500"
+    contents << "sph-cancel-url:https://example.com/cancel"
+    contents << "sph-currency:EUR"
+    contents << "sph-failure-url:https://example.com/failure"
+    contents << "sph-merchant:#{merchant}"
+    contents << "sph-order:order-500"
+    contents << "sph-request-id:super-uuid"
+    contents << "sph-success-url:https://example.com/success"
+    contents << "sph-timestamp:#{timestamp}"
+    contents << ""
     "SPH1 #{account_key} #{OpenSSL::HMAC.hexdigest('sha256', account_secret, contents.join("\n"))}"
   end
 end
