@@ -33,8 +33,6 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
   end
 
   def test_signature
-    puts @helper.generate_signature
-
     assert_equal generate_signature(@helper.fields["sph-timestamp"], 'test', 'test_merchantId', 'testKey', 'testSecret'), @helper.generate_signature
   end
 
