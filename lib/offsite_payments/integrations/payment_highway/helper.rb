@@ -44,11 +44,9 @@ module OffsitePayments #:nodoc:
         end
 
         def generate_signature
-          contents = ["POST"]
-          contents << "/form/view/pay_with_card"
-          contents << self.class.select_and_format_params(@fields)
-          contents << ""
-          "SPH1 #{@account_key} #{OpenSSL::HMAC.hexdigest('sha256', @secret, contents.join("\n"))}"
+          contents = ["POST", "/form/view/pay_with_card", self.class.select_and_format_params(@fields), ""]
+
+          "SPH1 #{@account_key} #{OpenSSL::HMAC.hexdigest('sha256', @secret, contents.flatten.join("\n"))}"
         end
 
         def self.valid_signature?(account_key, secret, params)
