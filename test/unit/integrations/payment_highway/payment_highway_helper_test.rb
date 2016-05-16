@@ -38,6 +38,21 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
     assert_equal generate_signature(@helper.fields["sph-timestamp"], 'test', 'test_merchantId', 'testKey', 'testSecret'), @helper.generate_signature
   end
 
+  def test_success_signature
+    params = { "sph-amount" => 4000,
+               "signature" => "SPH1 testKey b9b31e9ed9d355d0b01371556c064bd0f13b0c9d0c1bc2e9c4f2ee9bdacaaff5",
+               "sph-account" => "test",
+               "sph-currency" => "EUR",
+               "sph-merchant" => "test_merchantId",
+               "sph-transaction-id" =>"c4cf8c3d-0c86-409c-b3f5-b7bb2c422d1c",
+               "sph-order" => "104200",
+               "sph-timestamp" => "2016-05-16T07:06:46Z",
+               "sph-request-id" => "694ab577-a1a3-4426-a378-13df65266b1b",
+               "sph-success" => "OK"
+    }
+
+    assert_true PaymentHighway::Helper.valid_signature?("testKey", "testSecret", params)
+  end
   private def generate_signature timestamp, account, merchant, account_key, account_secret
     contents = ["POST"]
     contents << "/form/view/pay_with_card"
