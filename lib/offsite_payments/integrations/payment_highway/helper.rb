@@ -61,12 +61,9 @@ module OffsitePayments #:nodoc:
         end
 
         def self.valid_signature?(account_key, secret, params)
-          contents = ["GET"]
-          contents << ""
-          contents << select_and_format_params(params)
-          contents << ""
-          signature =  "SPH1 #{account_key} #{OpenSSL::HMAC.hexdigest('sha256', secret, contents.flatten.join("\n"))}"
-          signature == params["signature"]
+          contents = ["GET", "", select_and_format_params(params), ""]
+
+          params["signature"] ==  "SPH1 #{account_key} #{OpenSSL::HMAC.hexdigest('sha256', secret, contents.flatten.join("\n"))}"
         end
 
         private
