@@ -64,11 +64,11 @@ module OffsitePayments #:nodoc:
         end
 
         def self.select_and_format_params params
-          params.select do |k,v|
+          params.select{ |k,v|
             k.to_s.match(/^sph-/i)
-          end.sort.map do |k,v|
+          }.sort.map{ |k,v|
             "#{k.downcase}:#{v}"
-          end
+          }
         end
       end
     end
