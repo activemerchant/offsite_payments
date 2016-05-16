@@ -63,14 +63,24 @@ module OffsitePayments #:nodoc:
         def self.valid_signature?(account_key, secret, params)
           contents = ["GET"]
           contents << ""
-          contents << params.select { |k,v| k.to_s.match(/^sph-/i) }.sort.map{|k,v| "#{k.downcase}:#{v}"}
+          contents << select_and_format_params(params)
           contents << ""
           signature =  "SPH1 #{account_key} #{OpenSSL::HMAC.hexdigest('sha256', secret, contents.flatten.join("\n"))}"
           signature == params["signature"]
         end
 
-        private def generate_request_id
+        private
+
+        def generate_request_id
           SecureRandom.uuid
+        end
+
+        def self.select_and_format_params params
+          params.select do |k,v|
+            k.to_s.match(/^sph-/i)
+          end.sort.map do |k,v|
+            "#{k.downcase}:#{v}"
+          end
         end
       end
     end
