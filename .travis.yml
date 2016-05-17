@@ -4,13 +4,10 @@ sudo: false
 cache: bundler
 
 rvm:
-<<<<<<< HEAD
 - 2.2.3
 - 2.1
 - 2.0
-=======
 - 1.9
->>>>>>> paytm module
 
 gemfile:
 - Gemfile.rails32
