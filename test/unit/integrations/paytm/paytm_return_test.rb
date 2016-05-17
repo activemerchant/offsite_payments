@@ -40,16 +40,7 @@ class PaytmReturnTest < Test::Unit::TestCase
     assert_equal '100PT012', notification.invoice
     assert_equal 'WorldP64425807474247', notification.account
     assert_equal '10.00', notification.gross
-    #assert_equal '0.00', notification.discount
-    #assert_equal nil, notification.offer_description
-    #assert_equal 'Product Info', notification.product_info
-    #assert_equal 'test@example.com', notification.customer_email
-    #assert_equal '9999999999', notification.customer_phone
-    #assert_equal 'paytm-Admin', notification.customer_first_name
-    #assert_equal '', notification.customer_last_name
-    #assert_equal ["", "", "", "", "", "", "", "", "", ""], notification.user_defined
     assert_equal "UgTNNLvjnFi/vxElGKstkBHJGbNCWDi+9pTnz5PhgpYefo89+HfI3fGdmkwhRCjLVKw/CIebMnER62PxVj2p2RDkZCOKXvr3JxOr75/AoLY=", notification.checksum
-    #assert_equal 'Txn Successful', notification.message
     assert notification.checksum_ok?
   end
 
@@ -57,7 +48,6 @@ class PaytmReturnTest < Test::Unit::TestCase
 
   def http_raw_data_success
 	"MID=WorldP64425807474247&ORDERID=100PT012&TXNAMOUNT=10&CURRENCY=INR&TXNID=494157&BANKTXNID=201512236592678&STATUS=TXN_SUCCESS&RESPCODE=01&RESPMSG=Txn+Successful&TXNDATE=2015-12-23+16:06:22.0&GATEWAYNAME=ICICI&BANKNAME=ICICI&PAYMENTMODE=DC&CHECKSUMHASH=UgTNNLvjnFi/vxElGKstkBHJGbNCWDi+9pTnz5PhgpYefo89+HfI3fGdmkwhRCjLVKw/CIebMnER62PxVj2p2RDkZCOKXvr3JxOr75/AoLY="
-    #"mihpayid=403993715508030204&mode=CC&status=success&unmappedstatus=captured&key=merchant_id&txnid=4ba4afe87f7e73468f2a&amount=10.00&discount=0.00&addedon=2013-05-10 18 32 30&productinfo=Product Info&firstname=paytm-Admin&lastname=&address1=&address2=&city=&state=&country=&zipcode=&email=test@example.com&phone=1234567890&udf1=&udf2=&udf3=&udf4=&udf5=&udf6=&udf7=&udf8=&udf9=&udf10=&hash=#{checksum}&field1=313069903923&field2=999999&field3=59117331831301&field4=-1&field5=&field6=&field7=&field8=&PG_TYPE=HDFC&bank_ref_num=59117331831301&bankcode=CC&error=E000&cardnum=512345XXXXXX2346&cardhash=766f0227cc4b4c5f773a04cb31d8d1c5be071dd8d08fe365ecf5e2e5c947546d"
   end
 
   def http_raw_data_failure
@@ -67,7 +57,6 @@ class PaytmReturnTest < Test::Unit::TestCase
 
   def checksum
   "UgTNNLvjnFi/vxElGKstkBHJGbNCWDi+9pTnz5PhgpYefo89+HfI3fGdmkwhRCjLVKw/CIebMnER62PxVj2p2RDkZCOKXvr3JxOr75/AoLY="
-    #Digest::SHA512.hexdigest("secret|success|||||||||||test@example.com|paytm-Admin|Product Info|10.00|4ba4afe87f7e73468f2a|merchant_id")
   end
 
 end
