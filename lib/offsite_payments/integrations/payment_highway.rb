@@ -8,7 +8,7 @@ module OffsitePayments #:nodoc:
       self.test_url = "https://v1-hub-staging.sph-test-solinor.com/form/view/pay_with_card"
 
       mattr_accessor :production_url
-      self.production_url = "https.//example.com"
+      self.production_url = "https://v1.api.paymenthighway.io"
 
       def self.service_url
         mode = OffsitePayments.mode
