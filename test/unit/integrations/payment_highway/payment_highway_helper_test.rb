@@ -51,7 +51,10 @@ class PaymentHighwayHelperTest < Test::Unit::TestCase
 
     assert_true PaymentHighway::Helper.valid_signature?("testKey", "testSecret", params)
   end
-  private def generate_signature timestamp, account, merchant, account_key, account_secret
+
+  private
+
+  def generate_signature timestamp, account, merchant, account_key, account_secret
     contents = ["POST"]
     contents << "/form/view/pay_with_card"
     contents << "sph-account:#{account}"
