@@ -1,5 +1,4 @@
 require 'offsite_payments/integrations/payment_highway/helper'
-require 'offsite_payments/integrations/payment_highway/notification'
 
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
