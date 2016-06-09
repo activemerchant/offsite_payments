@@ -65,7 +65,7 @@ class PaytmModuleTest < Test::Unit::TestCase
 			encrypted_data = aes.update(check_sum.to_s) + aes.final
 			encrypted_data = Base64.encode64(encrypted_data)
 			
-			checksum = encrypted_data
+			checksum = encrypted_data.gsub("\n","")
 			
     assert_equal checksum, Paytm.checksum(paytm_load, @secret_key, '1234')
   end

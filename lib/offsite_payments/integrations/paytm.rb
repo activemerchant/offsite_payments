@@ -30,7 +30,7 @@ module OffsitePayments #:nodoc:
       end
 
       def self.checksum(params, secret_key, salt = nil )
-		if salt.nil ?
+		if salt.nil?
 			salt = SecureRandom.urlsafe_base64(4*(3.0/4.0))
 		end
 			keys = params.keys
@@ -57,7 +57,7 @@ module OffsitePayments #:nodoc:
 			encrypted_data = aes.update(check_sum.to_s) + aes.final
 			encrypted_data = Base64.encode64(encrypted_data)
 			
-			check_sum = encrypted_data
+			check_sum = encrypted_data.gsub("\n","")
 			#new_pg_encrypt_variable(check_sum, key)
 			return check_sum
       end
