@@ -31,7 +31,7 @@ module OffsitePayments #:nodoc:
 
       def self.checksum(params, secret_key, salt = nil )
 		if salt.nil?
-			salt = SecureRandom.urlsafe_base64(4*(3.0/4.0))
+			salt = SecureRandom.urlsafe_base64(4*(3/4))
 		end
 			keys = params.keys
 			str = nil
