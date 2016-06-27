@@ -25,9 +25,9 @@ module OffsitePayments #:nodoc:
       return {} if query_string.blank?
 
       query_string.split('&').inject({}) do |memo, chunk|
-        next if chunk.empty?
+        next memo if chunk.empty?
         key, value = chunk.split('=', 2)
-        next if key.empty?
+        next memo if key.empty?
         value = value.nil? ? nil : CGI.unescape(value)
         memo[CGI.unescape(key)] = value
         memo
