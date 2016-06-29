@@ -151,11 +151,15 @@ module OffsitePayments #:nodoc:
         def generate_checksum
           OpenSSL::HMAC.hexdigest('sha256', @options[:credential3], @raw)
         end
+        
+        def checksum_header
+          @options[:checksum_header]
+        end
 
         # Quickpay doesn't do acknowledgements of callback notifications
         # Instead it provides a SHA256 checksum header
         def acknowledge(authcode = nil)
-          generate_checksum == @options[:checksum_header]
+          generate_checksum == checksum_header
         end
 
         # Take the posted data and move the relevant data into a hash
