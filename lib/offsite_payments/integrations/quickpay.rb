@@ -180,6 +180,7 @@ module OffsitePayments #:nodoc:
           :cardnumber,
           :cardhash,
           :cardexpire,
+          :acquirer,
           :splitpayment,
           :fraudprobability,
           :fraudremarks,
