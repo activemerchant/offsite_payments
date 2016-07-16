@@ -219,7 +219,7 @@ module OffsitePayments #:nodoc:
             post.split(/-{20,40}\w{6,24}[\n\r]*/m).each do |part|
               part.scan(/([^\n\r]+)[\n\r]+([^\n\r]*)/m) do |header, value|
                 if header.match(/name=["'](.*)["']/)
-                  params[$1] = value.strip
+                  params[$1] = value
                 end
               end
             end
