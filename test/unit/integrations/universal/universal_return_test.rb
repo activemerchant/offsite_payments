@@ -23,9 +23,13 @@ class UniversalReturnTest < Test::Unit::TestCase
     assert @return.success?
   end
 
+  def test_return_message
+    assert_equal 'helloworld', @return.message
+  end
+
   private
 
   def query_data
-    'x_account_id=zork&x_reference=order-500&x_currency=USD&x_test=true&x_amount=123.45&x_gateway_reference=blorb123&x_timestamp=2014-03-24T12:15:41Z&x_result=success&x_signature=4365fef32f5309845052b728c8cbe962e583ecaf62bf1cdec91f248162b7f65e'
+    'x_account_id=zork&x_reference=order-500&x_currency=USD&x_test=true&x_amount=123.45&x_gateway_reference=blorb123&x_timestamp=2014-03-24T12:15:41Z&x_result=success&x_signature=55bd5acfabe65041568a94cb8981489ebced1f1eceebe0b985c8db43f3fedf91&x_message=helloworld'
   end
 end
