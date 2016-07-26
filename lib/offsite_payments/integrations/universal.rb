@@ -163,6 +163,10 @@ module OffsitePayments #:nodoc:
           result && result.capitalize
         end
 
+        def message
+          @params['x_message']
+        end
+
         def test?
           @params['x_test'] == 'true'
         end
@@ -183,6 +187,10 @@ module OffsitePayments #:nodoc:
 
         def success?
           @notification.acknowledge
+        end
+
+        def message
+          @notification.message
         end
       end
     end
