@@ -58,7 +58,6 @@ class PaytmModuleTest < Test::Unit::TestCase
     aes.key = @secret_key
     aes.iv = '@@@@&&&&####$$$$'
 
-    encrypted_data = nil
     encrypted_data = aes.update(check_sum.to_s) + aes.final
     encrypted_data = Base64.encode64(encrypted_data)
 

@@ -47,7 +47,7 @@ module OffsitePayments #:nodoc:
         aes.key = secret_key
         aes.iv = '@@@@&&&&####$$$$'
 
-        encrypted_data = nil
+		
         encrypted_data = aes.update(check_sum.to_s) + aes.final
         encrypted_data = Base64.encode64(encrypted_data)
 
@@ -124,7 +124,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Notification < OffsitePayments::Notification
-        PaytmResponseParams = %w(SUBS_ID MID BANKTXNID TXNAMOUNT CURRENCY STATUS RESPCODE RESPMSG TXNDATE GATEWAYNAME BANKNAME PAYMENTMODE PROMO_CAMP_ID PROMO_STATUS PROMO_RESPCODE ORDERID TXNID REFUNDAMOUNT REFID).freeze
+        PAYTM_RESPONSE_PARAMS = %w(SUBS_ID MID BANKTXNID TXNAMOUNT CURRENCY STATUS RESPCODE RESPMSG TXNDATE GATEWAYNAME BANKNAME PAYMENTMODE PROMO_CAMP_ID PROMO_STATUS PROMO_RESPCODE ORDERID TXNID REFUNDAMOUNT REFID).freeze
         def initialize(post, options = {})
           super(post, options)
           @merchant_id = options[:credential1]
@@ -220,12 +220,11 @@ module OffsitePayments #:nodoc:
 
           return false if check_sum.nil?
 
-          generated_check_sum = nil
+          
           aes = OpenSSL::Cipher::Cipher.new('aes-128-cbc')
           aes.decrypt
           aes.key = @secret_key
           aes.iv = '@@@@&&&&####$$$$'
-          decrypted_data = nil
           decrypted_data = Base64.decode64(check_sum.to_s)
           decrypted_data = aes.update(decrypted_data) + aes.final
           check_sum = decrypted_data
@@ -237,7 +236,7 @@ module OffsitePayments #:nodoc:
           str = nil
           keys = keys.sort
           keys.each do |k|
-            next unless PaytmResponseParams.include?(k)
+            next unless PAYTM_RESPONSE_PARAMS.include?(k)
             if str.nil?
               str = params[k].to_s
               next
