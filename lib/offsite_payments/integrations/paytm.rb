@@ -57,7 +57,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Helper < OffsitePayments::Helper
-        CHECKSUM_FIELDS = %w(MID ORDER_ID CUST_ID TXN_AMOUNT CHANNEL_ID INDUSTRY_TYPE_ID WEBSITE EMAIL MOBILE_NO).freeze
+        CHECKSUM_FIELDS = %w(MID ORDER_ID CUST_ID TXN_AMOUNT CHANNEL_ID INDUSTRY_TYPE_ID WEBSITE MOBILE_NO).freeze
 
         mapping :amount, 'TXN_AMOUNT'
         mapping :account, 'MID'
@@ -67,7 +67,6 @@ module OffsitePayments #:nodoc:
         mapping :customer, first_name: 'firstname',
                            last_name: 'lastname',
                            email: 'CUST_ID',
-                           email: 'EMAIL',
                            phone: 'MOBILE_NO'
 
         mapping :billing_address, city: 'city',
