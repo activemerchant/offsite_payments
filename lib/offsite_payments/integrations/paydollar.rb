@@ -5,7 +5,7 @@ module OffsitePayments #:nodoc:
           'HKD' => '344',
           'USD' => '840',
           'SGD' => '702',
-          'RMB' => '156',
+          'CNY' => '156',
           'JPY' => '392',
           'TWD' => '901',
           'AUD' => '036',
