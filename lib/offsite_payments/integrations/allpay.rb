@@ -30,7 +30,7 @@ module OffsitePayments #:nodoc:
       mattr_accessor :debug
 
       def self.service_url
-        mode = OffsitePayments::Base.integration_mode
+        mode = OffsitePayments::mode
         case mode
         when :production
           'https://payment.allpay.com.tw/Cashier/AioCheckOut'
@@ -44,7 +44,7 @@ module OffsitePayments #:nodoc:
       end
 
       def self.refund_url
-        mode = OffsitePayments::Base.integration_mode
+        mode = OffsitePayments::mode
         case mode
         when :production
           'https://payment.allpay.com.tw/Cashier/Capture'
