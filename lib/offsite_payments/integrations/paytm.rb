@@ -111,12 +111,15 @@ module OffsitePayments #:nodoc:
           @fields.merge(mappings[:CHANNEL_ID] => 'WEB')
           @fields.merge(mappings[:INDUSTRY_TYPE_ID] => @options[:credential3])
           @fields.merge(mappings[:WEBSITE] => @options[:credential4])
-          checksum_payload_items = CHECKSUM_FIELDS.map { |field| @fields[field] }
+          checksum_payload_items = Hash.new
+          CHECKSUM_FIELDS.each do |field|
+              checksum_payload_items[:field] = @fields[field]
+          end          
           Paytm.checksum(checksum_payload_items, @options[:credential2])
         end
 
         def sanitize_fields
-          %w(address1 address2 city state country productinfo email phone).each do |field|
+          %w(email phone).each do |field|
             @fields[field].gsub!(/[^a-zA-Z0-9\-_@\/\s.]/, '') if @fields[field]
           end
         end
