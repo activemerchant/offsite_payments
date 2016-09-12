@@ -73,9 +73,6 @@ module OffsitePayments #:nodoc:
         #mapping :return_url, 'CALLBACK_URL'
         mapping :checksum, 'CHECKSUMHASH'
 
-        add_field(mappings[:CHANNEL_ID], "WEB")
-        add_field(mappings[:INDUSTRY_TYPE_ID], @options[:credential3])
-        add_field(mappings[:WEBSITE], @options[:credential4])
 
         def initialize(order, account, options = {})
           super
@@ -89,7 +86,9 @@ module OffsitePayments #:nodoc:
         end
 
         def generate_checksum
-          
+          add_field(mappings[:CHANNEL_ID], "WEB")
+          add_field(mappings[:INDUSTRY_TYPE_ID], @options[:credential3])
+          add_field(mappings[:WEBSITE], @options[:credential4])
           checksum_payload_items = Hash.new
           CHECKSUM_FIELDS.each do |field|
               checksum_payload_items[:field] = @fields[field]
