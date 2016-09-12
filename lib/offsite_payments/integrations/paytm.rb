@@ -62,39 +62,17 @@ module OffsitePayments #:nodoc:
         mapping :amount, 'TXN_AMOUNT'
         mapping :account, 'MID'
         mapping :order, 'ORDER_ID'
-        mapping :description, 'productinfo'
 
-        mapping :customer, first_name: 'firstname',
-                           last_name: 'lastname',
-                           email: 'CUST_ID',
+        mapping :customer, email: 'CUST_ID',
                            phone: 'MOBILE_NO'
-
-        mapping :billing_address, city: 'city',
-                                  address1: 'address1',
-                                  address2: 'address2',
-                                  state: 'state',
-                                  zip: 'zip',
-                                  country: 'country'
 
         # Which tab you want to be open default on Paytm
         # CC (CreditCard) or NB (NetBanking)
         mapping :mode, 'pg'
 
-        mapping :notify_url, 'notify_url'
-        mapping :return_url, %w(surl furl)
-        mapping :cancel_return_url, 'curl'
-        mapping :checksum, 'hash'
+        #mapping :return_url, 'CALLBACK_URL'
+        mapping :checksum, 'CHECKSUMHASH'
 
-        mapping :user_defined, var1: 'udf1',
-                               var2: 'udf2',
-                               var3: 'udf3',
-                               var4: 'udf4',
-                               var5: 'udf5',
-                               var6: 'udf6',
-                               var7: 'udf7',
-                               var8: 'udf8',
-                               var9: 'udf9',
-                               var10: 'udf10'
 
         def initialize(order, account, options = {})
           super
@@ -104,13 +82,13 @@ module OffsitePayments #:nodoc:
 
         def form_fields
           sanitize_fields
-          @fields.merge(mappings[:CHECKSUMHASH] => generate_checksum)
+          @fields.merge(mappings[:checksum] => generate_checksum)
         end
 
         def generate_checksum
-          @fields.merge(mappings[:CHANNEL_ID] => 'WEB')
-          @fields.merge(mappings[:INDUSTRY_TYPE_ID] => @options[:credential3])
-          @fields.merge(mappings[:WEBSITE] => @options[:credential4])
+          add_field(mappings[:CHANNEL_ID], "WEB")
+          add_field(mappings[:INDUSTRY_TYPE_ID], @options[:credential3])
+          add_field(mappings[:WEBSITE], @options[:credential4])
           checksum_payload_items = Hash.new
           CHECKSUM_FIELDS.each do |field|
               checksum_payload_items[:field] = @fields[field]
