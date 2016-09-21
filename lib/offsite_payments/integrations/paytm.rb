@@ -57,26 +57,29 @@ module OffsitePayments #:nodoc:
       end
 
       class Helper < OffsitePayments::Helper
-        CHECKSUM_FIELDS = %w(MID ORDER_ID CUST_ID TXN_AMOUNT CHANNEL_ID INDUSTRY_TYPE_ID WEBSITE MOBILE_NO).freeze
+        CHECKSUM_FIELDS = %w(MID ORDER_ID EMAIL CALLBACK_URL CUST_ID TXN_AMOUNT CHANNEL_ID INDUSTRY_TYPE_ID WEBSITE MOBILE_NO).freeze
 
         mapping :amount, 'TXN_AMOUNT'
         mapping :account, 'MID'
         mapping :order, 'ORDER_ID'
 
-        mapping :customer, email: 'CUST_ID',
+        mapping :customer, email: ['CUST_ID' , 'EMAIL'],
                            phone: 'MOBILE_NO'
 
         # Which tab you want to be open default on Paytm
         # CC (CreditCard) or NB (NetBanking)
         mapping :mode, 'pg'
-
-        #mapping :return_url, 'CALLBACK_URL'
+        mapping :credential3, 'INDUSTRY_TYPE_ID'
+        mapping :credential4, 'WEBSITE'
+        mapping :channel_id, 'CHANNEL_ID'
+        mapping :return_url, 'CALLBACK_URL'
         mapping :checksum, 'CHECKSUMHASH'
 
 
         def initialize(order, account, options = {})
           super
           @options = options
+          add_field(mappings[:channel_id], "WEB")
           self.pg = 'CC'
         end
 
@@ -86,9 +89,7 @@ module OffsitePayments #:nodoc:
         end
 
         def generate_checksum
-          add_field(mappings[:CHANNEL_ID], "WEB")
-          add_field(mappings[:INDUSTRY_TYPE_ID], @options[:credential3])
-          add_field(mappings[:WEBSITE], @options[:credential4])
+          
           checksum_payload_items = Hash.new
           CHECKSUM_FIELDS.each do |field|
               checksum_payload_items[:field] = @fields[field]

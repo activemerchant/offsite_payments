@@ -34,7 +34,7 @@ class PaytmModuleTest < Test::Unit::TestCase
   end
 
   def test_checksum_method
-    paytm_load = { 'MID' => @merchant_id, 'ORDER_ID' => '100PT012', 'CUST_ID' => 'test@example.com', 'TXN_AMOUNT' => '10', 'CHANNEL_ID' => 'WEB', 'INDUSTRY_TYPE_ID' => @industry_type_id, 'WEBSITE' => @website, 'MOBILE_NO' => '9999999999' }
+    paytm_load = { 'MID' => @merchant_id, 'ORDER_ID' => '100PT012', 'CUST_ID' => 'test@example.com', 'TXN_AMOUNT' => '10', 'CHANNEL_ID' => 'WEB', 'INDUSTRY_TYPE_ID' => @industry_type_id, 'WEBSITE' => @website, 'MOBILE_NO' => '9999999999', 'EMAIL' => 'test@example.com', 'CALLBACK_URL' => 'http://www.shopify.com/paytmRes' }
 
     salt = '1234'
     keys = paytm_load.keys
