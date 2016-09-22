@@ -57,13 +57,13 @@ module OffsitePayments #:nodoc:
       end
 
       class Helper < OffsitePayments::Helper
-        CHECKSUM_FIELDS = %w(MID ORDER_ID EMAIL CALLBACK_URL CUST_ID TXN_AMOUNT CHANNEL_ID INDUSTRY_TYPE_ID WEBSITE MOBILE_NO).freeze
+        CHECKSUM_FIELDS = %w(MID ORDER_ID CALLBACK_URL CUST_ID TXN_AMOUNT CHANNEL_ID INDUSTRY_TYPE_ID WEBSITE MOBILE_NO).freeze
 
         mapping :amount, 'TXN_AMOUNT'
         mapping :account, 'MID'
         mapping :order, 'ORDER_ID'
 
-        mapping :customer, email: ['CUST_ID' , 'EMAIL'],
+        mapping :customer, email: 'CUST_ID',
                            phone: 'MOBILE_NO'
 
         # Which tab you want to be open default on Paytm
