@@ -751,3 +751,10 @@ wirecard_checkout_page:
 world_pay_gateway:
   login: LOGIN
   password: PASSWORD
+
+
+make_commerce:
+  shop_id: f7741ab2-7445-45f9-9af4-0d0408ef1e4c
+  secret_key: pfOsGD9oPaFEILwqFLHEHkPf7vZz4j3t36nAcufP1abqT9l99koyuC1IWAOcBeqt
+  public_key: zPA6jCTIvGKYqrXxlgkXLzv3F82Mjv2E
+
