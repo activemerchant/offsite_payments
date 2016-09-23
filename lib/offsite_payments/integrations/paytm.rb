@@ -25,17 +25,22 @@ module OffsitePayments #:nodoc:
         Return.new(post, options)
       end
 
-      def self.checksum(params, secret_key, salt = nil)
+      def self.checksum(chkParams, secret_key, salt = nil)
         salt = SecureRandom.urlsafe_base64(4 * (3 / 4)) if salt.nil?
-        keys = params.keys
+        keys = chkParams.keys
         str = nil
         keys = keys.sort
         keys.each do |k|
-          if str.nil?
-            str = params[k].to_s
+          
+          if chkParams[k].to_s.nil?
             next
           end
-          str = str + '|' + params[k].to_s
+          
+          if str.nil?
+            str = chkParams[k].to_s
+            next
+          end
+          str = str + '|' + chkParams[k].to_s
         end
         str = str + '|' + salt
         check_sum = Digest::SHA256.hexdigest(str)
