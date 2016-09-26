@@ -214,13 +214,13 @@ module OffsitePayments #:nodoc:
         end
 
         # Status of transaction. List of possible values:
-        # <tt>Canceled-Reversal</tt>::
+        # <tt>Canceled_Reversal</tt>::
         # <tt>Completed</tt>::
         # <tt>Denied</tt>::
         # <tt>Expired</tt>::
         # <tt>Failed</tt>::
         # <tt>In-Progress</tt>::
-        # <tt>Partially-Refunded</tt>::
+        # <tt>Partially_Refunded</tt>::
         # <tt>Pending</tt>::
         # <tt>Processed</tt>::
         # <tt>Refunded</tt>::
