@@ -87,7 +87,7 @@ module OffsitePayments #:nodoc:
         end
 
         def amount
-          BigDecimal.new(gross)
+          BigDecimal.new(params['payment']["amount"].to_s)
         end
 
         def key_present?
