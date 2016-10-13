@@ -103,7 +103,7 @@ module OffsitePayments #:nodoc:
         end
 
         def gross
-          (params['amount'] || params['balance'].try(:[], 'amount')).to_s
+          (params['amount'] || params['payment'].try(:[], 'amount')).to_s
         end
 
         def security_key
