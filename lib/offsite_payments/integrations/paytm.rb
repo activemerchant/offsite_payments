@@ -6,6 +6,9 @@ module OffsitePayments #:nodoc:
       require 'digest'
       require 'securerandom'
 
+      $DEBUG = false
+      #$RUN_UNIT_TEST = 0 #do not make this true, in normal 
+
       mattr_accessor :test_url
       mattr_accessor :production_url
 
@@ -26,23 +29,34 @@ module OffsitePayments #:nodoc:
       end
 
       def self.checksum(chkParams, secret_key, salt = nil)
-        salt = SecureRandom.urlsafe_base64(4 * (3 / 4)) if salt.nil?
+        if salt.nil?
+        	o = [('a'..'z'), ('A'..'Z'), ('0'..'9')].map { |i| i.to_a }.flatten
+			salt = (0...4).map { o[Random.rand(o.length)] }.join
+        end
         keys = chkParams.keys
         str = nil
+        keystr = nil
         keys = keys.sort
         keys.each do |k|
           
-          if chkParams[k].to_s.nil?
+          if chkParams[k].nil?
             next
           end
           
           if str.nil?
             str = chkParams[k].to_s
+            keystr = k.to_s+"="+chkParams[k].to_s+"&"
             next
           end
           str = str + '|' + chkParams[k].to_s
+          keystr = keystr + k.to_s+"="+chkParams[k].to_s+"&"
         end
         str = str + '|' + salt
+
+        if $DEBUG 
+        	puts "KeyMAp: " + keystr + ";   Values: "+str+"; salt: " + salt + ";"
+        end
+
         check_sum = Digest::SHA256.hexdigest(str)
         check_sum += salt
 
@@ -57,7 +71,6 @@ module OffsitePayments #:nodoc:
         encrypted_data = Base64.encode64(encrypted_data)
 
         check_sum = encrypted_data.delete("\n")
-        # new_pg_encrypt_variable(check_sum, key)
         check_sum
       end
 
@@ -68,8 +81,8 @@ module OffsitePayments #:nodoc:
         mapping :account, 'MID'
         mapping :order, 'ORDER_ID'
 
-        mapping :customer, email: 'CUST_ID',
-                           phone: 'MOBILE_NO'
+        mapping :customer, :email => 'CUST_ID',
+                           :phone => 'MOBILE_NO'
 
         # Which tab you want to be open default on Paytm
         # CC (CreditCard) or NB (NetBanking)
@@ -97,7 +110,7 @@ module OffsitePayments #:nodoc:
           
           checksum_payload_items = Hash.new
           CHECKSUM_FIELDS.each do |field|
-              checksum_payload_items[:field] = @fields[field]
+              checksum_payload_items[field] = @fields[field]
           end          
           Paytm.checksum(checksum_payload_items, @options[:credential2])
         end
@@ -107,7 +120,10 @@ module OffsitePayments #:nodoc:
             @fields[field].gsub!(/[^a-zA-Z0-9\-_@\/\s.]/, '') if @fields[field]
           end
         end
+
       end
+
+
 
       class Notification < OffsitePayments::Notification
         PAYTM_RESPONSE_PARAMS = %w(SUBS_ID MID BANKTXNID TXNAMOUNT CURRENCY STATUS RESPCODE RESPMSG TXNDATE GATEWAYNAME BANKNAME PAYMENTMODE PROMO_CAMP_ID PROMO_STATUS PROMO_RESPCODE ORDERID TXNID REFUNDAMOUNT REFID).freeze
@@ -122,10 +138,12 @@ module OffsitePayments #:nodoc:
         end
 
         def status
-          case transaction_status
-          when 'TXN_SUCCESS' then 'Completed'
-          when 'TXN_FAILURE' then 'Failed'
-          when 'pending' then 'Pending'
+          if transaction_status.casecmp("TXN_SUCCESS").zero? 
+            return 'Completed'
+          elsif transaction_status.casecmp("pending").zero? 
+            return 'Pending'
+          else
+            return 'Failed'
           end
         end
 
@@ -139,9 +157,9 @@ module OffsitePayments #:nodoc:
         end
 
         # Status of transaction return from the Paytm. List of possible values:
-        # <tt>SUCCESS</tt>::
-        # <tt>PENDING</tt>::
-        # <tt>FAILURE</tt>::
+        # <tt>TXN_SUCCESS</tt>::
+        # <tt>pending</tt>::
+        # <tt>TXN_FAILURE</tt>::
         def transaction_status
           params['STATUS']
         end
@@ -188,7 +206,7 @@ module OffsitePayments #:nodoc:
           parse_and_round_gross_amount(params['TXNAMOUNT'])
         end
 
-        def checksum
+        def checksum #double check check get via get call
           params['CHECKSUMHASH'].tr(' ', '+')
         end
 
@@ -204,6 +222,13 @@ module OffsitePayments #:nodoc:
           check_sum = checksum.delete("\n")
           check_sum = check_sum.tr(' ', '+')
 
+          if $DEBUG   
+            if check_sum.include? " "
+              puts "checksum contain Space : "+check_sum
+            end
+          end
+          #print debug msg if there is space in checksun
+
           return false if check_sum.nil?
 
           
@@ -213,31 +238,37 @@ module OffsitePayments #:nodoc:
           aes.iv = '@@@@&&&&####$$$$'
           decrypted_data = Base64.decode64(check_sum.to_s)
           decrypted_data = aes.update(decrypted_data) + aes.final
-          check_sum = decrypted_data
+          hashStr = decrypted_data
 
-          return false if check_sum == false
+          return false if hashStr == false
 
-          salt = check_sum[(check_sum.length - 4), check_sum.length]
+          salt = hashStr[(hashStr.length - 4), hashStr.length]
           keys = params.keys
           str = nil
+          keystr = nil
           keys = keys.sort
           keys.each do |k|
             next unless PAYTM_RESPONSE_PARAMS.include?(k)
             if str.nil?
               str = params[k].to_s
+              keystr = k.to_s
               next
             end
             str = str + '|' + params[k].to_s
+            keystr = keystr + '|' + k.to_s
           end
           str = str + '|' + salt
-          generated_check_sum = Digest::SHA256.hexdigest(str)
-          generated_check_sum += salt
-          if check_sum == generated_check_sum
+          generated_hashStr = Digest::SHA256.hexdigest(str)
+          generated_hashStr += salt
+          if $DEBUG 
+           	puts "KeyMAp: " + keystr + ";  Values: " + str + ";"
+          end
+          if hashStr == generated_hashStr
             if params['RESPCODE'] == '01'
               @message = params['RESPMSG']
               return true
             else
-              @message = 'Payment failed'
+              @message = params['RESPMSG']
               return false
             end
           else
