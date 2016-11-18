@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'jruby-openssl', :platforms => :jruby
-gem 'money', '~> 5.0'
 
 group :remote_test do
   gem 'mechanize'
@@ -10,5 +9,4 @@ group :remote_test do
   gem 'mongrel', '1.2.0.pre2', :platforms => :ruby
 end
 
-
-gem 'rails', '~> 3.2.0'
+gem 'actionpack', '~> 3.2.0'
