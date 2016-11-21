@@ -14,8 +14,12 @@ class PayFastNotificationTest < Test::Unit::TestCase
     assert_equal "Name", @pay_fast.item_name
     assert_equal "123.00", @pay_fast.gross
     assert_equal "-2.80", @pay_fast.fee
-    assert_equal "120.20", @pay_fast.amount
     assert_equal "10000100", @pay_fast.merchant_id
+    assert_equal "ZAR", @pay_fast.currency
+  end
+
+  def test_compositions
+    assert_equal Money.from_amount(BigDecimal.new('120.20'), 'ZAR'), @pay_fast.amount
   end
 
   def test_acknowledgement

@@ -14,7 +14,7 @@ class RobokassaNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(50000, 'USD').amount, @robokassa.amount
+    assert_equal Money.new(50000, 'RUB'), @robokassa.amount
   end
 
   # Replace with real successful acknowledgement code
