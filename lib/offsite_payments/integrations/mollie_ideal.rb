@@ -7,7 +7,7 @@ module OffsitePayments #:nodoc:
       self.live_issuers = [
         ["ABN AMRO", "ideal_ABNANL2A"],
         ["ASN Bank", "ideal_ASNBNL21"],
-        ["Friesland Bank", "ideal_FRBKNL2L"],
+        ["Bunq", "ideal_BUNQNL2A"],
         ["ING", "ideal_INGBNL2A"],
         ["Knab", "ideal_KNABNL2H"],
         ["Rabobank", "ideal_RABONL2U"],
