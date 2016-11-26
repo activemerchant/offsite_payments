@@ -167,7 +167,7 @@ module OffsitePayments #:nodoc:
 
         def status
           case @params['status']
-            when 'open';                 'Pending'
+            when 'open', 'pending';      'Pending'
             when 'paidout', 'paid';      'Completed'
             else                         'Failed'
           end
