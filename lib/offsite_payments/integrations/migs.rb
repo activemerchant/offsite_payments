@@ -153,7 +153,7 @@ module OffsitePayments
         def add_secure_hash
           sorted_values = @fields.sort_by(&:to_s).map(&:last)
           input = @secret + sorted_values.join
-          hash = Digest::MD5.hexdigest(input).upcase
+          hash = Digest::SHA256.hexdigest(input).upcase
 
           add_field('vpc_SecureHash', hash)
         end
@@ -255,7 +255,7 @@ module OffsitePayments
           response.delete('vpc_SecureHash')
           sorted_values = response.sort_by(&:to_s).map(&:last)
           input = @options[:secret] + sorted_values.join
-          Digest::MD5.hexdigest(input).upcase == secure_hash
+          Digest::SHA256.hexdigest(input).upcase == secure_hash
         end
 
         # Returns true if one of the following is true:
