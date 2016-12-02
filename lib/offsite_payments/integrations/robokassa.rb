@@ -103,10 +103,6 @@ module OffsitePayments #:nodoc:
           true
         end
 
-        def amount
-          BigDecimal.new(gross)
-        end
-
         def item_id
           params['InvId']
         end
@@ -137,6 +133,10 @@ module OffsitePayments #:nodoc:
 
         def success_response(*args)
           "OK#{item_id}"
+        end
+
+        def currency
+          'RUB'
         end
       end
 
