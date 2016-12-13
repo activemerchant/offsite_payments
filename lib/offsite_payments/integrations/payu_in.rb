@@ -84,7 +84,8 @@ module OffsitePayments #:nodoc:
         end
 
         def sanitize_fields
-          ['address1', 'address2', 'city', 'state', 'country', 'productinfo', 'email', 'phone'].each do |field|
+          @fields['phone'].gsub!(/[^0-9]/, '') if @fields['phone']
+          ['address1', 'address2', 'city', 'state', 'country', 'productinfo', 'email'].each do |field|
             @fields[field].gsub!(/[^a-zA-Z0-9\-_@\/\s.]/, '') if @fields[field]
           end
         end

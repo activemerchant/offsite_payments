@@ -71,4 +71,8 @@ class PayuInHelperTest < Test::Unit::TestCase
     assert_nil @helper.fields['email']
   end
 
+  def test_phone_replace_non_digits
+    @helper.fields['phone'] = '+(999)-99 99999'
+    assert_equal '9999999999', @helper.form_fields['phone']
+  end
 end
