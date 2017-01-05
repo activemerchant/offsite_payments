@@ -38,7 +38,7 @@ module OffsitePayments #:nodoc:
           authorization = [@public_key, timestamp, authorization].join(',')          
 
           headers = {'Authorization' => authorization, 'Content-Type' => 'application/json'}
-
+          
           begin
             if method == 'GET'
               poster.ssl_get(url, headers)
@@ -138,7 +138,7 @@ module OffsitePayments #:nodoc:
 
         # Defined in Swipe merchant's for all payments
         def currency
-          params['currency']
+          params['currency']['code']
         end
 
         # the money amount we received in X.2 decimal.
