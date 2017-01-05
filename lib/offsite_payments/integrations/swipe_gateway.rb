@@ -99,6 +99,9 @@ module OffsitePayments #:nodoc:
           swipe_api = SwipeApi.new(@private_key, @public_key)
           
           data = swipe_api.make_request('POST', route, params)
+          
+          raise ActionViewHelperError, "Error occured while contacting gateway" if data.nil?
+
           parsed_response = JSON.parse(data)
           
           raise ActionViewHelperError, "Error occured while contacting gateway : #{parsed_response}" if !parsed_response['errors'].empty?
