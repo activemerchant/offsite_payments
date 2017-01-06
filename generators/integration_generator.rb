@@ -18,34 +18,34 @@ class IntegrationGenerator < Thor::Group
   def generate
     template "templates/integration.rb", "#{lib}.rb"
 
-    template "templates/module_test.rb", "#{test_dir}/integrations/#{identifier}_module_test.rb"
-    template "templates/helper_test.rb", "#{test_dir}/integrations/#{identifier}_helper_test.rb"
-    template "templates/notification_test.rb", "#{test_dir}/integrations/#{identifier}_notification_test.rb"
+    template "templates/module_test.rb", "#{test_dir}/#{identifier}/#{identifier}_module_test.rb"
+    template "templates/helper_test.rb", "#{test_dir}/#{identifier}/#{identifier}_helper_test.rb"
+    template "templates/notification_test.rb", "#{test_dir}/#{identifier}/#{identifier}_notification_test.rb"
   end
 
   protected
 
-  def template(source, dest)
-    if options[:destroy]
-      remove_file dest
-    else
-      super
+    def template(source, dest)
+      if options[:destroy]
+        remove_file dest
+      else
+        super
+      end
     end
-  end
 
-  def identifier
-    @identifier ||= class_name.gsub(%r{([A-Z])}){|m| "_#{$1.downcase}"}.sub(%r{^_}, "")
-  end
+    def identifier
+      @identifier ||= class_name.gsub(%r{([A-Z])}){|m| "_#{$1.downcase}"}.sub(%r{^_}, "")
+    end
 
-  def class_name
-    @class_name ||= name.gsub(%r{(^[a-z])|_([a-zA-Z])}){|m| ($1||$2).upcase}
-  end
+    def class_name
+      @class_name ||= name.gsub(%r{(^[a-z])|_([a-zA-Z])}){|m| ($1||$2).upcase}
+    end
 
-  def lib
-    "lib/offsite_payments/integrations/#{identifier}"
-  end
+    def lib
+      "lib/offsite_payments/integrations/#{identifier}"
+    end
 
-  def test_dir
-    "test/unit/integrations"
-  end
+    def test_dir
+      "test/unit/integrations"
+    end
 end
