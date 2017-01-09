@@ -160,8 +160,8 @@ module OffsitePayments #:nodoc:
           parts = fields.map { |k, v| "#{k}=#{sanitize(k, v)}" unless v.nil? }.compact.shuffle
           parts.unshift(sage_encrypt_salt(key.length, key.length * 2))
           sage_encrypt(parts.join('&'), key)
-        rescue OpenSSL::Cipher::CipherError => e
-          if e.message == 'key length too short'
+        rescue OpenSSL::Cipher::CipherError, ArgumentError => e
+          if e.message == 'key length too short' || e.message == 'key must be 16 bytes'
             raise ActionViewHelperError, 'Invalid encryption key.'
           else
             raise
