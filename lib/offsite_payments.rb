@@ -2,6 +2,8 @@ require 'securerandom'
 require 'cgi'
 require "timeout"
 require "socket"
+require 'bigdecimal'
+require 'bigdecimal/util'
 
 require 'active_utils'
 
