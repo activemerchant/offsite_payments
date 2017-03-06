@@ -28,3 +28,6 @@ matrix:
       gemfile: Gemfile.rails41
     - rvm: 2.4.0
       gemfile: Gemfile.rails42
+
+before_install:
+  - gem update bundler
