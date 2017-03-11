@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency('i18n', '~> 0.5')
   s.add_dependency('money', '< 7.0.0')
   s.add_dependency('builder', '>= 2.1.2', '< 4.0.0')
-  s.add_dependency('active_utils', '~> 3.2.0')
+  s.add_dependency('active_utils', '~> 3.3.0')
   s.add_dependency('nokogiri', "~> 1.4")
   s.add_dependency('actionpack', ">= 3.2.20", "< 5.1")
 
