@@ -53,7 +53,7 @@ module OffsitePayments #:nodoc:
           'LKR' => '144',
           'KWD' => '414',
       }
-
+      # change url
       def self.service_url
         case OffsitePayments.mode
         when :production
