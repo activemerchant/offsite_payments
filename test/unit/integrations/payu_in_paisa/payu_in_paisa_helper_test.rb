@@ -28,7 +28,7 @@ class PayuInPaisaHelperTest < Test::Unit::TestCase
     assert_equal '666, Wooo', @helper.fields['address1']
     assert_equal 'EEE Street', @helper.fields['address2']
     assert_equal 'New Delhi', @helper.fields['state']
-    assert_equal '110001', @helper.fields['zip']
+    assert_equal '110001', @helper.fields['zipcode']
     assert_equal 'india', @helper.fields['country']
   end
 

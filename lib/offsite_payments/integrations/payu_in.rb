@@ -42,7 +42,7 @@ module OffsitePayments #:nodoc:
           :address1 => 'address1',
           :address2 => 'address2',
           :state => 'state',
-          :zip => 'zip',
+          :zip => 'zipcode',
           :country => 'country'
 
         # Which tab you want to be open default on PayU
