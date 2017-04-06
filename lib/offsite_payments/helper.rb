@@ -97,6 +97,10 @@ module OffsitePayments #:nodoc:
       name_or_code
     end
 
+    def language_from_locale(locale)
+      locale[0..1].downcase
+    end
+
     def method_missing(method_id, *args)
       method_id = method_id.to_s.gsub(/=$/, '').to_sym
       # Return and do nothing if the mapping was not found. This allows

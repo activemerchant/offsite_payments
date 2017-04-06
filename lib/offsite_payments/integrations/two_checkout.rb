@@ -114,6 +114,10 @@ module OffsitePayments #:nodoc:
             add_field("c_#{key}_#{line_item_id}", value)
           end
         end
+
+        def locale(locale)
+          add_field 'lang', language_from_locale(locale)
+        end
       end
 
       class Notification < OffsitePayments::Notification

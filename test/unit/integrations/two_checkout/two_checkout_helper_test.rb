@@ -23,12 +23,14 @@ class TwoCheckoutHelperTest < Test::Unit::TestCase
     @helper.return_url 'https://return.url/'
     @helper.cart_type 'shopify'
     @helper.purchase_step 'payment-method'
+    @helper.locale 'en-US'
 
     assert_field 'currency_code', 'ZAR'
     assert_field 'cart_order_id', '123'
     assert_field 'x_receipt_link_url', 'https://return.url/'
     assert_field '2co_cart_type', 'shopify'
     assert_field 'purchase_step', 'payment-method'
+    assert_field 'lang', 'en'
   end
 
   def test_customer_fields
