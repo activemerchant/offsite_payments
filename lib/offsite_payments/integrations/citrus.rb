@@ -96,8 +96,8 @@ module OffsitePayments
           order_id.to_s == invoice.to_s
         end
 
-        def amount_ok?( order_amount )
-          amount.to_d == order_amount
+        def amount_ok?(order_amount)
+          amount == Money.from_amount(order_amount, currency)
         end
 
         def item_id
