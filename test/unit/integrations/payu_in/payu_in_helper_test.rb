@@ -4,7 +4,8 @@ class PayuInHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    @helper = PayuIn::Helper.new( 'order_id', 'merchant_id', :amount => '10.00', :credential2 => 'secret_key')
+    @helper = PayuIn::Helper.new( 'order_id', 'merchant_id', :amount => '10.00')
+    OffsitePayments::Integrations::PayuIn.secret_key = 'secret_key'
   end
 
   def test_basic_helper_fields
@@ -56,7 +57,7 @@ class PayuInHelperTest < Test::Unit::TestCase
 
   def test_add_checksum_method
     @helper.customer :first_name => 'Payu-Admin', :email => 'test@example.com'
-    @helper.description "Product Info"
+    @helper.productinfo "Product Info"
     @helper.user_defined :var1 => 'var_one', :var2 => 'var_two', :var3 => 'var_three', :var4 => 'var_four', :var5 => 'var_five', :var6 => 'var_six', :var7 => 'var_seven', :var8 => 'var_eight', :var9 => 'var_nine', :var10 => 'var_ten'
 
     fields = ["txnid", "amount", "productinfo", "firstname", "email", "udf1", "udf2", "udf3", "udf4", "udf5", "udf6", "udf7", "udf8", "udf9", "udf10"].map { |field| @helper.fields[field] }
@@ -64,7 +65,7 @@ class PayuInHelperTest < Test::Unit::TestCase
   end
 
   def test_sanitize_fields_in_form_fields
-    @helper.description '{[Valid Description!]}'
+    @helper.productinfo '{[Valid Description!]}'
     @helper.form_fields
 
     assert_equal 'Valid Description', @helper.fields['productinfo']

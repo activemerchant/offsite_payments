@@ -3,6 +3,7 @@ module OffsitePayments #:nodoc:
     module PayuIn
       mattr_accessor :test_url
       mattr_accessor :production_url
+      mattr_accessor :secret_key
 
       self.test_url = 'https://test.payu.in/_payment.php'
       self.production_url = 'https://secure.payu.in/_payment.php'
@@ -31,7 +32,7 @@ module OffsitePayments #:nodoc:
         mapping :amount, 'amount'
         mapping :account, 'key'
         mapping :order, 'txnid'
-        mapping :description, 'productinfo'
+        mapping :productinfo, 'productinfo'
 
         mapping :customer, :first_name => 'firstname',
           :last_name  => 'lastname',
@@ -80,7 +81,7 @@ module OffsitePayments #:nodoc:
         def generate_checksum
           checksum_payload_items = CHECKSUM_FIELDS.map { |field| @fields[field] }
 
-          PayuIn.checksum(@fields["key"], @options[:credential2], checksum_payload_items )
+          PayuIn.checksum(@fields["key"], PayuIn.secret_key, checksum_payload_items )
         end
 
         def sanitize_fields
@@ -95,19 +96,32 @@ module OffsitePayments #:nodoc:
       class Notification < OffsitePayments::Notification
         def initialize(post, options = {})
           super(post, options)
-          @merchant_id = options[:credential1]
-          @secret_key = options[:credential2]
+          @merchant_id = options[:merchant_id]
+          @secret_key = options[:secret_key]
+          @params = options[:params]
         end
 
         def complete?
           status == "Completed"
         end
 
+        def params
+          @params
+        end
+
         def status
-          case transaction_status.downcase
-          when 'success' then 'Completed'
-          when 'failure' then 'Failed'
-          when 'pending' then 'Pending'
+          @status ||= if checksum_ok?
+            if transaction_id.blank?
+              'Invalid'
+            else
+              case transaction_status.downcase
+              when 'success' then 'Completed'
+              when 'failure' then 'Failed'
+              when 'pending' then 'Pending'
+              end
+            end
+          else
+            'Tampered'
           end
         end
 
