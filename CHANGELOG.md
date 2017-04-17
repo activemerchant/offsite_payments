@@ -1,5 +1,11 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.5.0 (April 12, 2017)
+- corrected zip parameter to from zip to zipcode
+- [Realex] guard against nil when extracting AVS code
+- only use fields that start with x_ to generate the signature
+- bump active_utils version 3.3.0
+
 ### Version 2.4.0 (March 7, 2017)
 - Fixed use of decimal instead of float
 - Fixed use Money gem
