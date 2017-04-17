@@ -12,6 +12,10 @@ module OffsitePayments #:nodoc:
         Return.new(query_string, options)
       end
 
+      def self.notification(post, options = {})
+        Notification.new(post, options)
+      end
+      
       #  (Optional Parameter) = channel //will generate URL to go directly to specific channel, e.g maybank2u, cimb
       #  Please refer MOLPay API spec for the channel routing
       class Helper < OffsitePayments::Helper
