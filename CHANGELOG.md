@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.5.1 (April 19, 2017)
+- [Citrus] compare Money object in Notification#amount_ok?
+
 ### Version 2.5.0 (April 12, 2017)
 - corrected zip parameter to from zip to zipcode
 - [Realex] guard against nil when extracting AVS code
