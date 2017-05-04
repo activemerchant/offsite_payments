@@ -53,13 +53,13 @@ module OffsitePayments #:nodoc:
           'LKR' => '144',
           'KWD' => '414',
       }
-
+      # change url
       def self.service_url
         case OffsitePayments.mode
         when :production
-          'https://www.paydollar.com/b2c2/eng/payment/payForm.jsp'
+          'https://www.paydollar.com/b2c2/eng/payment/payShopify.jsp'
         when :test
-          'https://test.paydollar.com/b2cDemo/eng/payment/payForm.jsp'
+          'https://test.paydollar.com/b2cDemo/eng/payment/payShopify.jsp'
         else
           raise StandardError, "Integration mode set to an invalid value: #{mode}"
         end
