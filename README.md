@@ -64,6 +64,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 * [PayDollar](http://www.paydollar.com)
 * [Paysbuy](https://www.paysbuy.com/) - TH
 * [Platron](https://www.platron.ru/) - RU
+* [POLi Payments](https://www.polipayments.com/) - AU, NZ
 * [Realex](http://www.realexpayments.com)
 * [RBK Money](https://rbkmoney.ru/) - RU
 * [Robokassa](http://robokassa.ru/) - RU
