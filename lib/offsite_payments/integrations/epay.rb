@@ -125,7 +125,7 @@ module OffsitePayments #:nodoc:
           return false
         end
 
-        %w(txnid orderid amount currency date time hash fraud payercountry issuercountry txnfee subscriptionid paymenttype cardno).each do |attr|
+        %w(txnid orderid currency date time hash fraud payercountry issuercountry txnfee subscriptionid paymenttype cardno).each do |attr|
           define_method(attr) do
             params[attr]
           end
@@ -133,10 +133,6 @@ module OffsitePayments #:nodoc:
 
         def currency
           CURRENCY_CODES.invert[params['currency']].to_s
-        end
-
-        def amount
-          Money.new(params['amount'].to_i, currency)
         end
 
         def generate_md5string

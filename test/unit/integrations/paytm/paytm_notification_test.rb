@@ -19,7 +19,7 @@ class PaytmNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(12345, 'USD'), @notification.amount
+    assert_equal Money.from_amount(123.45, 'USD'), @notification.amount
   end
 
   def test_acknowledge_valid_signature

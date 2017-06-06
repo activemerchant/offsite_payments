@@ -32,7 +32,7 @@ class BitPayNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(1000, 'USD'), @bit_pay.amount
+    assert_equal Money.from_amount(10.00, 'USD'), @bit_pay.amount
   end
 
   def test_successful_acknowledgement

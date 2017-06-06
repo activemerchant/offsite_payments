@@ -19,7 +19,7 @@ class DirectebankingNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(100, 'EUR'), @deb.amount
+    assert_equal Money.from_amount(1.00, 'EUR'), @deb.amount
   end
 
   def test_acknowledgement

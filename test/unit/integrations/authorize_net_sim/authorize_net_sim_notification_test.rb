@@ -26,7 +26,7 @@ class AuthorizeNetSimNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(12100, 'USD'), @authorize_net_sim.amount
+    assert_equal Money.from_amount(121.00, 'USD'), @authorize_net_sim.amount
   end
 
   def test_accessors_when_set

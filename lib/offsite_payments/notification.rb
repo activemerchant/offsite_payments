@@ -30,11 +30,10 @@ module OffsitePayments #:nodoc:
       (gross.to_f * 100.0).round
     end
 
-    # This combines the gross and currency and returns a proper Money object.
-    # this requires the money library located at http://rubymoney.github.io/money/
     def amount
-      return Money.new(gross_cents, currency) rescue ArgumentError
-      return Money.new(gross_cents) # maybe you have an own money object which doesn't take a currency?
+      amount = gross ? gross.to_d : 0
+      return Money.from_amount(amount, currency) rescue ArgumentError
+      return Money.from_amount(amount) # maybe you have an own money object which doesn't take a currency?
     end
 
     # reset the notification.
