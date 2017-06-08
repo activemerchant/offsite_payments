@@ -62,7 +62,7 @@ module OffsitePayments #:nodoc:
         end
 
         def amount_in_dollars
-          sprintf("%.2f", @amount_in_cents.to_f/100)
+          sprintf("%.2f", @amount_in_cents.to_d/100)
         end
 
         def amount=(money)

@@ -113,7 +113,7 @@ module OffsitePayments #:nodoc:
         end
 
         def gross
-          params['price'].to_f
+          params['price'].to_d
         end
 
         def acknowledge(authcode = nil)

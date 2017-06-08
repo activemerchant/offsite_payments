@@ -160,8 +160,8 @@ module OffsitePayments #:nodoc:
         end
 
         def tax_rate_for(item)
-          subtotal_price = item.fetch(:unit_price, 0).to_f * item.fetch(:quantity, 0).to_i
-          tax_amount = item.fetch(:tax_amount, 0).to_f
+          subtotal_price = item.fetch(:unit_price, 0).to_d * item.fetch(:quantity, 0).to_i
+          tax_amount = item.fetch(:tax_amount, 0).to_d
 
           if subtotal_price > 0
             tax_rate = tax_amount / subtotal_price

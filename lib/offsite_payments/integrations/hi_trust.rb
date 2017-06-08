@@ -90,7 +90,7 @@ module OffsitePayments #:nodoc:
         end
 
         def gross
-          sprintf("%.2f", gross_cents.to_f / 100)
+          sprintf("%.2f", gross_cents.to_d / 100)
         end
 
         def gross_cents

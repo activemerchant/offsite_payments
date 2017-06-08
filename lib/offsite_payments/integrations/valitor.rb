@@ -96,7 +96,7 @@ module OffsitePayments #:nodoc:
         end
 
         def format_amount(amount, currency)
-          OffsitePayments::CURRENCIES_WITHOUT_FRACTIONS.include?(currency) ? amount.to_f.round : sprintf("%.2f", amount)
+          OffsitePayments::CURRENCIES_WITHOUT_FRACTIONS.include?(currency) ? amount.to_d.round : sprintf("%.2f", amount)
         end
       end
 

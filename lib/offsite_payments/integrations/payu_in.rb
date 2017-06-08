@@ -241,7 +241,7 @@ module OffsitePayments #:nodoc:
 
         private
         def parse_and_round_gross_amount(amount)
-          rounded_amount = (amount.to_f * 100.0).round
+          rounded_amount = (amount.to_d * 100.0).round
           sprintf("%.2f", rounded_amount / 100.00)
         end
       end

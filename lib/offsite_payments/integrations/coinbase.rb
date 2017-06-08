@@ -82,9 +82,9 @@ module OffsitePayments #:nodoc:
 
         def gross
           if params['total_original'].present?
-            "%.2f" % (params['total_original']['cents'].to_f / 100)
+            "%.2f" % (params['total_original']['cents'].to_d / 100)
           else
-            "%.2f" % (params['total_native']['cents'].to_f / 100)
+            "%.2f" % (params['total_native']['cents'].to_d / 100)
           end
         end
 
