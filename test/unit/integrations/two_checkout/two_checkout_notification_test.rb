@@ -20,10 +20,6 @@ class TwoCheckoutNotificationTest < Test::Unit::TestCase
     assert_equal 'noreply@2co.com', @live_notification.payer_email
   end
 
-  def test_compositions
-    assert_equal Money.new(20, 'USD'), @live_notification.amount
-  end
-
   def test_acknowledgement
     live_notification = TwoCheckout::Notification.new(live_http_raw_data, :credential2 => 'tango')
     assert live_notification.acknowledge

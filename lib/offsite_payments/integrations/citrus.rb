@@ -97,7 +97,7 @@ module OffsitePayments
         end
 
         def amount_ok?(order_amount)
-          amount == Money.from_amount(order_amount, currency)
+          BigDecimal.new(gross) == BigDecimal.new(order_amount)
         end
 
         def item_id
@@ -117,10 +117,6 @@ module OffsitePayments
 
         def gross
           params['amount']
-        end
-
-        def amount
-          Money.from_amount(BigDecimal.new(gross), currency)
         end
 
         def transaction_id
@@ -182,7 +178,7 @@ module OffsitePayments
         end
 
         def checksum_ok?
-          fields = [invoice, transaction_status, sprintf('%.2f', amount), transaction_id, issuerrefno, authidcode, customer_first_name, customer_last_name, pgrespcode, customer_address[:zip]].join
+          fields = [invoice, transaction_status, sprintf('%.2f', gross), transaction_id, issuerrefno, authidcode, customer_first_name, customer_last_name, pgrespcode, customer_address[:zip]].join
 
           unless Citrus.checksum(@secret_key, fields ) == checksum
             @message = 'checksum mismatch...'

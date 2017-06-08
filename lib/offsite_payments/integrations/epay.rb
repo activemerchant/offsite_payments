@@ -114,11 +114,7 @@ module OffsitePayments #:nodoc:
         end
 
         def gross
-          "%.2f" % (gross_cents / 100.0)
-        end
-
-        def gross_cents
-          params['amount'].to_i
+          sprintf("%.2f", params['amount'].to_i / 100.0)
         end
 
         def test?
@@ -133,10 +129,6 @@ module OffsitePayments #:nodoc:
 
         def currency
           CURRENCY_CODES.invert[params['currency']].to_s
-        end
-
-        def amount
-          Money.new(params['amount'].to_i, currency)
         end
 
         def generate_md5string

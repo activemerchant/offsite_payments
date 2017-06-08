@@ -119,10 +119,6 @@ module OffsitePayments #:nodoc:
           params['pg_ps_full_amount']
         end
 
-        def amount
-          Money.from_amount(BigDecimal.new(params['pg_amount']), currency)
-        end
-
         def secret
           @options[:secret]
         end

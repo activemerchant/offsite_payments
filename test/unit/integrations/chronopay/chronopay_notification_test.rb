@@ -40,10 +40,6 @@ class ChronopayNotificationTest < Test::Unit::TestCase
     assert_equal Time.local(2006, 3, 30, 12, 30, 10), @notification.received_at
   end
 
-  def test_compositions
-    assert_equal Money.new(50000, 'CAD'), @notification.amount
-  end
-
   def test_payment_successful_status
     notification = Chronopay::Notification.new('transaction_type=onetime')
     assert_equal 'Completed', notification.status

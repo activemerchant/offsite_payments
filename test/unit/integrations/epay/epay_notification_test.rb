@@ -17,10 +17,6 @@ class EpayNotificationTest < Test::Unit::TestCase
     assert !@epay.test?
   end
 
-  def test_compositions
-    assert_equal Money.new(398750, 'DKK'), @epay.amount
-  end
-
   def test_acknowledgement
     assert @epay.acknowledge
   end

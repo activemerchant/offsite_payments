@@ -24,7 +24,6 @@ class NotificationTest < Test::Unit::TestCase
   def test_accessors
     assert_raise(NotImplementedError){ p @notification.status }
     assert_raise(NotImplementedError){ p @notification.gross }
-    assert_raise(NotImplementedError){ p @notification.gross_cents }
   end
 
   def test_notification_data_with_period

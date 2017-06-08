@@ -18,10 +18,6 @@ class PayFastNotificationTest < Test::Unit::TestCase
     assert_equal "ZAR", @pay_fast.currency
   end
 
-  def test_compositions
-    assert_equal Money.from_amount(BigDecimal.new('120.20'), 'ZAR'), @pay_fast.amount
-  end
-
   def test_acknowledgement
     PayFast::Notification.any_instance.stubs(:ssl_post).returns('VALID')
     assert @pay_fast.acknowledge

@@ -51,26 +51,21 @@ module OffsitePayments #:nodoc:
         #   14 (RHB)
         PAYMENT_METHODS      = %w[8 10 21 20 2 16 15 6 23 17 33 14]
 
-        attr_reader :amount_in_cents, :merchant_key
+        attr_reader :merchant_key
 
         def initialize(order, account, options = {})
           requires!(options, :amount, :currency, :credential2)
           @merchant_key = options[:credential2]
-          @amount_in_cents = options[:amount]
           super
           add_field mappings[:signature], signature
         end
 
-        def amount_in_dollars
-          sprintf("%.2f", @amount_in_cents.to_f/100)
-        end
-
         def amount=(money)
-          @amount_in_cents = money.respond_to?(:cents) ? money.cents : money
+          cents = money.respond_to?(:cents) ? money.cents : money
           raise ArgumentError, "amount must be a Money object or an integer" if money.is_a?(String)
-          raise ActionViewHelperError, "amount must be greater than $0.00" if @amount_in_cents.to_i <= 0
+          raise ActionViewHelperError, "amount must be greater than $0.00" if cents.to_i <= 0
 
-          add_field mappings[:amount], amount_in_dollars
+          add_field mappings[:amount], sprintf("%.2f", cents.to_f/100)
         end
 
         def currency(symbol)
@@ -123,7 +118,7 @@ module OffsitePayments #:nodoc:
           components  = [merchant_key]
           components << fields[mappings[:account]]
           components << fields[mappings[:order]]
-          components << amount_in_dollars.gsub(/[.,]/, '')
+          components << fields[mappings[:amount]].gsub(/[.,]/, '')
           components << fields[mappings[:currency]]
           components.join
         end

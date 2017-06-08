@@ -27,10 +27,6 @@ class DwollaNotificationTest < Test::Unit::TestCase
     assert_false @error_dwolla.test?
   end
 
-  def test_compositions
-    assert_equal Money.new(1, 'USD'), @success.amount
-  end
-
   # Replace with real successful acknowledgement code
   def test_acknowledgement
     assert_equal true, @success.acknowledge

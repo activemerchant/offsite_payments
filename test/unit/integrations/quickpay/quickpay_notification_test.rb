@@ -17,10 +17,6 @@ class QuickpayNotificationTest < Test::Unit::TestCase
     assert_equal Time.parse("2012-11-16 10:19:36+00:00"), @quickpay.received_at
   end
 
-  def test_compositions
-    assert_equal Money.new(123, 'DKK'), @quickpay.amount
-  end
-
   def test_acknowledgement
     assert @quickpay.acknowledge
   end

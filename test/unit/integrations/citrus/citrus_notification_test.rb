@@ -22,10 +22,6 @@ class CitrusNotificationTest < Test::Unit::TestCase
     assert_equal true, @citrus.checksum_ok?
   end
 
-  def test_compositions
-    assert_equal Money.from_amount(10.00, @citrus.currency), @citrus.amount
-  end
-
   def test_acknowledgement
     assert @citrus.acknowledge
   end
@@ -49,6 +45,6 @@ class CitrusNotificationTest < Test::Unit::TestCase
   end
 
   def http_raw_data_tampered
- "TxGateway=&TxId=ORD427&TxMsg=Cash+on+delivery+requested&TxRefNo=CTX1309180549472058821&TxStatus=SUCCESS&action=callback&addressCity=Kolkata&addressCountry=India&addressState=West+Bengal&addressStreet1=122+sksdlk+sdjf&addressStreet2=&addressZip=9292929292&amount=100.00&authIdCode=&controller=test&currency=USD&email=sujoy.goswami%40gmail.com&firstName=Amit&isCOD=true&issuerRefNo=&lastName=Pandey&mobileNo=929292929&paymentMode=CASH_ON_DELIVERY&pgRespCode=0&pgTxnNo=CTX1309180549472058821&signature=807bb30a30a02b904f1434539f2eb07942ecb6f1&transactionId=40689"
+    "TxGateway=&TxId=ORD427&TxMsg=Cash+on+delivery+requested&TxRefNo=CTX1309180549472058821&TxStatus=SUCCESS&action=callback&addressCity=Kolkata&addressCountry=India&addressState=West+Bengal&addressStreet1=122+sksdlk+sdjf&addressStreet2=&addressZip=9292929292&amount=100.00&authIdCode=&controller=test&currency=USD&email=sujoy.goswami%40gmail.com&firstName=Amit&isCOD=true&issuerRefNo=&lastName=Pandey&mobileNo=929292929&paymentMode=CASH_ON_DELIVERY&pgRespCode=0&pgTxnNo=CTX1309180549472058821&signature=807bb30a30a02b904f1434539f2eb07942ecb6f1&transactionId=40689"
   end
 end

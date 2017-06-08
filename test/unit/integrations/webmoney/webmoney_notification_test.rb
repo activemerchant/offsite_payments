@@ -12,10 +12,6 @@ class WebmoneyNotificationTest < Test::Unit::TestCase
     assert_equal "123",  @webmoney.item_id
   end
 
-  def test_compositions
-    assert_equal Money.from_amount(1, 'RUB'), @webmoney.amount
-  end
-
   def test_acknowledgement
     assert @webmoney.acknowledge
   end

@@ -95,11 +95,6 @@ class SagePayFormNotificationTest < Test::Unit::TestCase
     assert_nil n.currency
   end
 
-  def test_compositions
-    n = SagePayForm::Notification.new(successful_purchase, @options)
-    assert_equal Money.new(123147, nil), n.amount
-  end
-
   def test_bogus_crypt
     assert_raises SagePayForm::Notification::InvalidCryptData do
       SagePayForm::Notification.new('crypt=SomeInvalidCryptField', @options)

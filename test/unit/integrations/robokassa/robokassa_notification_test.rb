@@ -13,10 +13,6 @@ class RobokassaNotificationTest < Test::Unit::TestCase
     assert_equal "123", @robokassa.item_id
   end
 
-  def test_compositions
-    assert_equal Money.new(50000, 'RUB'), @robokassa.amount
-  end
-
   # Replace with real successful acknowledgement code
   def test_acknowledgement
     assert @robokassa.acknowledge

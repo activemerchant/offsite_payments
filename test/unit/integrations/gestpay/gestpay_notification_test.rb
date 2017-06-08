@@ -13,7 +13,6 @@ class GestpayNotificationTest < Test::Unit::TestCase
     assert_equal "1000", notification.item_id
     assert_equal "1234.56", notification.gross
     assert_equal "EUR", notification.currency
-    assert_equal Money.new(123456, 'EUR'), notification.amount
   end
 
   def test_failed_notification

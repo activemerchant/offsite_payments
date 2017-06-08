@@ -106,10 +106,6 @@ class Ipay88HelperTest < Test::Unit::TestCase
     assert_equal "abcipay88merchcodeorder-5001234MYR", @helper.send(:sig_components)
     @helper.amount = 1000
     assert_equal "abcipay88merchcodeorder-5001000MYR", @helper.send(:sig_components)
-    @helper.amount = Money.from_amount(0.90)
-    assert_equal "abcipay88merchcodeorder-500090MYR", @helper.send(:sig_components)
-    @helper.amount = Money.from_amount(10.00)
-    assert_equal "abcipay88merchcodeorder-5001000MYR", @helper.send(:sig_components)
   end
 
   def test_sign_method

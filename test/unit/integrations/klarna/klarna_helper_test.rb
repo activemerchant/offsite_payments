@@ -7,7 +7,7 @@ class KlarnaHelperTest < Test::Unit::TestCase
     @order_id = 1
     @credential1 = "Example Merchant ID"
     @options = {
-      :amount           => Money.from_amount(0.10),
+      :amount           => 10,
       :currency         => 'SEK',
       :country          => 'SE',
       :account_name     => 'Example Shop Name',
@@ -74,7 +74,7 @@ class KlarnaHelperTest < Test::Unit::TestCase
   def test_merchant_digest
     @helper = valid_helper
 
-    assert_field 'merchant_digest', "Efs6wr3Fhg4eGfQGMpelqTblLlXBzSCMz9fLUR9Bt74="
+    assert_field 'merchant_digest', "/MMTPkKSpT6Phhn1LHa5ZDPtIPJRBvjCih6Og6eSPMk="
   end
 
   def test_line_item

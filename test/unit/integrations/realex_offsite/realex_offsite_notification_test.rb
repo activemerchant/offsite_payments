@@ -20,10 +20,6 @@ class RealexOffsiteNotificationTest < Test::Unit::TestCase
     assert_equal "USD", @notification.currency
   end
 
-  def test_compositions
-    assert_equal Money.new(5000, 'USD'), @notification.amount
-  end
-
   def test_test_mode
     @notification = RealexOffsite::Notification.new(http_raw_data_test_mode, :credential3 => 'shared-secret')
     assert @notification.test?

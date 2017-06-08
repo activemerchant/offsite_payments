@@ -18,10 +18,6 @@ class WorldPayNotificationTest < Test::Unit::TestCase
     assert @world_pay.test?
   end
 
-  def test_compositions
-    assert_equal Money.new(500, 'GBP'), @world_pay.amount
-  end
-
   def test_extra_accessors
     assert_equal "Andrew White", @world_pay.name
     assert_equal "1 Nowhere Close", @world_pay.address

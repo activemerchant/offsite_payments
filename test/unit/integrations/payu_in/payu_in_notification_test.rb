@@ -30,10 +30,6 @@ class PayuInNotificationTest < Test::Unit::TestCase
     assert_equal true, @payu.checksum_ok?
   end
 
-  def test_compositions
-    assert_equal '10.00', @payu.gross
-  end
-
   def test_acknowledgement
     assert @payu.acknowledge
   end

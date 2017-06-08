@@ -24,12 +24,6 @@ class PagSeguroNotificationTest < Test::Unit::TestCase
     assert_equal "2011-02-10T16:13:41.000-03:00", pag_seguro.received_at
   end
 
-  def test_compositions
-    Net::HTTP.expects(:get_response).with(@uri).returns(stub(code: "200", body: http_raw_data))
-    pag_seguro = PagSeguro::Notification.new(notification_data)
-    assert_equal Money.new(4912, 'BRL'), pag_seguro.amount
-  end
-
   def test_respond_to_acknowledge
     Net::HTTP.expects(:get_response).with(@uri).returns(stub(code: "200", body: http_raw_data))
     pag_seguro = PagSeguro::Notification.new(notification_data)

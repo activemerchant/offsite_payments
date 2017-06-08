@@ -25,10 +25,6 @@ class AuthorizeNetSimNotificationTest < Test::Unit::TestCase
     }
   end
 
-  def test_compositions
-    assert_equal Money.new(12100, 'USD'), @authorize_net_sim.amount
-  end
-
   def test_accessors_when_set
     {:gross => "121.00", :auth_code => "000000", :payer_email => "test@test.com", :item_id => "441543269", :complete? => true,
      :duty => "0.0000", :customer_id => "10", :avs_code => "P", :cvv2_resp_code_matches? => false, :cvv2_resp_code => "", :tax_exempt => "FALSE",

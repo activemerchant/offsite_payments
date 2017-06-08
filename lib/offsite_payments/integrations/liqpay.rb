@@ -79,10 +79,6 @@ module OffsitePayments #:nodoc:
           params['merchant_id']
         end
 
-        def amount
-          Money.from_amount(BigDecimal.new(gross), currency)
-        end
-
         def item_id
           params['order_id']
         end

@@ -31,10 +31,6 @@ class BitPayNotificationTest < Test::Unit::TestCase
     assert_nil @bit_pay.item_id
   end
 
-  def test_compositions
-    assert_equal Money.new(1000, 'USD'), @bit_pay.amount
-  end
-
   def test_successful_acknowledgement
     Net::HTTP.any_instance.expects(:request).returns(stub(:body => http_raw_data))
     assert @bit_pay.acknowledge

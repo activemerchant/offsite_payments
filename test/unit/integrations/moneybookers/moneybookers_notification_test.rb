@@ -19,10 +19,6 @@ class MoneybookersNotificationTest < Test::Unit::TestCase
     assert_equal nil, @moneybookers.received_at
   end
 
-  def test_compositions
-    assert_equal Money.new(3960, 'EUR'), @moneybookers.amount
-  end
-
   def test_respond_to_acknowledge
     assert @moneybookers.respond_to?(:acknowledge)
   end

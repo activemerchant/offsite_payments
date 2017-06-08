@@ -18,10 +18,6 @@ class NochexNotificationTest < Test::Unit::TestCase
     assert @nochex.test?
   end
 
-  def test_compositions
-    assert_equal Money.new(3166, 'GBP'), @nochex.amount
-  end
-
   def test_successful_acknowledgement
     Nochex::Notification.any_instance.expects(:ssl_post).returns('AUTHORISED')
 

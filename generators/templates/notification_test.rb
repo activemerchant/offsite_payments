@@ -18,10 +18,6 @@ class <%= class_name %>NotificationTest < Test::Unit::TestCase
     assert @<%= identifier %>.test?
   end
 
-  def test_compositions
-    assert_equal Money.new(3166, 'USD'), @<%= identifier %>.amount
-  end
-
   # Replace with real successful acknowledgement code
   def test_acknowledgement
 

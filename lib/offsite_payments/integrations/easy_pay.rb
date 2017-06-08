@@ -100,10 +100,6 @@ module OffsitePayments #:nodoc:
           true
         end
 
-        def amount
-          Money.from_amount(BigDecimal.new(gross), currency)
-        end
-
         def item_id
           params['order_mer_code']
         end

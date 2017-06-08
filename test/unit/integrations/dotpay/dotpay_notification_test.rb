@@ -29,10 +29,6 @@ class DotpayNotificationTest < Test::Unit::TestCase
     assert_equal "1e0a636401a3a0604890a957b0d014f7", @dotpay_error.md5
   end
 
-  def test_compositions
-    assert_equal Money.new(15000, 'PLN'), @dotpay.amount
-  end
-
   # Replace with real successful acknowledgement code
   def test_acknowledgement
     assert @dotpay.acknowledge

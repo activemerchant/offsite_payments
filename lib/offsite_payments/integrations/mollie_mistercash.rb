@@ -109,10 +109,6 @@ module OffsitePayments #:nodoc:
             @params['amount']
           end
 
-          def gross_cents
-            (BigDecimal.new(@params['amount'], 2) * 100).to_i
-          end
-
           def status
             case @params['status']
               when 'open';                 'Pending'

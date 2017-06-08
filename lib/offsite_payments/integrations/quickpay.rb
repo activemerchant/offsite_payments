@@ -121,11 +121,7 @@ module OffsitePayments #:nodoc:
         end
 
         def gross
-          "%.2f" % (gross_cents / 100.0)
-        end
-
-        def gross_cents
-          params['amount'].to_i
+          sprintf("%.2f", params['amount'].to_i / 100.0)
         end
 
         def status

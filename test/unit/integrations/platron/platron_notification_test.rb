@@ -18,10 +18,6 @@ class PlatronNotificationTest < Test::Unit::TestCase
     assert_equal 'VI', @correct_notification.card_brand
   end
 
-  def test_compositions
-    assert_equal Money.from_amount(990, 'USD'), @correct_notification.amount
-  end
-
   def test_acknowledgement
     assert_equal @correct_notification.acknowledge, true
     assert_equal @notification_with_wrong_signature.acknowledge, false

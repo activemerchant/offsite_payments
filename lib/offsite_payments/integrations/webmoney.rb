@@ -82,10 +82,6 @@ module OffsitePayments #:nodoc:
           (params.has_key?('LMI_PAYMENT_NO') && params.has_key?('LMI_PAYMENT_AMOUNT'))
         end
 
-        def amount
-          Money.from_amount(BigDecimal.new(gross), currency)
-        end
-
         def key_present?
           params["LMI_HASH"].present?
         end

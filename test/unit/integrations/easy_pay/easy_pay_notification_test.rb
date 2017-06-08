@@ -13,10 +13,6 @@ class EasyPayNotificationTest < Test::Unit::TestCase
     assert_equal "1000", @easypay.item_id
   end
 
-  def test_compositions
-    assert_equal Money.from_amount(BigDecimal.new('100'), 'BYR'), @easypay.amount
-  end
-
   def test_credential2_required
     assert_raises ArgumentError do
       EasyPay::Notification.new(http_raw_data, {})

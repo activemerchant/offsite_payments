@@ -26,17 +26,6 @@ module OffsitePayments #:nodoc:
       raise NotImplementedError, "Must implement this method in the subclass"
     end
 
-    def gross_cents
-      (gross.to_f * 100.0).round
-    end
-
-    # This combines the gross and currency and returns a proper Money object.
-    # this requires the money library located at http://rubymoney.github.io/money/
-    def amount
-      return Money.new(gross_cents, currency) rescue ArgumentError
-      return Money.new(gross_cents) # maybe you have an own money object which doesn't take a currency?
-    end
-
     # reset the notification.
     def empty!
       @params  = Hash.new

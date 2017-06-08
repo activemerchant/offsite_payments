@@ -56,10 +56,6 @@ class PaypalNotificationTest < Test::Unit::TestCase
     assert @mass_pay_paypal.test?
   end
 
-  def test_compositions
-    assert_equal Money.new(50000, 'CAD'), @paypal.amount
-  end
-
   def test_acknowledgement
     Paypal::Notification.any_instance.stubs(:ssl_post).returns('VERIFIED')
     assert @paypal.acknowledge

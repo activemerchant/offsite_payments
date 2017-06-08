@@ -27,10 +27,6 @@ class FirstDataNotificationTest < Test::Unit::TestCase
     ].each{|m| assert_equal nil, @first_data.send(m)}
   end
 
-  def test_compositions
-    assert_equal Money.new(12100, 'USD'), @first_data.amount
-  end
-
   def test_accessors_when_set
     {
       :gross => "121.00", :auth_code => "000000",

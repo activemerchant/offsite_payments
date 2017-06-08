@@ -213,12 +213,7 @@ module OffsitePayments #:nodoc:
         end
 
         def gross
-          amount = Float(gross_cents) / 100
-          sprintf("%.2f", amount)
-        end
-
-        def gross_cents
-          params["order_amount"]
+          sprintf("%.2f", params["order_amount"].to_i / 100.0)
         end
 
         def status

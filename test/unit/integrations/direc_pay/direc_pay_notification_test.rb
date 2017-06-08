@@ -36,10 +36,6 @@ class DirecPayNotificationTest < Test::Unit::TestCase
     assert_equal "1001010000026516", @direc_pay.transaction_id
   end
 
-  def test_compositions
-    assert_equal Money.new(100, 'INR'), @direc_pay.amount
-  end
-
   def test_acknowledgement
     assert @direc_pay.acknowledge
   end

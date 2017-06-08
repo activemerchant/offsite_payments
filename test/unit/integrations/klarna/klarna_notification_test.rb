@@ -17,16 +17,6 @@ class KlarnaNotificationTest < Test::Unit::TestCase
     assert_equal "SEK", @klarna.currency
   end
 
-  def test_x2ness_of_gross_amount
-    @klarna.stubs(gross_cents: 100)
-
-    assert_equal '1.00', @klarna.gross
-  end
-
-  def test_compositions
-    assert_equal Money.new(5000, 'SEK'), @klarna.amount
-  end
-
   def test_acknowledge
     @klarna = Klarna::Notification.new(request_body, @options)
 
