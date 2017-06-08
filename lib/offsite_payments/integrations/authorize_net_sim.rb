@@ -189,7 +189,7 @@ module OffsitePayments #:nodoc:
           quantity = options[:quantity] || 1
           line_title = options[:line_title] || ('Item ' + (@line_item_count + 1).to_s) # left most field
           unit_price = options[:unit_price] || 0
-          unit_price = unit_price.to_f.round(2)
+          unit_price = unit_price.to_d.round(2)
           tax_value = options[:tax_value] || 'N'
 
           # Sanitization, in case they include a reserved word here, following
@@ -200,7 +200,7 @@ module OffsitePayments #:nodoc:
           raise 'illegal char for line item <|>' if name.include? '<|>'
           raise 'illegal char for line item "' if name.include? '"'
           raise 'cannot pass in dollar sign' if unit_price.to_s.include? '$'
-          raise 'must have positive or 0 unit price' if unit_price.to_f < 0
+          raise 'must have positive or 0 unit price' if unit_price.to_d < 0
           # Using CGI::escape causes the output to be formated incorrectly in
           # the HTML presented to the end-user's browser (e.g., spaces turn
           # into +'s).
@@ -242,7 +242,7 @@ module OffsitePayments #:nodoc:
           add_field 'x_duplicate_window', '28800' # large default duplicate window.
           add_field 'x_currency_code', currency_code
           add_field 'x_version' , '3.1' # version from doc
-          add_field 'x_amount', options[:amount].to_f.round(2)
+          add_field 'x_amount', options[:amount].to_d.round(2)
           @line_item_count = 0
         end
       end
@@ -258,7 +258,7 @@ module OffsitePayments #:nodoc:
       #   return render :partial => 'authorize_net_sim_payment_response'
       # end
       #
-      # if order.total != parser.gross.to_f
+      # if order.total != parser.gross.to_d
       #   logger.error "Authorize.Net sim said they paid for #{parser.gross} and it should have been #{order.total}!"
       #   passed = false
       # end

@@ -93,7 +93,7 @@ module OffsitePayments #:nodoc:
           raise ArgumentError, "amount must be a Money object or an integer" if money.is_a?(String)
           raise ActionViewHelperError, "amount must be greater than $0.00" if cents.to_i <= 0
 
-          add_field mappings[:amount], sprintf("%.2f", cents.to_f/100)
+          add_field mappings[:amount], sprintf("%.2f", cents.to_d/100)
         end
 
         def generate_signature_string
@@ -146,7 +146,7 @@ module OffsitePayments #:nodoc:
 
         # the money amount we received in X.2 decimal.
         def gross
-          "%.2f" % params['amount'].to_f
+          "%.2f" % params['amount'].to_d
         end
 
         def status

@@ -27,7 +27,7 @@ module OffsitePayments #:nodoc:
     end
 
     def gross_cents
-      (gross.to_f * 100.0).round
+      (gross.to_d * 100.0).round
     end
 
     # This combines the gross and currency and returns a proper Money object.

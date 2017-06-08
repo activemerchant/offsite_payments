@@ -30,7 +30,7 @@ module OffsitePayments #:nodoc:
             'TxnData1'          => options[:custom1],
             'TxnData2'          => options[:custom2],
             'TxnData3'          => options[:custom3],
-            'AmountInput'       => "%.2f" % options[:amount].to_f.round(2),
+            'AmountInput'       => "%.2f" % options[:amount].to_d.round(2),
             'EnableAddBillCard' => '0',
             'TxnType'           => 'Purchase',
             'UrlSuccess'        => options[:return_url],

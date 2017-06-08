@@ -64,7 +64,7 @@ module OffsitePayments #:nodoc:
           unless money > 0
             raise ArgumentError, "amount must be greater than $0.00."
           end
-          add_field mappings[:amount], sprintf("%.2f", money.to_f)
+          add_field mappings[:amount], sprintf("%.2f", money.to_d)
         end
 
         def currency=(cur)
