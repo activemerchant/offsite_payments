@@ -24,7 +24,7 @@ class MollieMistercashNotificationTest < Test::Unit::TestCase
     assert_equal "EUR", @notification.currency
     assert_equal 12345, @notification.gross_cents
     assert_equal "123.45", @notification.gross
-    assert_equal Money.new(12345, 'EUR'), @notification.amount
+    assert_equal Money.from_amount(123.45, 'EUR'), @notification.amount
 
     assert_equal "123", @notification.item_id
   end

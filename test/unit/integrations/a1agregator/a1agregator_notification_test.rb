@@ -23,7 +23,7 @@ class A1agregatorNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(10000, 'RUB'), @a1agregator.amount
+    assert_equal Money.from_amount(100.00, 'RUB'), @a1agregator.amount
   end
 
   def test_acknowledgement

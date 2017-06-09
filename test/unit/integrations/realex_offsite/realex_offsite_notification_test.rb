@@ -21,7 +21,7 @@ class RealexOffsiteNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(5000, 'USD'), @notification.amount
+    assert_equal Money.from_amount(50.00, 'USD'), @notification.amount
   end
 
   def test_test_mode

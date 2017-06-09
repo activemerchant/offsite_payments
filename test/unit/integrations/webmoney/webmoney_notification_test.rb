@@ -13,7 +13,7 @@ class WebmoneyNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.from_amount(1, 'RUB'), @webmoney.amount
+    assert_equal Money.from_amount(1.00, 'RUB'), @webmoney.amount
   end
 
   def test_acknowledgement

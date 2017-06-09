@@ -97,7 +97,7 @@ class SagePayFormNotificationTest < Test::Unit::TestCase
 
   def test_compositions
     n = SagePayForm::Notification.new(successful_purchase, @options)
-    assert_equal Money.new(123147, nil), n.amount
+    assert_equal Money.from_amount(1231.47), n.amount
   end
 
   def test_bogus_crypt

@@ -20,7 +20,7 @@ class MoneybookersNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(3960, 'EUR'), @moneybookers.amount
+    assert_equal Money.from_amount(39.60, 'EUR'), @moneybookers.amount
   end
 
   def test_respond_to_acknowledge

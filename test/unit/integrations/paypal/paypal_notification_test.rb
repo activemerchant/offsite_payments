@@ -57,7 +57,7 @@ class PaypalNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(50000, 'CAD'), @paypal.amount
+    assert_equal Money.from_amount(500.00, 'CAD'), @paypal.amount
   end
 
   def test_acknowledgement

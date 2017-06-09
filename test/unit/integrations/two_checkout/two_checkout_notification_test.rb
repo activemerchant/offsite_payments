@@ -21,7 +21,7 @@ class TwoCheckoutNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(20, 'USD'), @live_notification.amount
+    assert_equal Money.from_amount(0.20, 'USD'), @live_notification.amount
   end
 
   def test_acknowledgement

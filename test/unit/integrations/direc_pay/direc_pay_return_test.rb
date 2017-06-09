@@ -28,7 +28,7 @@ class DirecPayReturnTest < Test::Unit::TestCase
     assert_equal '1001', notification.item_id
     assert_equal '1.00', notification.gross
     assert_equal 100, notification.gross_cents
-    assert_equal Money.new(100, 'INR'), notification.amount
+    assert_equal Money.from_amount(1.00, 'INR'), notification.amount
     assert_equal 'INR', notification.currency
     assert_equal 'IND', notification.country
     assert_equal 'NULL', notification.other_details
