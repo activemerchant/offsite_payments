@@ -26,7 +26,7 @@ module OffsitePayments #:nodoc:
       class Helper < OffsitePayments::Helper
         include ActiveUtils::RequiresParameters
 
-        DEFAULT_SUCCESS_TEXT = "The transaction has been completed."
+        DEFAULT_SUCCESS_TEXT = "Til baka í verslun."
 
         def initialize(order, account, options={})
           options[:currency] ||= 'ISK'
