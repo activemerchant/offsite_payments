@@ -47,10 +47,22 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
                             :city => 'Leeds',
                             :state => 'Yorkshire',
                             :zip => 'LS2 7EE',
-                            :country  => 'CA'
+                            :country  => 'GB'
 
     assert_field 'BILLING_CODE', '27|1'
-    assert_field 'BILLING_CO', 'CA'
+    assert_field 'BILLING_CO', 'GB'
+  end
+
+  def test_address_mapping_us
+    @helper.billing_address :address1 => '123 My Street',
+                            :address2 => 'Apt. 1',
+                            :city => 'Anytown',
+                            :state => 'Anystate',
+                            :zip => '54321',
+                            :country  => 'US'
+
+    assert_field 'BILLING_CODE', '54321|123 My Street'
+    assert_field 'BILLING_CO', 'US'
   end
 
   def test_shipping_address
@@ -64,6 +76,19 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
 
     assert_field 'SHIPPING_CODE', '271|1'
     assert_field 'SHIPPING_CO', 'GB'
+  end
+
+  def test_shipping_address_us
+    @helper.shipping_address :name => 'Testing Tester',
+                             :address1 => '123 My Street',
+                             :address2 => 'Apt. 1',
+                             :city => 'Anytown',
+                             :state => 'Anystate',
+                             :zip => '54321',
+                             :country  => 'US'
+
+    assert_field 'SHIPPING_CODE', '54321|123 My Street'
+    assert_field 'SHIPPING_CO', 'US'
   end
 
   def test_format_amount_as_float
