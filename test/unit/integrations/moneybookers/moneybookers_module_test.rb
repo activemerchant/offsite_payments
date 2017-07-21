@@ -8,7 +8,7 @@ class MoneybookersModuleTest < Test::Unit::TestCase
   end
 
   def test_service_url
-    url = 'https://www.moneybookers.com/app/payment.pl'
+    url = 'https://pay.skrill.com'
     assert_equal url, Moneybookers.service_url
   end
 end
