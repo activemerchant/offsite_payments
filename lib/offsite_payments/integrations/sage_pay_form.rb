@@ -127,6 +127,8 @@ module OffsitePayments #:nodoc:
         end
 
         def form_fields
+          fields.delete('locale')
+
           map_billing_address_to_shipping_address unless @shipping_address_set
 
           fields['DeliveryFirstnames'] ||= fields['BillingFirstnames']

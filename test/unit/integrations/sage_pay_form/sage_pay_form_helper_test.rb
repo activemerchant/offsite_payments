@@ -268,6 +268,20 @@ class SagePayFormHelperTest < Test::Unit::TestCase
     assert_false @helper.fields['ReferrerID']
   end
 
+  def test_form_fields_does_not_contain_locale
+    @helper.add_field(:locale, 'en')
+
+    refute @helper.form_fields.key?('locale')
+  end
+
+  def test_encrypted_fields_do_not_contain_locale
+    @helper.add_field(:locale, 'en')
+
+    with_crypt_plaintext do |plain|
+      refute plain.include?('locale')
+    end
+  end
+
   private
 
   def with_crypt_plaintext
