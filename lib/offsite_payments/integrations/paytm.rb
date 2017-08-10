@@ -31,7 +31,7 @@ module OffsitePayments #:nodoc:
           salt = 4.times.map { SALT_ALPHABET[SecureRandom.random_number(SALT_ALPHABET.length)] }.join
         end
 
-        values = chk_params.compact.sort.to_h.values
+        values = chk_params.sort.to_h.values
         values << salt
         check_sum = Digest::SHA256.hexdigest(values.join('|')) + salt
 
