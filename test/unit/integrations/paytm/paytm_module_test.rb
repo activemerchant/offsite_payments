@@ -37,21 +37,9 @@ class PaytmModuleTest < Test::Unit::TestCase
     paytm_load = { 'MID' => @merchant_id, 'ORDER_ID' => '100PT012', 'CUST_ID' => 'test@example.com', 'TXN_AMOUNT' => '10', 'CHANNEL_ID' => 'WEB', 'INDUSTRY_TYPE_ID' => @industry_type_id, 'WEBSITE' => @website, 'MERC_UNQ_REF' => '100PT012', 'CALLBACK_URL' => 'http://www.shopify.com/paytmRes' }
 
     salt = '1234'
-    keys = paytm_load.keys
-    str = nil
-    keys = keys.sort
-    keys.each do |k|
-      if str.nil?
-        str = paytm_load[k].to_s
-        next
-      end
-      str = str + '|' + paytm_load[k].to_s
-    end
-    str = str + '|' + salt
-
-    check_sum = Digest::SHA256.hexdigest(str)
-    check_sum += salt
-
+    values = paytm_load.sort.to_h.values
+    values << salt
+    check_sum = Digest::SHA256.hexdigest(values.join('|')) + salt
     ### encrypting checksum ###
     aes = OpenSSL::Cipher::AES.new('128-CBC')
     aes.encrypt

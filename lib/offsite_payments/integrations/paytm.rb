@@ -30,25 +30,10 @@ module OffsitePayments #:nodoc:
         if salt.nil?
           salt = 4.times.map { SALT_ALPHABET[SecureRandom.random_number(SALT_ALPHABET.length)] }.join
         end
-        keys = chk_params.keys
-        str = nil
-        keys = keys.sort
 
-        keys.each do |k|
-          if chk_params[k].nil?
-            next
-          end
-
-          if str.nil?
-            str = chk_params[k].to_s
-            next
-          end
-          str = str + '|' + chk_params[k].to_s
-        end
-        str = str + '|' + salt
-
-        check_sum = Digest::SHA256.hexdigest(str)
-        check_sum += salt
+        values = chk_params.sort.to_h.values
+        values << salt
+        check_sum = Digest::SHA256.hexdigest(values.join('|')) + salt
 
         ### encrypting checksum ###
         aes = OpenSSL::Cipher::AES.new('128-CBC')
@@ -220,20 +205,9 @@ module OffsitePayments #:nodoc:
           return false if hash_str == false
 
           salt = hash_str[(hash_str.length - 4), hash_str.length]
-          keys = @params.keys
-          str = nil
-          keys = keys.sort
-          keys.each do |k|
-            next unless PAYTM_RESPONSE_PARAMS.include?(k)
-            if str.nil?
-              str = @params[k].to_s
-              next
-            end
-            str = str + '|' + @params[k].to_s
-          end
-          str = str + '|' + salt
-          generated_hash_str = Digest::SHA256.hexdigest(str)
-          generated_hash_str += salt
+          values = @params.sort.to_h.values
+          values << salt
+          generated_hash_str = Digest::SHA256.hexdigest(values.join('|')) + salt
 
           if hash_str == generated_hash_str
             if @params['RESPCODE'] == '01'
