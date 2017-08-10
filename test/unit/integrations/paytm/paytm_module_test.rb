@@ -37,7 +37,7 @@ class PaytmModuleTest < Test::Unit::TestCase
     paytm_load = { 'MID' => @merchant_id, 'ORDER_ID' => '100PT012', 'CUST_ID' => 'test@example.com', 'TXN_AMOUNT' => '10', 'CHANNEL_ID' => 'WEB', 'INDUSTRY_TYPE_ID' => @industry_type_id, 'WEBSITE' => @website, 'MERC_UNQ_REF' => '100PT012', 'CALLBACK_URL' => 'http://www.shopify.com/paytmRes' }
 
     salt = '1234'
-    values = paytm_load.sort.to_h.values
+    values = paytm_load.compact.sort.to_h.values
     values << salt
     check_sum = Digest::SHA256.hexdigest(values.join('|')) + salt
     ### encrypting checksum ###
