@@ -197,7 +197,7 @@ module OffsitePayments #:nodoc:
           expected_params = @params.keep_if { |k| PAYTM_RESPONSE_PARAMS.include?(k) }.sort.to_h
           expected_checksum = Paytm.checksum(expected_params, salt)
 
-          if ActiveSupport::SecurityUtils.variable_size_secure_compare(received_checksum, expected_checksum)
+          if received_checksum == expected_checksum
             @message = @params['RESPMSG']
             @params['RESPCODE'] == '01'
           else
