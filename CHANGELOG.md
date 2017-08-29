@@ -1,9 +1,19 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.6.0 (Aug 29, 2017)
+- Rails 5.1 compatibility [eitoball, patientdev] #245
+- Update paydollar URLs [SimonLeungAPHK] #228
+- Fixed compatibility between RubyMoney/money and Shopify/money gems [elfassy] #246
+- Fixed calling Mollie with extra parameters [edwinv] #247
+- Stop hiding JSON parse errors for Bitpay [bdewater] #251
+- Do not send locale parameter to Sagepay [pi3r] #258
+- Updats Skrill URL [sergey-alekseev ] #259
+- Changed PayTM integration [Mohit-Aggarwal1] #260
+
 ### Version 2.5.0 (April 12, 2017)
 - corrected zip parameter to from zip to zipcode
 - [Realex] guard against nil when extracting AVS code
-- only use fields that start with x_ to generate the signature
+- only use fields that start with `x_` to generate the signature
 - bump active_utils version 3.3.0
 
 ### Version 2.4.0 (March 7, 2017)
