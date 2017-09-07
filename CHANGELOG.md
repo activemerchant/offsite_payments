@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.6.1 (Sep 7, 2017)
+- Fix PayTM checksum generation [christianblais] #262
+
 ### Version 2.6.0 (Aug 29, 2017)
 - Rails 5.1 compatibility [eitoball, patientdev] #245
 - Update paydollar URLs [SimonLeungAPHK] #228
