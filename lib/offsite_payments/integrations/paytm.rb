@@ -77,9 +77,12 @@ module OffsitePayments #:nodoc:
         end
 
         def encrypt_checksum
-          payload_items = CHECKSUM_FIELDS.reduce({}) do |items, field|
-            items[field] = @fields[field]
+          payload_items = {}
+
+          CHECKSUM_FIELDS.each do |field|
+            payload_items[field] = @fields[field]
           end
+
           Paytm.encrypt(Paytm.checksum(payload_items), @options[:credential2])
         end
 
