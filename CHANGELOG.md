@@ -1,5 +1,9 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.6.2 (Oct 30, 2017)
+- Fix ArgumentError in PayuIn with BigDecimal v1.3.2 [aman-dureja] #264
+- Fix molpay and citrus tests [aman-dureja] #264
+
 ### Version 2.6.1 (Sep 7, 2017)
 - Fix PayTM checksum generation [christianblais] #262
 
