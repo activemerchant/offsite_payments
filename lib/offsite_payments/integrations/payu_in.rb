@@ -117,7 +117,8 @@ module OffsitePayments #:nodoc:
 
         # Order amount should be equal to gross - discount
         def amount_ok?( order_amount, order_discount = BigDecimal.new( '0.0' ) )
-          BigDecimal.new( original_gross ) == order_amount && discount.to_d == order_discount
+          parsed_discount = discount.nil? ? 0.to_d : discount.to_d
+          BigDecimal.new( original_gross ) == order_amount && parsed_discount == order_discount
         end
 
         # Status of transaction return from the PayU. List of possible values:
