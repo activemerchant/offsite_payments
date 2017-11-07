@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.6.3 (Nov 7, 2017)
+- Fix nil coercion to BigDecimal zero in PauyIn [aman-dureja] #265
+
 ### Version 2.6.2 (Oct 30, 2017)
 - Fix ArgumentError in PayuIn with BigDecimal v1.3.2 [aman-dureja] #264
 - Fix molpay and citrus tests [aman-dureja] #264
