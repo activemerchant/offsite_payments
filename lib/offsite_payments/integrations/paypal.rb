@@ -192,6 +192,56 @@ module OffsitePayments #:nodoc:
           status == "Completed"
         end
 
+        # Was the transaction reversal canceled?
+        def canceled_reversal?
+          status == "Canceled_Reversal"
+        end
+
+        # Was the transaction created?
+        def created?
+          status == "Created"
+        end
+
+        # Was the transaction denied?
+        def denied?
+          status == "Denied"
+        end
+
+        # Was the transaction expired?
+        def expired?
+          status == "Expired"
+        end
+
+        # Was the transaction failed?
+        def failed?
+          status == "Failed"
+        end
+
+        # Was the transaction pending?
+        def pending?
+          status == "Pending"
+        end
+
+        # Was the transaction refunded?
+        def refunded?
+          status == "Refunded"
+        end
+
+        # Was the transaction reversed?
+        def reversed?
+          status == "Reversed"
+        end
+
+        # Was the transaction processed?
+        def processed?
+          status == "Processed"
+        end
+
+        # Was the transaction voided?
+        def voided?
+          status == "Voided"
+        end
+
         # Is it a masspay notification?
         def masspay?
           type == "masspay"
@@ -275,6 +325,46 @@ module OffsitePayments #:nodoc:
 
         def account
           params['business'] || params['receiver_email']
+        end
+
+        # Status of a pending transaction. Returns nil if not pending.
+        # List of possible values when pending:
+        # <tt>address</tt>::
+        # <tt>authorization</tt>::
+        # <tt>echeck</tt>::
+        # <tt>intl</tt>::
+        # <tt>multi-currency</tt>::
+        # <tt>order</tt>::
+        # <tt>paymentreview</tt>::
+        # <tt>regulartory_review</tt>::
+        # <tt>unilateral</tt>::
+        # <tt>upgrade</tt>::
+        # <tt>verify</tt>::
+        # <tt>other</tt>::
+        def pending_reason
+          params['pending_reason']
+        end
+
+        # This variable is set if payment_status is Reversed, Refunded,
+        # Canceled_Reversal, or Denied. Otherwise is nil.
+        # List of possible values when pending:
+        # <tt>adjustment_reversal</tt>::
+        # <tt>admin_fraud_reversal</tt>::
+        # <tt>admin_reversal</tt>::
+        # <tt>buyer-complaint</tt>::
+        # <tt>chargeback</tt>::
+        # <tt>chargeback_reimbursement</tt>::
+        # <tt>chargeback_settlement</tt>::
+        # <tt>guarantee</tt>::
+        # <tt>other</tt>::
+        # <tt>refund</tt>::
+        # <tt>regulatory_block</tt>::
+        # <tt>regulartory_reject</tt>::
+        # <tt>regulatory_review_exceeding_sla</tt>::
+        # <tt>unauthorized_claim</tt>::
+        # <tt>unauthorized_spoof</tt>::
+        def reason_code
+          params['reason_code']
         end
 
         # Acknowledge the transaction to paypal. This method has to be called after a new
