@@ -71,7 +71,7 @@ module OffsitePayments #:nodoc:
           super
           @options = options
           self.pg = 'CC'
-          var5 << partner_identifier
+          var5 =var5 + partner_identifier
         end
 
         def form_fields
