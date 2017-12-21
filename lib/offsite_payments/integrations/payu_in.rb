@@ -70,6 +70,7 @@ module OffsitePayments #:nodoc:
           super
           @options = options
           self.pg = 'CC'
+          add_field('udf5', application_id)
         end
 
         def form_fields

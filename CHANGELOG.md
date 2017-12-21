@@ -1,5 +1,7 @@
 # Offsite Payments CHANGELOG
 
+- Add application ID tracking to PayuIn [ahamed-wahid] #271
+
 ### Version 2.7.0 (Apr 6, 2018)
 - Remove Money gem as dependency into gemspec [filipebarcos] #288
 
