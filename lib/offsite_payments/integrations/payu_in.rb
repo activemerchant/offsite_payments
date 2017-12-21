@@ -7,6 +7,7 @@ module OffsitePayments #:nodoc:
 
       self.test_url = 'https://test.payu.in/_payment.php'
       self.production_url = 'https://secure.payu.in/_payment.php'
+      self.partner_identifier = 'partner:shopify'
 
       def self.service_url
         OffsitePayments.mode == :production ? self.production_url : self.test_url
@@ -71,7 +72,7 @@ module OffsitePayments #:nodoc:
           super
           @options = options
           self.pg = 'CC'
-          var5 =var5 + partner_identifier
+          var5 = var5 + partner_identifier
         end
 
         def form_fields
