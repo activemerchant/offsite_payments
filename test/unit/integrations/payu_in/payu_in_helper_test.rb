@@ -40,7 +40,7 @@ class PayuInHelperTest < Test::Unit::TestCase
   end
 
   def test_user_defined_fields
-    @helper.user_defined :var1 => 'var_one', :var2 => 'var_two', :var3 => 'var_three', :var4 => 'var_four', :var5 => 'var_five', :var6 => 'var_six', :var7 => 'var_seven', :var8 => 'var_eight', :var9 => 'var_nine', :var10 => 'var_ten'
+    @helper.user_defined :var1 => 'var_one', :var2 => 'var_two', :var3 => 'var_three', :var4 => 'var_four', :var5 => 'partner:shopify', :var6 => 'var_six', :var7 => 'var_seven', :var8 => 'var_eight', :var9 => 'var_nine', :var10 => 'var_ten'
 
     assert_equal 'var_one', @helper.fields['udf1']
     assert_equal 'var_two', @helper.fields['udf2']
@@ -57,7 +57,7 @@ class PayuInHelperTest < Test::Unit::TestCase
   def test_add_checksum_method
     @helper.customer :first_name => 'Payu-Admin', :email => 'test@example.com'
     @helper.description "Product Info"
-    @helper.user_defined :var1 => 'var_one', :var2 => 'var_two', :var3 => 'var_three', :var4 => 'var_four', :var5 => 'var_five', :var6 => 'var_six', :var7 => 'var_seven', :var8 => 'var_eight', :var9 => 'var_nine', :var10 => 'var_ten'
+    @helper.user_defined :var1 => 'var_one', :var2 => 'var_two', :var3 => 'var_three', :var4 => 'var_four', :var5 => 'partner:shopify', :var6 => 'var_six', :var7 => 'var_seven', :var8 => 'var_eight', :var9 => 'var_nine', :var10 => 'var_ten'
 
     fields = ["txnid", "amount", "productinfo", "firstname", "email", "udf1", "udf2", "udf3", "udf4", "udf5", "udf6", "udf7", "udf8", "udf9", "udf10"].map { |field| @helper.fields[field] }
     assert_equal Digest::SHA512.hexdigest(['merchant_id', *fields, 'secret_key'].join("|")), @helper.form_fields["hash"]
