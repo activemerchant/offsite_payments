@@ -3,6 +3,7 @@ module OffsitePayments #:nodoc:
     module PayuIn
       mattr_accessor :test_url
       mattr_accessor :production_url
+      mattr_accessor :partner_identifier
 
       self.test_url = 'https://test.payu.in/_payment.php'
       self.production_url = 'https://secure.payu.in/_payment.php'
@@ -70,6 +71,7 @@ module OffsitePayments #:nodoc:
           super
           @options = options
           self.pg = 'CC'
+          var5 << partner_identifier
         end
 
         def form_fields
