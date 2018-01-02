@@ -40,13 +40,13 @@ class PayuInHelperTest < Test::Unit::TestCase
   end
 
   def test_user_defined_fields
-    @helper.user_defined :var1 => 'var_one', :var2 => 'var_two', :var3 => 'var_three', :var4 => 'var_four', :var5 => 'partner:shopify', :var6 => 'var_six', :var7 => 'var_seven', :var8 => 'var_eight', :var9 => 'var_nine', :var10 => 'var_ten'
+    @helper.user_defined :var1 => 'var_one', :var2 => 'var_two', :var3 => 'var_three', :var4 => 'var_four', :var5 => 'shopify_active_merchants', :var6 => 'var_six', :var7 => 'var_seven', :var8 => 'var_eight', :var9 => 'var_nine', :var10 => 'var_ten'
 
     assert_equal 'var_one', @helper.fields['udf1']
     assert_equal 'var_two', @helper.fields['udf2']
     assert_equal 'var_three', @helper.fields['udf3']
     assert_equal 'var_four', @helper.fields['udf4']
-    assert_equal 'var_five', @helper.fields['udf5']
+    assert_equal 'shopify_active_merchants', @helper.fields['udf5']
     assert_equal 'var_six', @helper.fields['udf6']
     assert_equal 'var_seven', @helper.fields['udf7']
     assert_equal 'var_eight', @helper.fields['udf8']
