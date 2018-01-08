@@ -1,7 +1,10 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.6.4 (Jan 8, 2018)
+- Use multiple address fields for WorldPay instead of concatenating them [joshnuss] #270
+
 ### Version 2.6.3 (Nov 7, 2017)
-- Fix nil coercion to BigDecimal zero in PayIn [aman-dureja] #265
+- Fix nil coercion to BigDecimal zero in PayuIn [aman-dureja] #265
 
 ### Version 2.6.2 (Oct 30, 2017)
 - Fix ArgumentError in PayuIn with BigDecimal v1.3.2 [aman-dureja] #264
