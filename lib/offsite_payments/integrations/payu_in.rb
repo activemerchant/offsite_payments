@@ -70,7 +70,7 @@ module OffsitePayments #:nodoc:
           super
           @options = options
           self.pg = 'CC'
-          @fields['udf5'] = 'shopify_active_merchants' 
+          @fields['udf5'] = 'shopify_active_merchants'
         end
 
         def form_fields
