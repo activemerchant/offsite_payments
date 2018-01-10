@@ -2,7 +2,7 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Moneybookers
       mattr_accessor :production_url
-      self.production_url = 'https://www.moneybookers.com/app/payment.pl'
+      self.production_url = 'https://pay.skrill.com'
 
       def self.service_url
         self.production_url

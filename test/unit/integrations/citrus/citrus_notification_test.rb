@@ -23,7 +23,7 @@ class CitrusNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(1000, @citrus.currency), @citrus.amount
+    assert_equal Money.from_amount(10.00, @citrus.currency), @citrus.amount
   end
 
   def test_acknowledgement

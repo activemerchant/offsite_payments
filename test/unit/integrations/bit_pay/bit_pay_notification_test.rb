@@ -17,22 +17,8 @@ class BitPayNotificationTest < Test::Unit::TestCase
     assert_equal 123, @bit_pay.item_id
   end
 
-  def test_invalid_data
-    hash = JSON.parse(http_raw_data)
-    @bit_pay = BitPay::Notification.new('{"invalid":json}')
-
-    assert @bit_pay.params.empty?
-  end
-
-  def test_item_id_invalid_json
-    hash = JSON.parse(http_raw_data)
-    @bit_pay = BitPay::Notification.new(hash.merge('posData' => 'Invalid JSON').to_json)
-
-    assert_nil @bit_pay.item_id
-  end
-
   def test_compositions
-    assert_equal Money.new(1000, 'USD'), @bit_pay.amount
+    assert_equal Money.from_amount(10.00, 'USD'), @bit_pay.amount
   end
 
   def test_successful_acknowledgement
@@ -42,11 +28,6 @@ class BitPayNotificationTest < Test::Unit::TestCase
 
   def test_acknowledgement_error
     Net::HTTP.any_instance.expects(:request).returns(stub(:body => '{"error":"Doesnt match"}'))
-    assert !@bit_pay.acknowledge
-  end
-
-  def test_acknowledgement_invalid_json
-    Net::HTTP.any_instance.expects(:request).returns(stub(:body => '{invalid json'))
     assert !@bit_pay.acknowledge
   end
 

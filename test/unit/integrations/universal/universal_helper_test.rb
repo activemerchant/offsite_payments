@@ -145,6 +145,18 @@ class UniversalHelperTest < Test::Unit::TestCase
     assert_field 'x_signature', expected_signature
   end
 
+  def test_signature_only_uses_fields_that_start_with_x_
+    expected_signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::SHA256.new, @key, 'x_account_idzorkx_amount123.45x_credential3123456789x_credential4abcdefghijkx_currencyUSDx_referenceorder-500x_shop_countryUSx_shop_nameWidgets Incx_testfalsex_transaction_typesale')
+    @helper.sign_fields
+
+    assert_field 'x_signature', expected_signature
+
+    @helper.add_field('should_not_be_used_in_signature', 'value')
+    @helper.sign_fields
+
+    assert_field 'x_signature', expected_signature
+  end
+
   def test_signature_when_some_credentials_are_not_defined
     @options[:credential3] = ''
     @options[:credential4] = ''

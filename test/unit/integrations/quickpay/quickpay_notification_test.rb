@@ -18,7 +18,7 @@ class QuickpayNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(123, 'DKK'), @quickpay.amount
+    assert_equal Money.from_amount(1.23, 'DKK'), @quickpay.amount
   end
 
   def test_acknowledgement

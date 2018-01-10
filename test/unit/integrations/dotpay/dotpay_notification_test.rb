@@ -30,7 +30,7 @@ class DotpayNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(15000, 'PLN'), @dotpay.amount
+    assert_equal Money.from_amount(150.00, 'PLN'), @dotpay.amount
   end
 
   # Replace with real successful acknowledgement code

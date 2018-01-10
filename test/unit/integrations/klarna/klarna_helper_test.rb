@@ -7,7 +7,7 @@ class KlarnaHelperTest < Test::Unit::TestCase
     @order_id = 1
     @credential1 = "Example Merchant ID"
     @options = {
-      :amount           => Money.new(10.00),
+      :amount           => Money.from_amount(0.10),
       :currency         => 'SEK',
       :country          => 'SE',
       :account_name     => 'Example Shop Name',

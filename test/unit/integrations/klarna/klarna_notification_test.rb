@@ -24,7 +24,7 @@ class KlarnaNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(5000, 'SEK'), @klarna.amount
+    assert_equal Money.from_amount(50.00, 'SEK'), @klarna.amount
   end
 
   def test_acknowledge

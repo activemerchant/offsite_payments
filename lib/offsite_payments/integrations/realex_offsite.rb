@@ -88,6 +88,7 @@ module OffsitePayments #:nodoc:
         end
 
         def extract_digits(value)
+          return unless value
           value.scan(/\d+/).join('')
         end
 
