@@ -187,6 +187,8 @@ module OffsitePayments #:nodoc:
         end
 
         def checksum_ok?
+          return false if checksum.nil?
+
           normalized_data = checksum.delete("\n").tr(' ', '+')
           encrypted_data = Base64.strict_decode64(normalized_data)
 
