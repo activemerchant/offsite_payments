@@ -207,6 +207,8 @@ module OffsitePayments #:nodoc:
             @message = 'Return checksum not matching the data provided'
             false
           end
+        rescue
+          return false
         end
 
         private
