@@ -12,6 +12,7 @@ end
 require 'bundler/gem_tasks'
 require 'rake'
 require 'rake/testtask'
+require 'ci/reporter/rake/test_unit'
 
 task :tag_release do
   system "git tag -a v#{OffsitePayments::VERSION} -m 'Tagging #{OffsitePayments::VERSION}'"
@@ -19,8 +20,8 @@ task :tag_release do
 end
 
 desc "Run the unit test suite"
-task :default => 'test:units'
-task :test => 'test:units'
+task :default =>  ['ci:setup:testunit', 'test:units']
+task :test =>  ['ci:setup:testunit', 'test:units']
 
 namespace :test do
   Rake::TestTask.new(:units) do |t|

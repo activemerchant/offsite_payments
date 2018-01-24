@@ -1,5 +1,5 @@
 language: ruby
-script: "bundle exec rake test:units"
+script: "bundle exec rake test"
 sudo: false
 cache: bundler
 
@@ -37,3 +37,11 @@ matrix:
 
 before_install:
   - gem update bundler
+  - mkdir -p $HOME/bin
+  - curl -fsSL https://testspace-client.s3.amazonaws.com/testspace-linux.tgz | tar -zxvf- -C $HOME/bin
+  - testspace config url $TS_ORG.testspace.com
+
+after_script:
+  - export RAILS_VER=$(echo $BUNDLE_GEMFILE | sed -r 's/.*Gemfile.(\S+)/\1/g')
+  - export FOLDER=ruby_${TRAVIS_RUBY_VERSION}.$RAILS_VER
+  - testspace [${FOLDER}]$PWD/test/reports/TEST*.xml{test} 
