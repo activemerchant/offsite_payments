@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-gemspec
+gemspec path: '..'
 
 gem 'jruby-openssl', :platforms => :jruby
 
@@ -9,4 +9,4 @@ group :remote_test do
   gem 'mongrel', '1.2.0.pre2', :platforms => :ruby
 end
 
-gem 'actionpack', '~> 4.1.0'
+gem 'actionpack', '~> 4.0.0'
