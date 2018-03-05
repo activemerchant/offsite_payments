@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.6.5 (Mar 5, 2018)
+- Allow actionpack 5.2 [Edouard-chin] #276
+
 ### Version 2.6.4 (Jan 8, 2018)
 - Use multiple address fields for WorldPay instead of concatenating them [joshnuss] #270
 
