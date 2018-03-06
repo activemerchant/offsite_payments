@@ -39,5 +39,6 @@ The addition of your payment integration to offsite_payments does not guarantee 
 1. Check the [semantic versioning page](http://semver.org) for info on how to version the new release.
 2. Update the `OffsitePayments::VERSION` constant in **lib/offsite_payments/version.rb**.
 3. Add a `CHANGELOG` entry for the new release with the date
-4. Tag the release commit on GitHub: `bundle exec rake tag_release`
-5. Release the gem to rubygems using ShipIt
+4. Run `bundle install` and commit the changes you've made.
+5. Tag the release commit on GitHub: `bundle exec rake tag_release`
+6. Release the gem to rubygems using ShipIt
