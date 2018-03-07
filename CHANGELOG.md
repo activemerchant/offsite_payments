@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.6.7 (Mar 7, 2018)
+- Add GET retries for Mollie offsites [Girardvjonathan] #279
+
 ### Version 2.6.6 (Mar 6, 2018)
 - Paytm to accepts phone numbers as customer identifier [christianblais] #275
 - Paytm::Notification#checksum_ok? should always return a boolean predicate [pi3r] #273
