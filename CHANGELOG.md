@@ -1,5 +1,9 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.6.6 (Mar 6, 2018)
+- Paytm to accepts phone numbers as customer identifier [christianblais] #275
+- Paytm::Notification#checksum_ok? should always return a boolean predicate [pi3r] #273
+
 ### Version 2.6.5 (Mar 5, 2018)
 - Allow actionpack 5.2 [Edouard-chin] #276
 
