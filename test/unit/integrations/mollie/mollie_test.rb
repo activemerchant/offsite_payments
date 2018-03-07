@@ -45,6 +45,26 @@ class MollieTest < Test::Unit::TestCase
     assert_equal 'https://example.com/return', response['links']['redirectUrl']
   end
 
+  def test_get_request_retry_on_timeout
+    @api
+      .expects(:ssl_request)
+      .with(
+        :get,
+        'https://api.mollie.nl/v1/payments/tr_QkwjRvZBzH',
+        nil,
+        {
+          "Authorization" => "Bearer test_8isBjQoJXJoiXRSzjhwKPO1Bo9AkVA",
+          "Content-Type" => "application/json"
+        }
+      )
+      .twice
+      .raises(ActiveUtils::ConnectionError, 'message')
+      .then
+      .returns(@api_response)
+
+    response = @api.get_request("payments/tr_QkwjRvZBzH")
+  end
+
   def test_post_request
     params =  {
       :amount => BigDecimal.new('123.45'),
