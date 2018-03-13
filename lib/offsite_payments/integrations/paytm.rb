@@ -96,12 +96,12 @@ module OffsitePayments #:nodoc:
 
         def sanitize_fields
           %w(email phone).each do |field|
-            sanitize_field(@fields[field])
+            @fields[field] = sanitize_field(@fields[field])
           end
         end
 
         def sanitize_field(field)
-          field.gsub!(/[^a-zA-Z0-9\-_@\/\s.]/, '') if field
+          field.gsub(/[^a-zA-Z0-9\-_@\/\s.]/, '') if field
         end
       end
 
