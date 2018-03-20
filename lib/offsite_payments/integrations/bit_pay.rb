@@ -74,7 +74,6 @@ module OffsitePayments #:nodoc:
 
           response = http.request(request)
           JSON.parse(response.body)
-        rescue JSON::ParserError
         end
       end
 
