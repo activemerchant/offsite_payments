@@ -1,5 +1,9 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.6.8 (Mar 22, 2018)
+- Ensure values are always sanitized [christianblais] #281
+- Updates exception handling for BitPay [joshnuss] #282
+
 ### Version 2.6.7 (Mar 7, 2018)
 - Add GET retries for Mollie offsites [Girardvjonathan] #279
 

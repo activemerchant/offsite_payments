@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    offsite_payments (2.6.7)
+    offsite_payments (2.6.8)
       actionpack (>= 3.2.20, < 6.0)
       active_utils (~> 3.3.0)
       activesupport (>= 3.2.14)
@@ -36,7 +36,7 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_utils (3.3.10)
+    active_utils (3.3.11)
       activesupport (>= 3.2, < 6.0)
       i18n
     activejob (5.1.5)
