@@ -36,6 +36,8 @@ matrix:
   include:
     - rvm: 2.3.3
       gemfile: gemfiles/Gemfile.shopify
+    - rvm: 2.4.0
+      gemfile: gemfiles/Gemfile.shopify
 
 before_install:
   - gem update bundler

@@ -10,4 +10,4 @@ group :remote_test do
 end
 
 gem 'actionpack', '~> 5.0.0'
-gem 'money', git: 'https://github.com/Shopify/money.git'
+gem 'shopify-money', require: 'money', git: 'https://github.com/Shopify/money.git'
