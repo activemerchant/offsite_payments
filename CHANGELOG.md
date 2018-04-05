@@ -1,5 +1,19 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.6.8 (Mar 22, 2018)
+- Ensure values are always sanitized [christianblais] #281
+- Updates exception handling for BitPay [joshnuss] #282
+
+### Version 2.6.7 (Mar 7, 2018)
+- Add GET retries for Mollie offsites [Girardvjonathan] #279
+
+### Version 2.6.6 (Mar 6, 2018)
+- Paytm to accepts phone numbers as customer identifier [christianblais] #275
+- Paytm::Notification#checksum_ok? should always return a boolean predicate [pi3r] #273
+
+### Version 2.6.5 (Mar 5, 2018)
+- Allow actionpack 5.2 [Edouard-chin] #276
+
 ### Version 2.6.4 (Jan 8, 2018)
 - Use multiple address fields for WorldPay instead of concatenating them [joshnuss] #270
 

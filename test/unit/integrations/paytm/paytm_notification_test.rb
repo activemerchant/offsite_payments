@@ -31,6 +31,18 @@ class PaytmNotificationTest < Test::Unit::TestCase
     assert @paytm.acknowledge
   end
 
+  def test_checksum_ok_returns_false_when_checksum_is_nil
+    @paytm = Paytm::Notification.new(
+      http_raw_data.gsub('&CHECKSUMHASH=M9E4OLugj4L3TLLiof2BSO03hhQQLMucnVgtYuHi4wIVLB20dCXS632PRw0dTmnAa58R0kEuh9%2bV3bfQs4F/SrlmsmV%2bhvhb3Nui1zlnh/o=', ''),
+      credential1: 'WorldP64425807474247',
+      credential2: 'kbzk1DSbJiV_O3p5',
+      credential3: 'Retail',
+      credential4: 'worldpressplg'
+    )
+
+    assert_equal false, @paytm.checksum_ok?
+  end
+
   private
 
   def http_raw_data

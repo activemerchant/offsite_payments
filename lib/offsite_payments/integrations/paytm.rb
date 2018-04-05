@@ -51,9 +51,6 @@ module OffsitePayments #:nodoc:
         mapping :account, 'MID'
         mapping :order, 'MERC_UNQ_REF'
 
-        mapping :customer, :email => 'CUST_ID'
-
-
         mapping :credential3, 'INDUSTRY_TYPE_ID'
         mapping :credential4, 'WEBSITE'
         mapping :channel_id, 'CHANNEL_ID'
@@ -69,6 +66,17 @@ module OffsitePayments #:nodoc:
           add_field 'ORDER_ID', "#{order}-#{@timestamp.to_i}"
 
           self.pg = 'CC'
+        end
+
+        def customer(options = {})
+          customer_id =
+            if options[:email].present?
+              sanitize_field(options[:email])
+            else
+              sanitize_field(options[:phone])
+            end
+
+          add_field('CUST_ID', customer_id)
         end
 
         def form_fields
@@ -88,8 +96,12 @@ module OffsitePayments #:nodoc:
 
         def sanitize_fields
           %w(email phone).each do |field|
-            @fields[field].gsub!(/[^a-zA-Z0-9\-_@\/\s.]/, '') if @fields[field]
+            @fields[field] = sanitize_field(@fields[field])
           end
+        end
+
+        def sanitize_field(field)
+          field.gsub(/[^a-zA-Z0-9\-_@\/\s.]/, '') if field
         end
       end
 
@@ -187,6 +199,8 @@ module OffsitePayments #:nodoc:
         end
 
         def checksum_ok?
+          return false if checksum.nil?
+
           normalized_data = checksum.delete("\n").tr(' ', '+')
           encrypted_data = Base64.strict_decode64(normalized_data)
 
