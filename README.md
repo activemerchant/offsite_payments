@@ -17,7 +17,7 @@ The addition of your gateway to offsite_payments does not guarantee placement wi
 4. Your most recent Certificate of PCI Compliance
 5. Reason that the [Universal API](https://github.com/activemerchant/offsite_payments/blob/master/lib/offsite_payments/integrations/universal.rb)* cannot be used for your integration.
 
-*The Universal API defines a standard set of requests and callbacks that can be used to integrate with Shopify. A sample app and documentation are hosted [here](https://github.com/Shopify/offsite-gateway-sim). The Universal API should be used for all integrations in which placement within Shopify is the desired outcome. 
+*The Universal API defines a standard set of requests and callbacks that can be used to integrate with Shopify. A sample app and documentation are hosted [here](https://github.com/Shopify/offsite-gateway-sim). The Universal API should be used for all integrations in which placement within Shopify is the desired outcome.
 
 ## Installation
 
@@ -36,6 +36,19 @@ Installation from RubyGems:
 Or, if you're using Bundler, just add the following to your Gemfile:
 
     gem 'offsite_payments'
+
+### Money gem dependency
+
+At the moment, `offsite_payments` gem depends on `Money` object, which was previously included by default. Since Shopify
+released their own `shopify-money` gem. Because `offsite_payments` does not impose which one of those gems should be
+included into your gem file, as long as one of them is included.
+
+
+- For [ruby money gem]() add `gem 'money'` to your `Gemfile`;
+- For [Shopify money gem]() add `gem 'shopify-money', require: 'money'` in your `Gemfile`.
+
+It's important to note that either of those Money gems would need to be added to your `Gemfile` before the `offsite_payments`
+one.
 
 [API documentation](http://www.rubydoc.info/github/activemerchant/offsite_payments/master).
 
