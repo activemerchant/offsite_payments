@@ -4,9 +4,9 @@ sudo: false
 cache: bundler
 
 rvm:
-- 2.4.0
-- 2.3.3
-- 2.2.3
+- 2.4
+- 2.3
+- 2.2
 - 2.1
 
 gemfile:
@@ -25,16 +25,18 @@ matrix:
       gemfile: gemfiles/Gemfile.rails51
     - rvm: 2.1
       gemfile: gemfiles/Gemfile.rails52
-    - rvm: 2.4.0
+    - rvm: 2.4
       gemfile: gemfiles/Gemfile.rails32
-    - rvm: 2.4.0
+    - rvm: 2.4
       gemfile: gemfiles/Gemfile.rails40
-    - rvm: 2.4.0
+    - rvm: 2.4
       gemfile: gemfiles/Gemfile.rails41
-    - rvm: 2.4.0
+    - rvm: 2.4
       gemfile: gemfiles/Gemfile.rails42
   include:
-    - rvm: 2.3.3
+    - rvm: 2.3
+      gemfile: gemfiles/Gemfile.shopify
+    - rvm: 2.4
       gemfile: gemfiles/Gemfile.shopify
 
 before_install:

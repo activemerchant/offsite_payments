@@ -7,7 +7,6 @@ PATH
       activesupport (>= 3.2.14)
       builder (>= 2.1.2, < 4.0.0)
       i18n (>= 0.6.6)
-      money (< 7.0.0)
       nokogiri (~> 1.6)
 
 GEM
@@ -165,6 +164,7 @@ DEPENDENCIES
   launchy
   mechanize
   mocha (~> 1.0)
+  money (~> 6.8)
   mongrel (= 1.2.0.pre2)
   offsite_payments!
   rails (>= 3.2.14)
