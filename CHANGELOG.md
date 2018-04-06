@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.7.0 (Apr 6, 2018)
+- Remove Money gem as dependency into gemspec [filipebarcos] #288
+
 ### Version 2.6.8 (Mar 22, 2018)
 - Ensure values are always sanitized [christianblais] #281
 - Updates exception handling for BitPay [joshnuss] #282
