@@ -44,8 +44,8 @@ released their own `shopify-money` gem. Because `offsite_payments` does not impo
 included into your gem file, as long as one of them is included.
 
 
-- For [ruby money gem]() add `gem 'money'` to your `Gemfile`;
-- For [Shopify money gem]() add `gem 'shopify-money', require: 'money'` in your `Gemfile`.
+- For [ruby money gem](https://github.com/RubyMoney/money) add `gem 'money'` to your `Gemfile`;
+- For [Shopify money gem](https://github.com/Shopify/money) add `gem 'shopify-money', require: 'money'` in your `Gemfile`.
 
 It's important to note that either of those Money gems would need to be added to your `Gemfile` before the `offsite_payments`
 one.
