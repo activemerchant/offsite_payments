@@ -10,3 +10,4 @@ group :remote_test do
 end
 
 gem 'actionpack', '~> 4.2.0'
+gem 'money', '~> 6.8'

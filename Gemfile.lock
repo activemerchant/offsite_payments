@@ -1,13 +1,12 @@
 PATH
   remote: .
   specs:
-    offsite_payments (2.6.8)
+    offsite_payments (2.7.0)
       actionpack (>= 3.2.20, < 6.0)
       active_utils (~> 3.3.0)
       activesupport (>= 3.2.14)
       builder (>= 2.1.2, < 4.0.0)
       i18n (>= 0.6.6)
-      money (< 7.0.0)
       nokogiri (~> 1.6)
 
 GEM
@@ -72,7 +71,7 @@ GEM
       concurrent-ruby (~> 1.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    loofah (2.2.0)
+    loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -165,6 +164,7 @@ DEPENDENCIES
   launchy
   mechanize
   mocha (~> 1.0)
+  money (~> 6.8)
   mongrel (= 1.2.0.pre2)
   offsite_payments!
   rails (>= 3.2.14)

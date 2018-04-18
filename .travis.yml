@@ -24,6 +24,8 @@ matrix:
       gemfile: gemfiles/Gemfile.rails50
     - rvm: 2.1
       gemfile: gemfiles/Gemfile.rails51
+    - rvm: 2.1
+      gemfile: gemfiles/Gemfile.rails52
     - rvm: 2.4
       gemfile: gemfiles/Gemfile.rails32
     - rvm: 2.4
@@ -42,6 +44,10 @@ matrix:
       gemfile: gemfiles/Gemfile.rails42
   include:
     - rvm: 2.3
+      gemfile: gemfiles/Gemfile.shopify
+    - rvm: 2.4
+      gemfile: gemfiles/Gemfile.shopify
+    - rvm: 2.5
       gemfile: gemfiles/Gemfile.shopify
 
 before_install:
