@@ -1,5 +1,6 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.7.1 (Apr 26, 2018)
 - Add application ID tracking to PayuIn [ahamed-wahid] #271
 
 ### Version 2.7.0 (Apr 6, 2018)
