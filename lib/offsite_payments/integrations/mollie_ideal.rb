@@ -10,6 +10,7 @@ module OffsitePayments #:nodoc:
         ["Bunq", "ideal_BUNQNL2A"],
         ["ING", "ideal_INGBNL2A"],
         ["Knab", "ideal_KNABNL2H"],
+        ["Moneyou", "ideal_MOYONL21"],
         ["Rabobank", "ideal_RABONL2U"],
         ["RegioBank", "ideal_RBRBNL21"],
         ["SNS Bank", "ideal_SNSBNL2A"],
