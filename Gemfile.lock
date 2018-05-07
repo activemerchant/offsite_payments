@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    offsite_payments (2.7.1)
+    offsite_payments (2.7.2)
       actionpack (>= 3.2.20, < 6.0)
       active_utils (~> 3.3.0)
       activesupport (>= 3.2.14)
@@ -57,7 +57,7 @@ GEM
     arel (8.0.0)
     builder (3.2.3)
     concurrent-ruby (1.0.5)
-    crass (1.0.3)
+    crass (1.0.4)
     daemons (1.0.10)
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
@@ -126,8 +126,8 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.0.3)
-      loofah (~> 2.0)
+    rails-html-sanitizer (1.0.4)
+      loofah (~> 2.2, >= 2.2.2)
     railties (5.1.5)
       actionpack (= 5.1.5)
       activesupport (= 5.1.5)

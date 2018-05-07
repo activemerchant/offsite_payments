@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.7.2 (May 7, 2018)
+- Update list of Mollie iDEAL issuers [Smitsel] #292
+
 ### Version 2.7.1 (Apr 26, 2018)
 - Add application ID tracking to PayuIn [ahamed-wahid] #271
 
