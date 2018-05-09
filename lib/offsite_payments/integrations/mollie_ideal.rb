@@ -24,7 +24,7 @@ module OffsitePayments #:nodoc:
       ]
 
       def self.redirect_param_label
-        "Select your bank"
+        "Selecteer uw bank"
       end
 
       def self.redirect_param_options(options = {})
