@@ -1,6 +1,6 @@
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
-    module MollieMistercash
+    module MollieCreditcard
       include Mollie
 
         RedirectError = Class.new(ActiveUtils::ActiveUtilsError)
@@ -38,7 +38,7 @@ module OffsitePayments #:nodoc:
                 :amount => options[:amount],
                 :description => options[:description],
                 :redirectUrl => options[:return_url],
-                :method => 'mistercash',
+                :method => 'creditcard',
                 :metadata => { :order => order }
               }
 
@@ -61,7 +61,7 @@ module OffsitePayments #:nodoc:
             end
 
             def request_redirect
-              MollieMistercash.create_payment(token, redirect_parameters)
+              MollieCreditcard.create_payment(token, redirect_parameters)
             rescue ActiveUtils::ResponseError => e
               case e.response.code
               when '401', '403', '422'
@@ -131,7 +131,7 @@ module OffsitePayments #:nodoc:
           end
 
           def check_payment_status(transaction_id)
-            MollieMistercash.check_payment_status(@options[:credential1], transaction_id)
+            MollieCreditcard.check_payment_status(@options[:credential1], transaction_id)
           end
         end
 

@@ -68,6 +68,7 @@ one.
 * [ePay](http://www.epay.dk/epay-payment-solutions/)
 * [First Data](https://firstdata.zendesk.com/entries/407522-first-data-global-gateway-e4sm-payment-pages-integration-manual)
 * [HiTRUST](http://www.hitrust.com.hk/)
+* [Mollie](http://www.mollie.com/) - BE, DE, FR, NL
 * [MOLPay](http://www.molpay.com/v2/) - MY, SG, ID, TH, VN, PH, CN, AU
 * [Moneybookers](http://www.moneybookers.com)
 * [Nochex](http://www.nochex.com)
