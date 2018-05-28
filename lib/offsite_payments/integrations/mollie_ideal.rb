@@ -18,18 +18,12 @@ module OffsitePayments #:nodoc:
         ["van Lanschot", "ideal_FVLBNL22"]
       ]
 
-      mattr_accessor :test_issuers
-      self.test_issuers = [
-        ["TBM Bank", "ideal_TESTNL99"]
-      ]
-
       def self.redirect_param_label
         "Select your bank"
       end
 
       def self.redirect_param_options(options = {})
-        return test_issuers if options[:credential1].blank?
-        options[:credential1].start_with?('live_') ? live_issuers : test_issuers
+        live_issuers
       end
 
       def self.retrieve_issuers(token)
