@@ -87,7 +87,8 @@ module OffsitePayments #:nodoc:
         end
 
         def amount
-          BigDecimal.new(params['payment']["amount"].to_s)
+          amount_in_string = params['order'].try(:[], 'to_amount').try(:to_s) || params['payment']["amount"].to_s
+          BigDecimal.new(amount_in_string)
         end
 
         def key_present?
