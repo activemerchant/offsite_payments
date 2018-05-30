@@ -77,7 +77,7 @@ class WorldPayNotificationTest < Test::Unit::TestCase
   private
 
   def http_raw_data
-    "transId=1234123412341234&transStatus=Y&currency=GBP&transTime=1167609600000&testMode=100&authAmount=5.00&cartId=1&authCurrency=GBP&callbackPW=password&countryMatch=Y&AVS=2222&cardType=Mastercard&name=Andrew White&address=1 Nowhere Close&postcode=CV1 1AA&country=GB&tel=024 7699 9999&fax=024 7699 9999&email=andyw@example.com"
+    "transId=1234123412341234&transStatus=Y&currency=GBP&transTime=1167609600000&testMode=100&amount=5.00&authAmount=5.00&cartId=1&authCurrency=GBP&callbackPW=password&countryMatch=Y&AVS=2222&cardType=Mastercard&name=Andrew White&address=1 Nowhere Close&postcode=CV1 1AA&country=GB&tel=024 7699 9999&fax=024 7699 9999&email=andyw@example.com"
   end
 
 end

@@ -142,11 +142,11 @@ module OffsitePayments #:nodoc:
 
         # the money amount we received in X.2 decimal.
         def gross
-          params['authAmount']
+          params['amount']
         end
 
         def currency
-          params['authCurrency']
+          params['currency']
         end
 
         # Was this a test transaction?
