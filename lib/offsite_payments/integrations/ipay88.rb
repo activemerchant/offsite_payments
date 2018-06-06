@@ -4,11 +4,11 @@ module OffsitePayments #:nodoc:
       CANCELLED_ERROR_DESCRIPTION = 'Customer Cancel Transaction'
 
       def self.service_url
-        "https://www.mobile88.com/epayment/entry.asp"
+        "https://payment.ipay88.com.my/epayment/entry.asp"
       end
 
       def self.requery_url
-        "https://www.mobile88.com/epayment/enquiry.asp"
+        "https://payment.ipay88.com.my/epayment/enquiry.asp"
       end
 
       def self.return(query_string, options={})
