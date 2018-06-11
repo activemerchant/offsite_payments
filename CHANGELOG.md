@@ -1,5 +1,11 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.7.3 (June 11, 2018)
+- Update ipay88 urls due to deprecation [pi3r] #298
+- Remove test issues from Mollie [elfassy] #297
+- Use requested currency instead of authorization currency for WorldPay [joshnuss] #296
+
+
 ### Version 2.7.2 (May 7, 2018)
 - Update list of Mollie iDEAL issuers [Smitsel] #292
 
