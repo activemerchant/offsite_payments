@@ -99,6 +99,8 @@ module OffsitePayments #:nodoc:
         end
 
         def set_form_fields_for_redirect(uri)
+          return unless uri.query
+
           CGI.parse(uri.query).each do |key, value|
             if value.is_a?(Array) && value.length == 1
               add_field(key, value.first)
