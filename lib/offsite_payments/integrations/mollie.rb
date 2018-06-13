@@ -30,6 +30,35 @@ module OffsitePayments #:nodoc:
         end
       end
 
+      class Helper < OffsitePayments::Helper
+        def credential_based_url
+          response = request_redirect
+          @transaction_id = response['id']
+
+          uri = URI.parse(response['links']['paymentUrl'])
+          set_form_fields_for_redirect(uri)
+          uri.query = ''
+          uri.to_s.sub(/\?\z/, '')
+        end
+
+        def form_method
+          "GET"
+        end
+
+        private
+
+        def set_form_fields_for_redirect(uri)
+          return unless uri.query
+
+          CGI.parse(uri.query).each do |key, value|
+            if value.is_a?(Array) && value.length == 1
+              add_field(key, value.first)
+            else
+              add_field(key, value)
+            end
+          end
+        end
+      end
     end
   end
 end
