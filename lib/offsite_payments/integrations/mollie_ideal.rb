@@ -61,7 +61,7 @@ module OffsitePayments #:nodoc:
         true
       end
 
-      class Helper < OffsitePayments::Helper
+      class Helper < Mollie::Helper
         attr_reader :transaction_id, :redirect_parameters, :token
 
         def initialize(order, account, options = {})
@@ -82,30 +82,6 @@ module OffsitePayments #:nodoc:
           raise ArgumentError, "The redirect_param option needs to be set to the bank_id the customer selected." if options[:redirect_param].blank?
           raise ArgumentError, "The return_url option needs to be set." if options[:return_url].blank?
           raise ArgumentError, "The description option needs to be set." if options[:description].blank?
-        end
-
-        def credential_based_url
-          response = request_redirect
-          @transaction_id = response['id']
-
-          uri = URI.parse(response['links']['paymentUrl'])
-          set_form_fields_for_redirect(uri)
-          uri.query = ''
-          uri.to_s.sub(/\?\z/, '')
-        end
-
-        def form_method
-          "GET"
-        end
-
-        def set_form_fields_for_redirect(uri)
-          CGI.parse(uri.query).each do |key, value|
-            if value.is_a?(Array) && value.length == 1
-              add_field(key, value.first)
-            else
-              add_field(key, value)
-            end
-          end
         end
 
         def request_redirect

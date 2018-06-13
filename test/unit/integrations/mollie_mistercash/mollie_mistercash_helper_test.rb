@@ -30,6 +30,18 @@ class MollieMistercashHelperTest < Test::Unit::TestCase
     assert_equal nil, @helper.fields['bank_trxid']
   end
 
+  def test_credential_based_url_with_query_params
+    @mock_api.expects(:post_request)
+      .with('payments', amount: 500, description: 'Order #111', method: 'mistercash', redirectUrl: 'https://return.com', metadata: {order: 'order-500'})
+      .returns(RESPONSE_WITH_PARAMS_JSON)
+
+    uri = @helper.credential_based_url
+
+    assert_equal 'https://www.mollie.com/paymentscreen/mistercash/testmode/ca8195a3dc8d5cbf2f7b130654abe5a5', uri
+    assert_equal '20a5a25c2bce925b4fabefd0410927ca', @helper.fields['transaction_id']
+    assert_equal '0148703115482464', @helper.fields['bank_trxid']
+  end
+
   def test_credential_based_url_errors
     @mock_api.expects(:post_request)
       .with('payments', :amount => 500, :description => 'Order #111', :method => 'mistercash', :redirectUrl => 'https://return.com', :metadata => {:order => 'order-500'})
@@ -68,6 +80,26 @@ class MollieMistercashHelperTest < Test::Unit::TestCase
       "details":null,
       "links":{
         "paymentUrl":"https://www.mollie.com/paymentscreen/mistercash/testmode/ca8195a3dc8d5cbf2f7b130654abe5a5",
+        "redirectUrl":"https://example.com/return"
+      }
+    }
+  JSON
+
+  RESPONSE_WITH_PARAMS_JSON = JSON.parse(<<-JSON)
+    {
+      "id":"tr_djsfilasX",
+      "mode":"test",
+      "createdDatetime":"2014-03-03T10:17:05.0Z",
+      "status":"open",
+      "amount":"500.00",
+      "description":"My order description",
+      "method":"mistercash",
+      "metadata":{
+        "my_reference":"unicorn"
+      },
+      "details":null,
+      "links":{
+        "paymentUrl":"https://www.mollie.com/paymentscreen/mistercash/testmode/ca8195a3dc8d5cbf2f7b130654abe5a5?transaction_id=20a5a25c2bce925b4fabefd0410927ca&bank_trxid=0148703115482464",
         "redirectUrl":"https://example.com/return"
       }
     }

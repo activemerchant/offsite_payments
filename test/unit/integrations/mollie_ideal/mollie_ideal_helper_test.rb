@@ -56,6 +56,18 @@ class MollieIdealHelperTest < Test::Unit::TestCase
     assert_raises(ArgumentError) { MollieIdeal::Helper.new('order-500','1234567', @required_options.merge(:description => nil)) }
   end
 
+  def test_without_query_params
+    @mock_api.expects(:post_request)
+      .with('payments', :amount => 500, :description => 'Order #111', :method => 'ideal', :issuer => 'ideal_TESTNL99', :redirectUrl => 'https://return.com', :metadata => {:order => 'order-500'})
+      .returns(RESPONSE_WITHOUT_PARAMS)
+
+    uri = @helper.credential_based_url
+
+    assert_equal 'tr_djsfilasX', @helper.transaction_id
+    assert_equal "https://www.mollie.nl/paymentscreen/ideal/testmode", uri
+    assert_equal 0, @helper.fields.length
+  end
+
   CREATE_PAYMENT_RESPONSE_JSON = JSON.parse(<<-JSON)
     {
       "id":"tr_djsfilasX",
@@ -71,6 +83,26 @@ class MollieIdealHelperTest < Test::Unit::TestCase
       "details":null,
       "links":{
         "paymentUrl":"https://www.mollie.nl/paymentscreen/ideal/testmode?transaction_id=20a5a25c2bce925b4fabefd0410927ca&bank_trxid=0148703115482464",
+        "redirectUrl":"https://example.com/return"
+      }
+    }
+  JSON
+
+  RESPONSE_WITHOUT_PARAMS = JSON.parse(<<-JSON)
+    {
+      "id":"tr_djsfilasX",
+      "mode":"test",
+      "createdDatetime":"2014-03-03T10:17:05.0Z",
+      "status":"open",
+      "amount":"500.00",
+      "description":"My order description",
+      "method":"ideal",
+      "metadata":{
+        "my_reference":"unicorn"
+      },
+      "details":null,
+      "links":{
+        "paymentUrl":"https://www.mollie.nl/paymentscreen/ideal/testmode",
         "redirectUrl":"https://example.com/return"
       }
     }
