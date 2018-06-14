@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### Version 2.7.5 (June 14, 2018)
+- add failure reasons for Moneybookers (Skrill) integration [dhalai] #263
+
 ### Version 2.7.4 (June 13, 2018)
 - Update Mollie iDEAL & MisterCash handling of querystring [joshnuss] #299
 
