@@ -13,10 +13,10 @@ class PaytmModuleTest < Test::Unit::TestCase
 
   def test_service_url_method
     OffsitePayments.mode = :test
-    assert_equal 'https://pguat.paytm.com/oltp-web/processTransaction', Paytm.service_url
+    assert_equal 'https://securegw-stage.paytm.in/theia/processTransaction', Paytm.service_url
 
     OffsitePayments.mode = :production
-    assert_equal 'https://secure.paytm.in/oltp-web/processTransaction', Paytm.service_url
+    assert_equal 'https://securegw.paytm.in/theia/processTransaction', Paytm.service_url
   ensure
     OffsitePayments.mode = :test
   end
