@@ -1,4 +1,6 @@
 # Offsite Payments CHANGELOG
+### version 2.7.6 (August 23, 2018)
+- Update Paytm test and production urls [rahul7verma] #301
 
 ### Version 2.7.5 (June 14, 2018)
 - add failure reasons for Moneybookers (Skrill) integration [dhalai] #263
