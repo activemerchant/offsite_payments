@@ -1,4 +1,7 @@
 # Offsite Payments CHANGELOG
+### version 2.7.7 (September 13, 2018)
+- Update sprockets to new versions [Girardvjonathan] #302
+
 ### version 2.7.6 (August 23, 2018)
 - Update Paytm test and production urls [rahul7verma] #301
 
