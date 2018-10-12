@@ -9,7 +9,6 @@ class PagSeguroHelperTest < Test::Unit::TestCase
 
   def test_basic_helper_fields
     assert_field 'email', 'cody@example.com'
-    assert_field 'token', 'USER_TOKEN'
 
     assert_field 'itemAmount1', '55.00'
     assert_field 'reference', 'order-500'
@@ -102,7 +101,7 @@ class PagSeguroHelperTest < Test::Unit::TestCase
 
   def test_unknown_address_mapping
     @helper.shipping_address :farm => 'CA'
-    assert_equal 8, @helper.fields.size
+    assert_equal 7, @helper.fields.size
   end
 
   def test_unknown_mapping
