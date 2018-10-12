@@ -58,7 +58,6 @@ module OffsitePayments #:nodoc:
         end
 
         mapping :account, 'email'
-        mapping :credential2, 'token'
 
         mapping :order, 'reference'
 
