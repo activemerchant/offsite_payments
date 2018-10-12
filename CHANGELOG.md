@@ -1,4 +1,8 @@
 # Offsite Payments CHANGELOG
+
+### version 2.7.8 (October 11, 2018)
+- remove credential2 and access key from citrus helper fields [elfassy] #304
+
 ### version 2.7.7 (September 13, 2018)
 - Update sprockets to new versions [Girardvjonathan] #302
 
