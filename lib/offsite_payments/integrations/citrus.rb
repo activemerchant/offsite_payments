@@ -21,8 +21,6 @@ module OffsitePayments
       class Helper < OffsitePayments::Helper
         mapping :order, 'merchantTxnId'
         mapping :amount, 'orderAmount'
-        mapping :account, 'merchantAccessKey'
-        mapping :credential2, 'secret_key'
         mapping :credential3, 'pmt_url'
         mapping :currency, 'currency'
 
@@ -55,6 +53,7 @@ module OffsitePayments
           super
           add_field 'paymentMode', 'NET_BANKING'
           add_field 'reqtime', (Time.now.to_i * 1000).to_s
+          @secret_key = options[:credential2]
         end
 
         def form_fields
@@ -63,7 +62,7 @@ module OffsitePayments
 
         def generate_checksum
           checksum_fields = @fields["pmt_url"] + @fields["orderAmount"].to_s + @fields["merchantTxnId"] + @fields["currency"]
-          Citrus.checksum(@fields["secret_key"],  checksum_fields )
+          Citrus.checksum(@secret_key,  checksum_fields )
         end
       end
 
