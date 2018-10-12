@@ -24,10 +24,11 @@ module OffsitePayments #:nodoc:
           add_field('vendor', account)
           add_field('user', options[:credential4].presence || account)
           add_field('trxtype', options[:transaction_type] || 'S')
+
+          @password = options.delete(:credential2)
         end
 
         mapping :account, 'login'
-        mapping :credential2, 'pwd'
         mapping :credential3, 'partner'
         mapping :order, 'user1'
 
@@ -90,10 +91,10 @@ module OffsitePayments #:nodoc:
         def request_secure_token
           @fields["securetokenid"] = secure_token_id
           @fields["createsecuretoken"] = "Y"
+          fields = @fields.merge("pwd" => @password)
 
-          fields = @fields.collect {|key, value| "#{key}[#{value.length}]=#{value}" }.join("&")
-
-          response = ssl_post(secure_token_url, fields)
+          query_string = fields.collect {|key, value| "#{key}[#{value.length}]=#{value}" }.join("&")
+          response = ssl_post(secure_token_url, query_string)
 
           parse_response(response)
         end
