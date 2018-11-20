@@ -106,9 +106,8 @@ module OffsitePayments #:nodoc:
 
         def status
           case transaction_status.downcase
-          when 'success' then 'Completed'
-          when 'failure' then 'Failed'
-          when 'pending' then 'Pending'
+            when 'success' then 'Completed'
+            else 'Failed'
           end
         end
 

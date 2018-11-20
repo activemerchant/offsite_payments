@@ -7,6 +7,10 @@ class PayuInReturnTest < Test::Unit::TestCase
     @payu = PayuIn::Return.new(http_raw_data_success, :credential1 => 'merchant_id', :credential2 => 'secret')
   end
 
+  def setup_pending_return
+    @payu = PayuIn::Return.new(http_raw_data_pending, :credential1 => 'merchant_id', :credential2 => 'secret')
+  end
+
   def setup_failed_return
     @payu = PayuIn::Return.new(http_raw_data_failure, :credential1 => 'merchant_id', :credential2 => 'secret')
   end
@@ -16,8 +20,13 @@ class PayuInReturnTest < Test::Unit::TestCase
     assert_equal 'Completed', @payu.status('4ba4afe87f7e73468f2a','10.00')
   end
 
-  def test_failure_is_successful
+  def test_failed_return_is_a_failed_status
     setup_failed_return
+    assert_equal 'Failed', @payu.status('8ae1034d1abf47fde1cf', '10.00')
+  end
+
+  def test_pending_return_is_a_failed_status
+    setup_pending_return
     assert_equal 'Failed', @payu.status('8ae1034d1abf47fde1cf', '10.00')
   end
 
@@ -57,6 +66,10 @@ class PayuInReturnTest < Test::Unit::TestCase
 
   def http_raw_data_success
     "mihpayid=403993715508030204&mode=CC&status=success&unmappedstatus=captured&key=merchant_id&txnid=4ba4afe87f7e73468f2a&amount=10.00&discount=0.00&addedon=2013-05-10 18 32 30&productinfo=Product Info&firstname=Payu-Admin&lastname=&address1=&address2=&city=&state=&country=&zipcode=&email=test@example.com&phone=1234567890&udf1=&udf2=&udf3=&udf4=&udf5=&udf6=&udf7=&udf8=&udf9=&udf10=&hash=#{checksum}&field1=313069903923&field2=999999&field3=59117331831301&field4=-1&field5=&field6=&field7=&field8=&PG_TYPE=HDFC&bank_ref_num=59117331831301&bankcode=CC&error=E000&cardnum=512345XXXXXX2346&cardhash=766f0227cc4b4c5f773a04cb31d8d1c5be071dd8d08fe365ecf5e2e5c947546d"
+  end
+
+  def http_raw_data_pending
+    "mihpayid=403993715508030204&mode=CC&status=pending&unmappedstatus=in%20progress&key=merchant_id&txnid=8ae1034d1abf47fde1cf&amount=10.00&discount=0.00&addedon=2013-05-13 11:09:20&productinfo=Product Info&firstname=Payu-Admin&lastname=&address1=&address2=&city=&state=&country=&zipcode=&email=test@example.com&phone=1234567890&udf1=&udf2=&udf3=&udf4=&udf5=&udf6=&udf7=&udf8=&udf9=&udf10=&hash=65774f82abe64cec54be31107529b2a3eef8f6a3f97a8cb81e9769f4394b890b0e7171f8988c4df3684e7f9f337035d0fe09a844da4b76e68dd643e8ac5e5c63&field1=&field2=&field3=&field4=&field5=!ERROR!-GV00103-Invalid BrandError Code: GV00103&field6=&field7=&field8=failed in enrollment&PG_TYPE=HDFC&bank_ref_num=&bankcode=CC&error=E201&cardnum=411111XXXXXX1111&cardhash=49c73d6c44f27f7ac71b439de842f91e27fcbc3b9ce9dfbcbf1ce9a8fe790c17"
   end
 
   def http_raw_data_failure
