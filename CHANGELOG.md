@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.9 (November 26, 2018)
+- Update rack and loofah to fix security issues [pi3r] #307
+
 ### version 2.7.8 (October 11, 2018)
 - remove credential2 and access key from citrus helper fields [elfassy] #304
 
