@@ -1,5 +1,9 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.10 (November 26, 2018)
+- Quickpay callback includes acquirer param and must be checked with md5secret from options [espen] #72
+- map payu_in pg status pending as Failed [GeminPatel] #306
+
 ### version 2.7.9 (November 26, 2018)
 - Update rack and loofah to fix security issues [pi3r] #307
 
