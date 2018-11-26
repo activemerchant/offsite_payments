@@ -5,7 +5,7 @@ module OffsitePayments #:nodoc:
       self.service_url = 'https://secure.quickpay.dk/form/'
 
       def self.notification(post, options = {})
-        Notification.new(post)
+        Notification.new(post, options)
       end
 
       def self.return(post, options = {})
@@ -180,6 +180,7 @@ module OffsitePayments #:nodoc:
           :cardnumber,
           :cardhash,
           :cardexpire,
+          :acquirer,
           :splitpayment,
           :fraudprobability,
           :fraudremarks,
@@ -195,8 +196,6 @@ module OffsitePayments #:nodoc:
           Digest::MD5.hexdigest(generate_md5string)
         end
 
-        # Quickpay doesn't do acknowledgements of callback notifications
-        # Instead it uses and MD5 hash of all parameters
         def acknowledge(authcode = nil)
           generate_md5check == params['md5check']
         end
