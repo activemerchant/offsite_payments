@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.10 (December 14, 2018)
+- Add `TXNDATETIME` to the whitelist of params to use for checksum verification [pi3r] #308
+
 ### version 2.7.10 (November 26, 2018)
 - Quickpay callback includes acquirer param and must be checked with md5secret from options [espen] #72
 - map payu_in pg status pending as Failed [GeminPatel] #306
