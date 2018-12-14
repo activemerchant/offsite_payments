@@ -11,7 +11,7 @@ module OffsitePayments #:nodoc:
 
       # self.test_url = 'https://pguat.paytm.com/oltp-web/processTransaction'
       # self.production_url = 'https://secure.paytm.in/oltp-web/processTransaction'
-      
+
       self.test_url = 'https://securegw-stage.paytm.in/theia/processTransaction'
       self.production_url = 'https://securegw.paytm.in/theia/processTransaction'
 
@@ -109,7 +109,7 @@ module OffsitePayments #:nodoc:
       end
 
       class Notification < OffsitePayments::Notification
-        PAYTM_RESPONSE_PARAMS = %w(MID BANKTXNID TXNAMOUNT CURRENCY STATUS RESPCODE RESPMSG TXNDATE GATEWAYNAME BANKNAME PAYMENTMODE PROMO_CAMP_ID PROMO_STATUS PROMO_RESPCODE ORDERID TXNID REFUNDAMOUNT REFID MERC_UNQ_REF CUSTID).freeze
+        PAYTM_RESPONSE_PARAMS = %w(MID BANKTXNID TXNAMOUNT CURRENCY STATUS RESPCODE RESPMSG TXNDATE GATEWAYNAME BANKNAME PAYMENTMODE PROMO_CAMP_ID PROMO_STATUS PROMO_RESPCODE ORDERID TXNID REFUNDAMOUNT REFID MERC_UNQ_REF CUSTID TXNDATETIME).freeze
 
         def initialize(post, options = {})
           super
