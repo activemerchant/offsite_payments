@@ -1,4 +1,6 @@
 # Offsite Payments CHANGELOG
+### HEAD
+- Update rails dependancy to 5.2.2 in development
 
 ### version 2.7.10 (December 14, 2018)
 - Add `TXNDATETIME` to the whitelist of params to use for checksum verification [pi3r] #308

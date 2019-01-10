@@ -22,6 +22,10 @@ matrix:
     - rvm: 2.1
       gemfile: gemfiles/Gemfile.rails50
     - rvm: 2.1
+      gemfile: gemfiles/Gemfile.shopify
+    - rvm: 2.2
+      gemfile: gemfiles/Gemfile.shopify
+    - rvm: 2.1
       gemfile: gemfiles/Gemfile.rails51
     - rvm: 2.1
       gemfile: gemfiles/Gemfile.rails52
