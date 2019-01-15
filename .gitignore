@@ -1,3 +1,5 @@
 .yardoc
 pkg
 *.gem
+.tool-versions
+.idea/*
