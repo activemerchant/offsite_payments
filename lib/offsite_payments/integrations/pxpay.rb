@@ -32,13 +32,13 @@ module OffsitePayments #:nodoc:
             'TxnData3'          => options[:custom3],
             'AmountInput'       => "%.2f" % options[:amount].to_f.round(2),
             'EnableAddBillCard' => options[:enable_add_bill_card] || '0',
-            'TxnType'           => options[:txn_type] || 'Purchase',
+            'TxnType'           => options[:transaction_type] || 'Purchase',
             'UrlSuccess'        => options[:return_url],
             'UrlFail'           => options[:return_url]
           }
           @redirect_parameters = {}
 
-          super(order, account, options.except(:customer_email, :custom1, :custom2, :custom3, :enable_add_bill_card, :txn_type))
+          super(order, account, options.except(:customer_email, :custom1, :custom2, :custom3, :enable_add_bill_card))
 
           raise ArgumentError, "error - must specify return_url"        if token_parameters['UrlSuccess'].blank?
           raise ArgumentError, "error - must specify cancel_return_url" if token_parameters['UrlFail'].blank?

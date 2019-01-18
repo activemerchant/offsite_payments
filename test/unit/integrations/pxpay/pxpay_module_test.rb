@@ -21,7 +21,7 @@ class PxpayModuleTest < Test::Unit::TestCase
       :custom2 => 'custom2field',
       :custom3 => 'custom3field',
       :enable_add_bill_card => '1',
-      :txn_type => 'Auth'
+      :transaction_type => 'Auth'
     }
   end
 
@@ -51,7 +51,7 @@ class PxpayModuleTest < Test::Unit::TestCase
 
   def test_default_txn_type
     Pxpay::Helper.any_instance.expects(:ssl_post).with { |_, request| request.include?("<TxnType>Purchase</TxnType>") }.returns(valid_response)
-    payment_service_for('44', @username, @service_options.except(:txn_type)) {}
+    payment_service_for('44', @username, @service_options.except(:transaction_type)) {}
   end
 
   def test_all_fields
