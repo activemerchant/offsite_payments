@@ -4,11 +4,6 @@ class PaypalPaymentsAdvancedHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    if RUBY_VERSION < '1.9' && $KCODE == "NONE"
-      @original_kcode = $KCODE
-      $KCODE = 'u'
-    end
-
     @helper = PaypalPaymentsAdvanced::Helper.new(1121, 'myaccount', :amount => 500,
                                       :currency => 'CAD', :credential2 => "password",
                                       :test => true)
