@@ -43,7 +43,7 @@ Gem::Specification.new do |s|
   s.add_dependency('builder', '>= 2.1.2', '< 4.0.0')
   s.add_dependency('active_utils', '~> 3.3.0')
   s.add_dependency('nokogiri', "~> 1.6")
-  s.add_dependency('actionpack', '>= 3.2.20', '< 6.0')
+  s.add_dependency('actionpack', '>= 3.2.20')
 
   s.add_development_dependency('rake')
   s.add_development_dependency('test-unit', '~> 3.0')
