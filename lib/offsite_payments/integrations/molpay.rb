@@ -103,45 +103,45 @@ module OffsitePayments #:nodoc:
         end
 
         def item_id
-          params['orderid']
+          decode(params['orderid'])
         end
 
         def transaction_id
-          params['tranID']
+          decode(params['tranID'])
         end
 
         def account
-          params["domain"]
+          decode(params['domain'])
         end
 
         # the money amount we received in X.2 decimal.
         def gross
-          params['amount']
+          decode(params['amount'])
         end
 
         def currency
-          params['currency']
+          decode(params['currency'])
         end
 
         def channel
-          params['channel']
+          decode(params['channel'])
         end
 
         # When was this payment received by the client.
         def received_at
-          params['paydate']
+          decode(params['paydate'])
         end
 
         def auth_code
-          params['appcode']
+          decode(params['appcode'])
         end
 
         def error_code
-          params['error_code']
+          decode(params['error_code'])
         end
 
         def error_desc
-          params['error_desc']
+          decode(params['error_desc'])
         end
 
         def security_key
@@ -171,6 +171,11 @@ module OffsitePayments #:nodoc:
         def generate_signature
           key0 = Digest::MD5.hexdigest("#{transaction_id}#{item_id}#{status_orig}#{account}#{gross}#{currency}")
           Digest::MD5.hexdigest("#{received_at}#{account}#{key0}#{auth_code}#{@options[:credential2]}")
+        end
+        
+        def decode param
+          return nil if param.nil?
+          URI.decode(param)
         end
       end
 
