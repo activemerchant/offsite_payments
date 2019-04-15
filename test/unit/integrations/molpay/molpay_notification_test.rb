@@ -59,6 +59,12 @@ class MolpayNotificationTest < Test::Unit::TestCase
     refute molpay.acknowledge
   end
 
+  def test_urldecoded_paydate
+    raw = http_raw_data(:success_with_urlencoded_paydate)
+    molpay = Molpay::Notification.new(raw)
+    assert_not_equal(molpay.received_at, molpay.params['paydate'])
+    assert_not_match(/\%[0-9A-F][0-9A-F]|\+/, molpay.received_at)
+  end
 
   private
 
@@ -77,6 +83,9 @@ class MolpayNotificationTest < Test::Unit::TestCase
 
     case mode
     when :success
+      basedata.collect {|k,v| "#{k}=#{CGI.escape(v.to_s)}"}.join('&')
+    when :success_with_urlencoded_paydate
+      basedata['paydate'] = '2019-04-15%2012%3A08%3A47'
       basedata.collect {|k,v| "#{k}=#{CGI.escape(v.to_s)}"}.join('&')
     when :payment_failed
       basedata.merge("status" => "11", "error_code" => "404", "error_desc" => "Payment Failed").collect {|k,v| "#{k}=#{CGI.escape(v.to_s)}"}.join('&')
