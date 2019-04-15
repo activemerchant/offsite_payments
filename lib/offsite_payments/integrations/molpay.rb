@@ -175,7 +175,7 @@ module OffsitePayments #:nodoc:
         
         def decode param
           return nil if param.nil?
-          URI.decode(param)
+          URI.decode_www_form_component(param)
         end
       end
 
