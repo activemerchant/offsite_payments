@@ -7,7 +7,7 @@ class MolpayHelperTest < Test::Unit::TestCase
     @helper = Molpay::Helper.new('order-5.00','molpaytech', :amount => 5.00, :currency => 'MYR', :credential2 => 'testcredential')
   end
  
- def test_basic_helper_fields
+  def test_basic_helper_fields
     assert_field "merchantid", "molpaytech"
     assert_field "amount", "5.00"
     assert_field "orderid", "order-5.00"
