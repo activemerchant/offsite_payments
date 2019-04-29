@@ -4,7 +4,7 @@ class BitPayHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    @helper = BitPay::Helper.new(1234, 'cody@example.com', :amount => 500, :currency => 'USD',:checkout_token=> 'i1gJ7FocK41g')
+    @helper = BitPay::Helper.new(1234, 'cody@example.com', :amount => 500, :currency => 'USD')
   end
 
   def test_basic_helper_fields
