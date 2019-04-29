@@ -23,12 +23,13 @@ module OffsitePayments #:nodoc:
         def initialize(order_id, account, options)
           super
           @account = account
+          @options = options
           add_field('posData', {'orderId' => order_id}.to_json)
           add_field('fullNotifications', true)
           add_field('transactionSpeed', 'high')
         end
 
-        if options[:checkout_token].length >=44 && /^[^0OIl]*$/.match(options[:checkout_token])
+        if options[:checkout_token].length >=44 && /^[^0OIl]*$/.match(@options[:checkout_token])
           self.invoicing_url = 'https://bitpay.com/invoices'
         end
 
