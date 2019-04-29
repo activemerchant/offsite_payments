@@ -28,12 +28,8 @@ module OffsitePayments #:nodoc:
           add_field('transactionSpeed', 'high')
         end
 
-        if options[:checkout_token].length >=44
-            self.invoicing_url = 'https://bitpay.com/invoices'
-            #check for characters and revert
-            if options[:checkout_token].include? "0" || options[:checkout_token].include? "O" || options[:checkout_token].include? "I" || options[:checkout_token].include? "l"
-              self.invoicing_url = 'https://bitpay.com/api/invoice'
-            end
+        if options[:checkout_token].length >=44 && /^[^0OIl]*$/.match(options[:checkout_token])
+          self.invoicing_url = 'https://bitpay.com/invoices'
         end
 
         mapping :amount, 'price'
