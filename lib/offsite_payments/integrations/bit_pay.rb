@@ -27,8 +27,15 @@ module OffsitePayments #:nodoc:
           add_field('fullNotifications', true)
           add_field('transactionSpeed', 'high')
         end
-         if :checkout_token.length >=44 && /^[^0OIl]*$/.match(:checkout_token)
+         if :checkout_token.length >=44
           self.invoicing_url = 'https://bitpay.com/invoices'
+          #revert back to old api if needed
+          if /^[^0OIl]*$/.match(:checkout_token)
+            #this means the "missing" tokens from the old api were found, so revert back.
+            #about a 1% chance this will happen, but possible
+             self.service_url = 'https://bitpay.com/invoice'
+
+          end
          end
         
         mapping :amount, 'price'
