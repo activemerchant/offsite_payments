@@ -27,11 +27,10 @@ module OffsitePayments #:nodoc:
           add_field('fullNotifications', true)
           add_field('transactionSpeed', 'high')
         end
-
-        if self.checkout_token.length >=44 && /^[^0OIl]*$/.match(self.checkout_token)
+         if :checkout_token.length >=44 && /^[^0OIl]*$/.match(:checkout_token)
           self.invoicing_url = 'https://bitpay.com/invoices'
-        end
-
+         end
+        
         mapping :amount, 'price'
         mapping :order, 'orderID'
         mapping :currency, 'currency'
