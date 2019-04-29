@@ -11,6 +11,7 @@ class BitPayHelperTest < Test::Unit::TestCase
     assert_field 'orderID', "1234"
     assert_field 'price', "500"
     assert_field 'currency', 'USD'
+    assert_field 'checkout_token', 'i1gJ7FocK41g'
   end
 
   def test_customer_fields
