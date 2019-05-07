@@ -26,6 +26,8 @@ module OffsitePayments #:nodoc:
           add_field('posData', {'orderId' => order_id}.to_json)
           add_field('fullNotifications', true)
           add_field('transactionSpeed', 'high')
+          add_field('token', @options[:credential1])
+          
         end
          if @options[:credential1].length >=44
           self.invoicing_url = 'https://bitpay.com/invoices'
@@ -40,7 +42,7 @@ module OffsitePayments #:nodoc:
           end
          end
         
-        mapping :@options[:credential1], 'token'
+       
         mapping :amount, 'price'
         mapping :order, 'orderID'
         mapping :currency, 'currency'
