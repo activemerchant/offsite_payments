@@ -4,6 +4,8 @@ class MolpayNotificationTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
+    ::WebMock.allow_net_connect!
+
     @amount = "10.00"
     @secret_key = "molpay_skey"
     @account = "molpaytest"
