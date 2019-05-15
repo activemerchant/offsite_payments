@@ -1,11 +1,12 @@
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module BitPay
+      API_V1_URL = 'https://bitpay.com/api/invoice'
+      API_V1_TOKEN_REGEX = /[0OIl]/
+      API_V2_URL = 'https://bitpay.com/invoices'
+
       mattr_accessor :service_url
       self.service_url = 'https://bitpay.com/invoice'
-
-      mattr_accessor :invoicing_url
-      self.invoicing_url = 'https://bitpay.com/api/invoice'
 
       def self.notification(post, options = {})
         Notification.new(post, options)
@@ -17,6 +18,18 @@ module OffsitePayments #:nodoc:
 
       def self.return(query_string, options = {})
         Return.new(query_string)
+      end
+
+      def self.v2_api_token?(api_token)
+        api_token.length >= 44 && !API_V1_TOKEN_REGEX.match(api_token)
+      end
+
+      def self.invoicing_url(api_token)
+        if v2_api_token?(api_token)
+          API_V2_URL
+        else
+          API_V1_URL
+        end
       end
 
       class Helper < OffsitePayments::Helper
@@ -77,7 +90,7 @@ module OffsitePayments #:nodoc:
         private
 
         def create_invoice
-          uri = URI.parse(BitPay.invoicing_url)
+          uri = URI.parse(BitPay.invoicing_url(@account))
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true
 
@@ -129,7 +142,7 @@ module OffsitePayments #:nodoc:
         end
 
         def acknowledge(authcode = nil)
-          uri = URI.parse("#{OffsitePayments::Integrations::BitPay.invoicing_url}/#{transaction_id}")
+          uri = URI.parse("#{OffsitePayments::Integrations::BitPay.invoicing_url(@options[:credential1])}/#{transaction_id}")
 
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true

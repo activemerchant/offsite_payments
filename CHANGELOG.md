@@ -1,6 +1,10 @@
 # Offsite Payments CHANGELOG
 
-### version 2.7.10 (December 14, 2018)
+### version 2.7.12 (December 14, 2018)
+- [BitPay] Use v2 api urls when the api token is of type v2 [pi3r] #319
+- Fix CVE-2019-5418, CVE-2018-14404 [pi3r] #317
+
+### version 2.7.11 (December 14, 2018)
 - Add `TXNDATETIME` to the whitelist of params to use for checksum verification [pi3r] #308
 
 ### version 2.7.10 (November 26, 2018)
