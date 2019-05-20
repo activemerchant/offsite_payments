@@ -2,7 +2,7 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module BitPay
       API_V1_URL = 'https://bitpay.com/api/invoice'
-      API_V1_TOKEN_REGEX = /[0OIl]/
+      API_V1_TOKEN_REGEX = /^[^0OIl]{44,}$/
       API_V2_URL = 'https://bitpay.com/invoices'
 
       mattr_accessor :service_url
@@ -21,7 +21,7 @@ module OffsitePayments #:nodoc:
       end
 
       def self.v2_api_token?(api_token)
-        api_token.length >= 44 && !API_V1_TOKEN_REGEX.match(api_token)
+        API_V1_TOKEN_REGEX.match(api_token)
       end
 
       def self.invoicing_url(api_token)
@@ -36,24 +36,18 @@ module OffsitePayments #:nodoc:
         def initialize(order_id, account, options)
           super
           @account = account
+          @options = options
+
           add_field('posData', {'orderId' => order_id}.to_json)
           add_field('fullNotifications', true)
           add_field('transactionSpeed', 'high')
-          add_field('token', @options[:credential1])
+          add_field('token', @options[:credential2])
+
+          if API_V1_TOKEN_REGEX.match(@options[:credential2])
+            self.invoicing_url = 'https://bitpay.com/invoices'
+          end
           
         end
-         if @options[:credential1].length >=44
-          self.invoicing_url = 'https://bitpay.com/invoices'
-          self.service_url = 'https://bitpay.com/invoice'
-          #revert back to old api if needed
-          if /^[^0OIl]*$/.match(@options[:credential1])
-            #this means the "missing" tokens from the old api were found, so revert back.
-            #about a 1% chance this will happen, but possible
-             self.service_url = 'https://bitpay.com/invoice'
-             self.invoicing_url = 'https://bitpay.com/api/invoice'
-
-          end
-         end
         
        
         mapping :amount, 'price'
@@ -90,7 +84,7 @@ module OffsitePayments #:nodoc:
         private
 
         def create_invoice
-          uri = URI.parse(BitPay.invoicing_url(@account))
+          uri = URI.parse(BitPay.invoicing_url(@options[:credential2]))
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true
 
@@ -142,13 +136,13 @@ module OffsitePayments #:nodoc:
         end
 
         def acknowledge(authcode = nil)
-          uri = URI.parse("#{OffsitePayments::Integrations::BitPay.invoicing_url(@options[:credential1])}/#{transaction_id}")
+          uri = URI.parse("#{OffsitePayments::Integrations::BitPay.invoicing_url(@options[:credential2])}/#{transaction_id}")
 
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true
 
           request = Net::HTTP::Get.new(uri.path)
-          request.basic_auth @options[:credential1], ''
+          request.basic_auth @options[:credential2], ''
 
           response = http.request(request)
 

@@ -3,3 +3,5 @@ pkg
 *.gem
 .bundle
 vendor
+.DS_Store
+.gitignore

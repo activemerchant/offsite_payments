@@ -4,10 +4,15 @@ class BitPayHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
+    @service_options = {
+        :amount => 500,
+        :currency => 'USD'
+    }
     @token_v1 = 'g82hEYhfRkhIlX5HJEqO8w5giRVeyGwsJ1wDPRvx8'
-    @token_v2 = '5v2K2rwuWQbnKexiQF9Eu6xdCVg7HFtkFNXarGEq9vLR'
+    @token_v2 = '5v2K2rwuWQbnKexiQF9Eu6xdCVg7HFtkFNXarGEq9vLRl'
     @invoice_id = '98kui1gJ7FocK41gUaBZxG'
-    @helper = BitPay::Helper.new(1234, @token_v1, :amount => 500, :currency => 'USD')
+
+    @helper = BitPay::Helper.new(1234, 1234, @service_options.merge(:credential2 => @token_v1))
   end
 
   def test_basic_helper_fields
@@ -81,7 +86,7 @@ class BitPayHelperTest < Test::Unit::TestCase
       body: { id: @invoice_id }.to_json
     )
 
-    helper = BitPay::Helper.new(1234, @token_v2, :amount => 500, :currency => 'USD')
+    helper = BitPay::Helper.new(1234, 1234, @service_options.merge(:credential2 => @token_v2))
 
     assert_equal @invoice_id, helper.form_fields['id']
   end
