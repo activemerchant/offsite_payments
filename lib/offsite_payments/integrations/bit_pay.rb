@@ -40,6 +40,7 @@ module OffsitePayments #:nodoc:
           add_field('posData', {'orderId' => order_id}.to_json)
           add_field('fullNotifications', true)
           add_field('transactionSpeed', 'high')
+          add_field('token', account)
         end
 
         mapping :amount, 'price'

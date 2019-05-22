@@ -57,6 +57,7 @@ class BitPayHelperTest < Test::Unit::TestCase
         posData: { orderId: 1234 }.to_json,
         fullNotifications: "true",
         transactionSpeed: 'high',
+        token: @token_v1,
       }.to_json
     ).to_return(
       status: 200,
@@ -75,6 +76,7 @@ class BitPayHelperTest < Test::Unit::TestCase
         posData: { orderId: 1234 }.to_json,
         fullNotifications: "true",
         transactionSpeed: 'high',
+        token: @token_v2,
       }.to_json
     ).to_return(
       status: 200,
