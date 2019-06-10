@@ -77,7 +77,7 @@ one.
 * [PayDollar](http://www.paydollar.com)
 * [Paysbuy](https://www.paysbuy.com/) - TH
 * [Platron](https://www.platron.ru/) - RU
-* [Realex](http://www.realexpayments.com)
+* [GlobalPayments](https://www.globalpaymentsinc.com)
 * [RBK Money](https://rbkmoney.ru/) - RU
 * [Robokassa](http://robokassa.ru/) - RU
 * [SagePay Form](http://www.sagepay.com/products_services/sage_pay_go/integration/form)
