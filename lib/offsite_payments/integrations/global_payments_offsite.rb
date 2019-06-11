@@ -115,6 +115,7 @@ module OffsitePayments #:nodoc:
           add_field 'AUTO_SETTLE_FLAG', '1'
           add_field 'RETURN_TSS', '1'
           add_field 'TIMESTAMP', @timestamp
+          add_field 'HPP_VERSION', '2'
           # Realex does not send back CURRENCY param in response
           # however it does echo any other param so we send it twice.
           add_field 'X-CURRENCY', @currency
