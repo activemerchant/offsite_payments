@@ -34,6 +34,7 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
   def test_default_helper_fields
     assert_field 'AUTO_SETTLE_FLAG', '1'
     assert_field 'RETURN_TSS', '1'
+    assert_field 'HPP_VERSION', '2'
   end
 
   def test_customer_mapping
