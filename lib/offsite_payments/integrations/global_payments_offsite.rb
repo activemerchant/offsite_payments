@@ -96,6 +96,9 @@ module OffsitePayments #:nodoc:
           [extract_digits(params[:zip]), extract_digits(params[:address1])].join('|')
         end
 
+        def extract_address_match_indicator(value)
+          value ? 'Y' : 'N'
+        end
       end
 
       class Helper < OffsitePayments::Helper
@@ -143,6 +146,15 @@ module OffsitePayments #:nodoc:
           add_field(mappings[:shipping_address][:country], lookup_country_code(params[:country]))
         end
 
+        def addresses_match=(address_match=nil)
+          return if address_match.nil?
+
+          add_field(
+            mappings[:addresses_match],
+            extract_address_match_indicator(address_match)
+          )
+        end
+
         def sign_fields
           @fields.merge!('SHA1HASH' => generate_signature)
         end
@@ -163,6 +175,8 @@ module OffsitePayments #:nodoc:
         mapping :amount,           'AMOUNT'
         mapping :notify_url,       'MERCHANT_RESPONSE_URL'
         mapping :return_url,       'MERCHANT_RETURN_URL'
+
+        mapping :addresses_match,  'HPP_ADDRESS_MATCH_INDICATOR'
 
         # Realex Optional fields
         mapping :customer,        :email => 'HPP_CUSTOMER_EMAIL',

@@ -86,6 +86,22 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
     assert_field 'HPP_SHIPPING_STATE', 'Whales'
   end
 
+  def test_address_match_indicator
+    @helper.addresses_match = true
+
+    assert_field 'HPP_ADDRESS_MATCH_INDICATOR', 'Y'
+  end
+
+  def test_address_match_indicator_false
+    @helper.addresses_match = false
+
+    assert_field 'HPP_ADDRESS_MATCH_INDICATOR', 'N'
+  end
+
+  def test_address_match_indicator_not_sent
+    assert_field 'HPP_ADDRESS_MATCH_INDICATOR', nil
+  end
+
   def test_format_amount_as_float
     amount_gbp = @helper.format_amount_as_float(929, 'GBP')
     assert_in_delta amount_gbp, 9.29, 0.00
