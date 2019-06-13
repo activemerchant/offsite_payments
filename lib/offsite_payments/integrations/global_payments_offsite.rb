@@ -132,11 +132,13 @@ module OffsitePayments #:nodoc:
         end
 
         def billing_address(params={})
+          super
           add_field(mappings[:billing_address][:zip], extract_avs_code(params))
           add_field(mappings[:billing_address][:country], lookup_country_code(params[:country]))
         end
 
         def shipping_address(params={})
+          super
           add_field(mappings[:shipping_address][:zip], extract_avs_code(params))
           add_field(mappings[:shipping_address][:country], lookup_country_code(params[:country]))
         end
@@ -163,12 +165,25 @@ module OffsitePayments #:nodoc:
         mapping :return_url,       'MERCHANT_RETURN_URL'
 
         # Realex Optional fields
-        mapping :customer,         :email => 'CUST_NUM'
+        mapping :customer,        :email => 'HPP_CUSTOMER_EMAIL',
+                                  :phone => 'HPP_CUSTOMER_PHONENUMBER_HOME',
+                                  :work_phone => 'HPP_CUSTOMER_PHONENUMBER_WORK'
 
-        mapping :shipping_address, :zip =>        'SHIPPING_CODE',
-                                   :country =>    'SHIPPING_CO'
-        mapping :billing_address,  :zip =>        'BILLING_CODE',
-                                   :country =>    'BILLING_CO'
+        mapping :shipping_address, :zip =>        'HPP_SHIPPING_POSTALCODE',
+                                   :country =>    'HPP_SHIPPING_COUNTRY',
+                                   :address1 =>   'HPP_SHIPPING_STREET1',
+                                   :address2 =>   'HPP_SHIPPING_STREET2',
+                                   :address3 =>   'HPP_SHIPPING_STREET3',
+                                   :city =>       'HPP_SHIPPING_CITY',
+                                   :state =>      'HPP_SHIPPING_STATE'
+
+        mapping :billing_address,  :zip =>        'HPP_BILLING_POSTALCODE',
+                                   :country =>    'HPP_BILLING_COUNTRY',
+                                   :address1 =>   'HPP_BILLING_STREET1',
+                                   :address2 =>   'HPP_BILLING_STREET2',
+                                   :address3 =>   'HPP_BILLING_STREET3',
+                                   :city =>       'HPP_BILLING_CITY',
+                                   :state =>      'HPP_BILLING_STATE'
       end
 
       class Notification < OffsitePayments::Notification

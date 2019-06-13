@@ -38,33 +38,52 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
   end
 
   def test_customer_mapping
-    @helper.customer :first_name => 'Cody', :last_name => 'Fauser', :email => 'cody@example.com', :phone => '(555)555-5555'
-    assert_field 'CUST_NUM', 'cody@example.com'
+    @helper.customer :first_name => 'Cody',
+                     :last_name => 'Fauser',
+                     :email => 'cody@example.com',
+                     :phone => '(555)555-5555',
+                     :work_phone => '(555)555-6666'
+
+    assert_field 'HPP_CUSTOMER_EMAIL', 'cody@example.com'
+    assert_field 'HPP_CUSTOMER_PHONENUMBER_HOME', '(555)555-5555'
+    assert_field 'HPP_CUSTOMER_PHONENUMBER_WORK', '(555)555-6666'
   end
 
   def test_address_mapping
     @helper.billing_address :address1 => '1 My Street',
                             :address2 => 'Apt. 1',
+                            :address3 => 'Entrance B',
                             :city => 'Leeds',
                             :state => 'Yorkshire',
                             :zip => 'LS2 7EE',
                             :country  => 'CA'
 
-    assert_field 'BILLING_CODE', '27|1'
-    assert_field 'BILLING_CO', 'CA'
+    assert_field 'HPP_BILLING_POSTALCODE', '27|1'
+    assert_field 'HPP_BILLING_COUNTRY', 'CA'
+    assert_field 'HPP_BILLING_STREET1', '1 My Street'
+    assert_field 'HPP_BILLING_STREET2', 'Apt. 1'
+    assert_field 'HPP_BILLING_STREET3', 'Entrance B'
+    assert_field 'HPP_BILLING_CITY', 'Leeds'
+    assert_field 'HPP_BILLING_STATE', 'Yorkshire'
   end
 
   def test_shipping_address
     @helper.shipping_address :name => 'Testing Tester',
                              :address1 => '1 My Street',
                              :address2 => 'Apt. 1',
+                             :address3 => 'Entrance B',
                              :city => 'London',
                              :state => 'Whales',
                              :zip => 'LS2 7E1',
                              :country  => 'GB'
 
-    assert_field 'SHIPPING_CODE', '271|1'
-    assert_field 'SHIPPING_CO', 'GB'
+    assert_field 'HPP_SHIPPING_POSTALCODE', '271|1'
+    assert_field 'HPP_SHIPPING_COUNTRY', 'GB'
+    assert_field 'HPP_SHIPPING_STREET1', '1 My Street'
+    assert_field 'HPP_SHIPPING_STREET2', 'Apt. 1'
+    assert_field 'HPP_SHIPPING_STREET3', 'Entrance B'
+    assert_field 'HPP_SHIPPING_CITY', 'London'
+    assert_field 'HPP_SHIPPING_STATE', 'Whales'
   end
 
   def test_format_amount_as_float
