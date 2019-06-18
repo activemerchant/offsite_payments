@@ -2,7 +2,7 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module BitPay
       API_V1_URL = 'https://bitpay.com/api/invoice'
-      API_V1_TOKEN_REGEX = /[0OIl]/
+      API_V2_TOKEN_REGEX = /^[^0OIl]{44,}$/
       API_V2_URL = 'https://bitpay.com/invoices'
 
       mattr_accessor :service_url
@@ -21,7 +21,7 @@ module OffsitePayments #:nodoc:
       end
 
       def self.v2_api_token?(api_token)
-        api_token.length >= 44 && !API_V1_TOKEN_REGEX.match(api_token)
+        API_V2_TOKEN_REGEX.match(api_token)
       end
 
       def self.invoicing_url(api_token)
@@ -84,7 +84,11 @@ module OffsitePayments #:nodoc:
           request = Net::HTTP::Post.new(uri.request_uri)
           request.content_type = "application/json"
           request.body = @fields.to_json
-          request.basic_auth @account, ''
+
+          unless v2_api_token?(@account)
+            request.add_field("x-bitpay-plugin-info", "BitPay_Shopify_Client_v2.0.1906")
+            request.basic_auth @account, ''
+          end
 
           response = http.request(request)
           JSON.parse(response.body)

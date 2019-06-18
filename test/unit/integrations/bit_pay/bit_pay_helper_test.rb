@@ -58,7 +58,8 @@ class BitPayHelperTest < Test::Unit::TestCase
         fullNotifications: "true",
         transactionSpeed: 'high',
         token: @token_v1,
-      }.to_json
+      }.to_json,
+      basic_auth: [@token_v1, ''],
     ).to_return(
       status: 200,
       body: { id: @invoice_id }.to_json
