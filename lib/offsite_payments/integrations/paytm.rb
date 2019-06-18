@@ -13,7 +13,7 @@ module OffsitePayments #:nodoc:
       # self.production_url = 'https://secure.paytm.in/oltp-web/processTransaction'
 
       self.test_url = 'https://securegw-stage.paytm.in/theia/processTransaction'
-      self.production_url = 'https://securegw.paytm.in/theia/processTransaction'
+      self.production_url = 'https://securegw.paytm.in/order/process'
 
       def self.service_url
         OffsitePayments.mode == :production ? production_url : test_url
