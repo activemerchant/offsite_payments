@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.15 (June 18, 2018)
+- Update URL for Paytm [AnnaGyergyai] #315
+
 ### version 2.7.14 (June 18, 2018)
 - [Bitpay] Include basic auth only when the api isn't v2 [anbugal] #323
 
