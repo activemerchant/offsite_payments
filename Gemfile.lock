@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    offsite_payments (2.7.14)
+    offsite_payments (2.7.15)
       actionpack (>= 5.2.3)
       actionview (>= 5.1.6.2)
       active_utils (~> 3.3.0)
@@ -191,4 +191,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.17.3
+   2.0.1
