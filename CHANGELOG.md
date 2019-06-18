@@ -1,9 +1,13 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.14 (June 18, 2018)
+- [Bitpay] Include basic auth only when the api isn't v2 [anbugal] #323
+
 ### version 2.7.13 (May 22, 2018)
 - [BitPay] Add token to payload while creating the invoice [pi3r] #321
 
 ### version 2.7.12 (May 13, 2018)
+
 - [BitPay] Use v2 api urls when the api token is of type v2 [pi3r] #319
 - Fix CVE-2019-5418, CVE-2018-14404 [pi3r] #317
 
