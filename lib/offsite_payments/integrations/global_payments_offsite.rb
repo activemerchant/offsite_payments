@@ -104,6 +104,8 @@ module OffsitePayments #:nodoc:
       class Helper < OffsitePayments::Helper
         include Common
 
+        self.country_format = :numeric
+
         def initialize(order, account, options = {})
           @timestamp   = Time.now.strftime('%Y%m%d%H%M%S')
           @currency    = options[:currency]

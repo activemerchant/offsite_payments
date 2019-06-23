@@ -59,7 +59,7 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
                             :country  => 'CA'
 
     assert_field 'HPP_BILLING_POSTALCODE', '27|1'
-    assert_field 'HPP_BILLING_COUNTRY', 'CA'
+    assert_field 'HPP_BILLING_COUNTRY', '124'
     assert_field 'HPP_BILLING_STREET1', '1 My Street'
     assert_field 'HPP_BILLING_STREET2', 'Apt. 1'
     assert_field 'HPP_BILLING_STREET3', 'Entrance B'
@@ -78,7 +78,7 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
                              :country  => 'GB'
 
     assert_field 'HPP_SHIPPING_POSTALCODE', '271|1'
-    assert_field 'HPP_SHIPPING_COUNTRY', 'GB'
+    assert_field 'HPP_SHIPPING_COUNTRY', '826'
     assert_field 'HPP_SHIPPING_STREET1', '1 My Street'
     assert_field 'HPP_SHIPPING_STREET2', 'Apt. 1'
     assert_field 'HPP_SHIPPING_STREET3', 'Entrance B'
