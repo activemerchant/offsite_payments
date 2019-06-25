@@ -118,6 +118,28 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
     assert_field 'HPP_ADDRESS_MATCH_INDICATOR', nil
   end
 
+  def test_does_not_require_shipping
+    @helper.addresses_match true
+    @helper.shipping_address :name => 'Testing Tester',
+                             :address1 => '1 My Street',
+                             :address2 => 'Apt. 1',
+                             :address3 => 'Entrance B',
+                             :city => 'London',
+                             :state => 'Whales',
+                             :zip => 'LS2 7E1',
+                             :country  => 'GB'
+    @helper.require_shipping false
+
+    assert_field 'HPP_ADDRESS_MATCH_INDICATOR', nil
+    assert_field 'HPP_SHIPPING_POSTALCODE', nil
+    assert_field 'HPP_SHIPPING_COUNTRY', nil
+    assert_field 'HPP_SHIPPING_STREET1', nil
+    assert_field 'HPP_SHIPPING_STREET2', nil
+    assert_field 'HPP_SHIPPING_STREET3', nil
+    assert_field 'HPP_SHIPPING_CITY', nil
+    assert_field 'HPP_SHIPPING_STATE', nil
+  end
+
   def test_format_amount_as_float
     amount_gbp = @helper.format_amount_as_float(929, 'GBP')
     assert_in_delta amount_gbp, 9.29, 0.00

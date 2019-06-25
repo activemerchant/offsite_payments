@@ -100,6 +100,8 @@ module OffsitePayments #:nodoc:
           value ? 'TRUE' : 'FALSE'
         end
 
+        # if HPP_ADDRESS_MATCH_INDICATOR is set to TRUE
+        # HPP requires the shipping address to be sent from the billing address
         def copy_billing_address
           @fields.select { |k, _| k.start_with? 'HPP_BILLING_' }
                  .each do |k, v|
@@ -155,7 +157,7 @@ module OffsitePayments #:nodoc:
           add_field(mappings[:shipping_address][:country], lookup_country_code(params[:country]))
         end
 
-        def addresses_match(address_match=nil)
+        def addresses_match(address_match = nil)
           return if address_match.nil?
 
           add_field(
@@ -164,6 +166,16 @@ module OffsitePayments #:nodoc:
           )
 
           copy_billing_address if address_match
+        end
+
+        # HPP does not want shipping address and HPP_ADDRESS_MATCH_INDICATOR to be sent
+        # if the product does not require shipping
+        def require_shipping(require_shipping = nil)
+          return unless require_shipping == false
+
+          @fields.delete_if do |k, _|
+            k.start_with?('HPP_SHIPPING_') || k == 'HPP_ADDRESS_MATCH_INDICATOR'
+          end
         end
 
         def sign_fields
