@@ -97,7 +97,14 @@ module OffsitePayments #:nodoc:
         end
 
         def extract_address_match_indicator(value)
-          value ? 'Y' : 'N'
+          value ? 'TRUE' : 'FALSE'
+        end
+
+        def copy_billing_address
+          @fields.select { |k, _| k.start_with? 'HPP_BILLING_' }
+                 .each do |k, v|
+                   add_field("HPP_SHIPPING_#{k.split('HPP_BILLING_')[1]}", v)
+                 end
         end
       end
 
@@ -148,13 +155,15 @@ module OffsitePayments #:nodoc:
           add_field(mappings[:shipping_address][:country], lookup_country_code(params[:country]))
         end
 
-        def addresses_match=(address_match=nil)
+        def addresses_match(address_match=nil)
           return if address_match.nil?
 
           add_field(
             mappings[:addresses_match],
             extract_address_match_indicator(address_match)
           )
+
+          copy_billing_address if address_match
         end
 
         def sign_fields
@@ -178,7 +187,6 @@ module OffsitePayments #:nodoc:
         mapping :notify_url,       'MERCHANT_RESPONSE_URL'
         mapping :return_url,       'MERCHANT_RETURN_URL'
 
-        mapping :addresses_match,  'HPP_ADDRESS_MATCH_INDICATOR'
 
         # Realex Optional fields
         mapping :customer,        :email => 'HPP_CUSTOMER_EMAIL',
@@ -200,6 +208,8 @@ module OffsitePayments #:nodoc:
                                    :address3 =>   'HPP_BILLING_STREET3',
                                    :city =>       'HPP_BILLING_CITY',
                                    :state =>      'HPP_BILLING_STATE'
+
+        mapping :addresses_match,  'HPP_ADDRESS_MATCH_INDICATOR'
       end
 
       class Notification < OffsitePayments::Notification

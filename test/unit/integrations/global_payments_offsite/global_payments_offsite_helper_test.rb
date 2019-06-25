@@ -87,15 +87,31 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
   end
 
   def test_address_match_indicator
-    @helper.addresses_match = true
+    @helper.billing_address :address1 => '1 My Street',
+                            :address2 => 'Apt. 1',
+                            :address3 => 'Entrance B',
+                            :city => 'Leeds',
+                            :state => 'Yorkshire',
+                            :zip => 'LS2 7E1',
+                            :country  => 'CA'
 
-    assert_field 'HPP_ADDRESS_MATCH_INDICATOR', 'Y'
+    @helper.addresses_match true
+
+    assert_field 'HPP_ADDRESS_MATCH_INDICATOR', 'TRUE'
+
+    assert_field 'HPP_SHIPPING_POSTALCODE', '271|1'
+    assert_field 'HPP_SHIPPING_COUNTRY', '124'
+    assert_field 'HPP_SHIPPING_STREET1', '1 My Street'
+    assert_field 'HPP_SHIPPING_STREET2', 'Apt. 1'
+    assert_field 'HPP_SHIPPING_STREET3', 'Entrance B'
+    assert_field 'HPP_SHIPPING_CITY', 'Leeds'
+    assert_field 'HPP_SHIPPING_STATE', 'Yorkshire'
   end
 
   def test_address_match_indicator_false
-    @helper.addresses_match = false
+    @helper.addresses_match false
 
-    assert_field 'HPP_ADDRESS_MATCH_INDICATOR', 'N'
+    assert_field 'HPP_ADDRESS_MATCH_INDICATOR', 'FALSE'
   end
 
   def test_address_match_indicator_not_sent
