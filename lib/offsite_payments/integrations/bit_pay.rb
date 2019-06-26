@@ -71,7 +71,7 @@ module OffsitePayments #:nodoc:
 
           raise ActionViewHelperError, "Invalid response while retrieving BitPay Invoice ID. Please try again." unless invoice
 
-          {"id" => invoice['id']}
+          { "id" => extract_invoice_id(invoice) }
         end
 
         private
@@ -92,6 +92,14 @@ module OffsitePayments #:nodoc:
 
           response = http.request(request)
           JSON.parse(response.body)
+        end
+
+        def extract_invoice_id(invoice)
+          if BitPay.v2_api_token?(@account)
+            invoice['data']['id']
+          else
+            invoice['id']
+          end
         end
       end
 

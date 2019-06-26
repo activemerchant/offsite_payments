@@ -81,7 +81,7 @@ class BitPayHelperTest < Test::Unit::TestCase
       }.to_json
     ).to_return(
       status: 200,
-      body: { id: @invoice_id }.to_json
+      body: { data: { id: @invoice_id } }.to_json
     )
 
     helper = BitPay::Helper.new(1234, @token_v2, :amount => 500, :currency => 'USD')
