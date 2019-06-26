@@ -85,7 +85,7 @@ module OffsitePayments #:nodoc:
           request.content_type = "application/json"
           request.body = @fields.to_json
 
-          unless v2_api_token?(@account)
+          unless BitPay.v2_api_token?(@account)
             request.add_field("x-bitpay-plugin-info", "BitPay_Shopify_Client_v2.0.1906")
             request.basic_auth @account, ''
           end
