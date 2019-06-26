@@ -1,15 +1,20 @@
 # Offsite Payments CHANGELOG
 
-### version 2.7.15 (June 18, 2018)
+### version 2.7.16 (June 26, 2019)
+- [BitPay] properly call `v2_api_token?` on the BitPay module [pi3r] #325
+- [BitPay] properly fetch the invoice id after creation [pi3r] #325
+- Remove support for Ruby 2.3/2.2 (they are EOL) [pi3r]
+
+### version 2.7.15 (June 18, 2019)
 - Update URL for Paytm [AnnaGyergyai] #315
 
-### version 2.7.14 (June 18, 2018)
+### version 2.7.14 (June 18, 2019)
 - [Bitpay] Include basic auth only when the api isn't v2 [anbugal] #323
 
-### version 2.7.13 (May 22, 2018)
+### version 2.7.13 (May 22, 2019)
 - [BitPay] Add token to payload while creating the invoice [pi3r] #321
 
-### version 2.7.12 (May 13, 2018)
+### version 2.7.12 (May 13, 2019)
 
 - [BitPay] Use v2 api urls when the api token is of type v2 [pi3r] #319
 - Fix CVE-2019-5418, CVE-2018-14404 [pi3r] #317
