@@ -13,7 +13,7 @@ class RemoteMollieIdealTest < Test::Unit::TestCase
 
   def test_create_payment_and_check_status
     create_response = MollieIdeal.create_payment(@api_key,
-      :amount => BigDecimal.new('123.45'),
+      :amount => BigDecimal('123.45'),
       :description => 'My order description',
       :redirectUrl => 'https://example.com/return',
       :method => 'ideal',

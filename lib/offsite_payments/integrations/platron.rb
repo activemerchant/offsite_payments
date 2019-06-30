@@ -120,7 +120,7 @@ module OffsitePayments #:nodoc:
         end
 
         def amount
-          Money.from_amount(BigDecimal.new(params['pg_amount']), currency)
+          Money.from_amount(BigDecimal(params['pg_amount']), currency)
         end
 
         def secret

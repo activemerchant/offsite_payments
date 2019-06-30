@@ -67,7 +67,7 @@ class MollieTest < Test::Unit::TestCase
 
   def test_post_request
     params =  {
-      :amount => BigDecimal.new('123.45'),
+      :amount => BigDecimal('123.45'),
       :description => 'My order description',
       :redirectUrl => 'https://example.com/return',
       :method => 'ideal',
