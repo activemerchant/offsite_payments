@@ -29,6 +29,7 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
     assert_field 'AMOUNT', '999'
     assert_field 'CHECKOUT_ID', 'order-500'
     assert_field 'ORDER_ID', 'order-500' + @helper.fields["TIMESTAMP"]
+    assert_field 'HPP_VERSION', '2'
   end
 
   def test_default_helper_fields

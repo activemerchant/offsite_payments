@@ -120,6 +120,7 @@ module OffsitePayments #:nodoc:
           add_field 'X-CURRENCY', @currency
           add_field 'X-TEST', @test.to_s
           add_field 'ORDER_ID', "#{order}#{@timestamp.to_i}"
+          add_field 'HPP_VERSION', '2'
         end
 
         def form_fields
