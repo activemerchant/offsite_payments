@@ -41,12 +41,10 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
     @helper.customer :first_name => 'Cody',
                      :last_name => 'Fauser',
                      :email => 'cody@example.com',
-                     :phone => '(555)555-5555',
-                     :work_phone => '(555)555-6666'
+                     :phone => '(555)555-5555'
 
     assert_field 'HPP_CUSTOMER_EMAIL', 'cody@example.com'
-    assert_field 'HPP_CUSTOMER_PHONENUMBER_HOME', '(555)555-5555'
-    assert_field 'HPP_CUSTOMER_PHONENUMBER_WORK', '(555)555-6666'
+    assert_field 'HPP_CUSTOMER_PHONENUMBER_MOBILE', '5|555555555'
   end
 
   def test_address_mapping

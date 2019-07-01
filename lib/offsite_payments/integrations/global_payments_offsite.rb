@@ -100,6 +100,23 @@ module OffsitePayments #:nodoc:
           value ? 'TRUE' : 'FALSE'
         end
 
+        # The home phone number provided by the Cardholder. Should be In format:
+        # of 'CountryCallingCode|Number' for example, '1|123456789'.
+        def format_phone_number(phone_number)
+          return nil if phone_number.nil?
+
+          clean_number = phone_number.gsub(/\D/, '')
+
+          if clean_number.length >= 10
+            country_code = clean_number[0, clean_number.length - 9]
+            number = clean_number[clean_number.length - 9, clean_number.length]
+
+            "#{country_code}|#{number}"
+          else
+            phone_number
+          end
+        end
+
         # if HPP_ADDRESS_MATCH_INDICATOR is set to TRUE
         # HPP requires the shipping address to be sent from the billing address
         def copy_billing_address
@@ -157,6 +174,11 @@ module OffsitePayments #:nodoc:
           add_field(mappings[:shipping_address][:country], lookup_country_code(params[:country]))
         end
 
+        def customer(params={})
+          super
+          add_field(mappings[:customer][:phone], format_phone_number(params[:phone]))
+        end
+
         def addresses_match(address_match = nil)
           return if address_match.nil?
 
@@ -202,8 +224,7 @@ module OffsitePayments #:nodoc:
 
         # Realex Optional fields
         mapping :customer,        :email => 'HPP_CUSTOMER_EMAIL',
-                                  :phone => 'HPP_CUSTOMER_PHONENUMBER_HOME',
-                                  :work_phone => 'HPP_CUSTOMER_PHONENUMBER_WORK'
+                                  :phone => 'HPP_CUSTOMER_PHONENUMBER_MOBILE'
 
         mapping :shipping_address, :zip =>        'HPP_SHIPPING_POSTALCODE',
                                    :country =>    'HPP_SHIPPING_COUNTRY',
