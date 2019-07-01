@@ -107,14 +107,12 @@ module OffsitePayments #:nodoc:
 
           clean_number = phone_number.gsub(/\D/, '')
 
-          if clean_number.length >= 10
-            country_code = clean_number[0, clean_number.length - 9]
-            number = clean_number[clean_number.length - 9, clean_number.length]
+          return phone_number if clean_number.length < 10
 
-            "#{country_code}|#{number}"
-          else
-            phone_number
-          end
+          country_code = clean_number[0, clean_number.length - 9]
+          number = clean_number[clean_number.length - 9, clean_number.length]
+
+          "#{country_code}|#{number}"
         end
 
         # if HPP_ADDRESS_MATCH_INDICATOR is set to TRUE
