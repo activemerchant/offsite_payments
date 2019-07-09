@@ -188,6 +188,10 @@ module OffsitePayments #:nodoc:
           copy_billing_address if address_match
         end
 
+        def comment(comment = nil)
+          add_field(mappings[:comment], comment)
+        end
+
         # HPP does not want shipping address and HPP_ADDRESS_MATCH_INDICATOR to be sent
         # if the product does not require shipping
         def require_shipping(require_shipping = nil)
@@ -241,6 +245,7 @@ module OffsitePayments #:nodoc:
                                    :state =>      'HPP_BILLING_STATE'
 
         mapping :addresses_match,  'HPP_ADDRESS_MATCH_INDICATOR'
+        mapping :comment, 'COMMENT1'
       end
 
       class Notification < OffsitePayments::Notification
