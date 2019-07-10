@@ -147,8 +147,6 @@ module OffsitePayments #:nodoc:
           http.use_ssl = true
 
           request = Net::HTTP::Get.new(uri.path)
-          request.basic_auth @options[:credential1], ''
-
           response = http.request(request)
 
           posted_json = comparable_data
