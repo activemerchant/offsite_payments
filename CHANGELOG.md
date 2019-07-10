@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.17 (July 10, 2019)
+- [BitPay] Read information from the `data` key present in the payload instead of root [pi3r] #328
+
 ### version 2.7.16 (June 26, 2019)
 - [BitPay] properly call `v2_api_token?` on the BitPay module [pi3r] #325
 - [BitPay] properly fetch the invoice id after creation [pi3r] #325
