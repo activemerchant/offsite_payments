@@ -50,17 +50,19 @@ class BitPayNotificationTest < Test::Unit::TestCase
   private
   def http_raw_data
     {
-      "id"=> @invoice_id,
-      "orderID"=>"123",
-      "url"=>"https://bitpay.com/invoice/98kui1gJ7FocK41gUaBZxG",
-      "status"=>"complete",
-      "btcPrice"=>"0.0295",
-      "price"=>"10.00",
-      "currency"=>"USD",
-      "invoiceTime"=>"1370539476654",
-      "expirationTime"=>"1370540376654",
-      "currentTime"=>"1370539573956",
-      "posData" => '{"orderId":123}'
+      "data"=> {
+        "id"=> @invoice_id,
+        "orderID"=>"123",
+        "url"=>"https://bitpay.com/invoice/98kui1gJ7FocK41gUaBZxG",
+        "status"=>"complete",
+        "btcPrice"=>"0.0295",
+        "price"=>"10.00",
+        "currency"=>"USD",
+        "invoiceTime"=>"1370539476654",
+        "expirationTime"=>"1370540376654",
+        "currentTime"=>"1370539573956",
+        "posData" => '{"orderId":123}'
+      }
     }.to_json
   end
 end
