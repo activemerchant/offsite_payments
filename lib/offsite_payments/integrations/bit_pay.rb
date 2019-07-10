@@ -141,7 +141,7 @@ module OffsitePayments #:nodoc:
         end
 
         def acknowledge(authcode = nil)
-          uri = URI.parse("#{OffsitePayments::Integrations::BitPay.API_V2_URL}/#{transaction_id}")
+          uri = URI.parse("#{OffsitePayments::Integrations::BitPay::API_V2_URL}/#{transaction_id}")
 
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true
