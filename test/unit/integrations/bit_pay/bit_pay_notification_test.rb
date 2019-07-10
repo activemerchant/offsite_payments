@@ -25,14 +25,14 @@ class BitPayNotificationTest < Test::Unit::TestCase
   end
 
   def test_successful_acknowledgement_with_v1_api_token
-    stub_request(:get, "#{BitPay.invoicing_url(@token_v1)}/#{@invoice_id}").
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}").
       to_return(status: 200, body: http_raw_data)
 
     assert @bit_pay.acknowledge
   end
 
   def test_successful_acknowledgement_with_v2_api_token
-    stub_request(:get, "#{BitPay.invoicing_url(@token_v2)}/#{@invoice_id}").
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}").
       to_return(status: 200, body: http_raw_data)
 
     notification = BitPay::Notification.new(http_raw_data, credential1: @token_v2)
@@ -41,7 +41,7 @@ class BitPayNotificationTest < Test::Unit::TestCase
   end
 
   def test_acknowledgement_error
-    stub_request(:get, "#{BitPay.invoicing_url(@token_v1)}/#{@invoice_id}").
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}").
       to_return(status: 200, body: { error: 'Doesnt match'}.to_json)
 
     assert !@bit_pay.acknowledge
