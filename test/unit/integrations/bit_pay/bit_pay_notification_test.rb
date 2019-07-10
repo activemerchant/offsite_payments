@@ -25,15 +25,17 @@ class BitPayNotificationTest < Test::Unit::TestCase
   end
 
   def test_successful_acknowledgement_with_v1_api_token
-    stub_request(:get, "#{BitPay.invoicing_url(@token_v1)}/#{@invoice_id}").
-      to_return(status: 200, body: http_raw_data)
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}")
+      .with(basic_auth: [@token_v1, ''])
+      .to_return(status: 200, body: http_raw_data)
 
     assert @bit_pay.acknowledge
   end
 
   def test_successful_acknowledgement_with_v2_api_token
-    stub_request(:get, "#{BitPay.invoicing_url(@token_v2)}/#{@invoice_id}").
-      to_return(status: 200, body: http_raw_data)
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}")
+      .with(basic_auth: [@token_v2, ''])
+      .to_return(status: 200, body: http_raw_data)
 
     notification = BitPay::Notification.new(http_raw_data, credential1: @token_v2)
 
@@ -41,8 +43,9 @@ class BitPayNotificationTest < Test::Unit::TestCase
   end
 
   def test_acknowledgement_error
-    stub_request(:get, "#{BitPay.invoicing_url(@token_v1)}/#{@invoice_id}").
-      to_return(status: 200, body: { error: 'Doesnt match'}.to_json)
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}")
+      .with(basic_auth: [@token_v1, ''])
+      .to_return(status: 200, body: { error: 'Doesnt match'}.to_json)
 
     assert !@bit_pay.acknowledge
   end
@@ -50,17 +53,19 @@ class BitPayNotificationTest < Test::Unit::TestCase
   private
   def http_raw_data
     {
-      "id"=> @invoice_id,
-      "orderID"=>"123",
-      "url"=>"https://bitpay.com/invoice/98kui1gJ7FocK41gUaBZxG",
-      "status"=>"complete",
-      "btcPrice"=>"0.0295",
-      "price"=>"10.00",
-      "currency"=>"USD",
-      "invoiceTime"=>"1370539476654",
-      "expirationTime"=>"1370540376654",
-      "currentTime"=>"1370539573956",
-      "posData" => '{"orderId":123}'
+      "data" => {
+        "id"=> @invoice_id,
+        "orderID"=>"123",
+        "url"=>"https://bitpay.com/invoice/98kui1gJ7FocK41gUaBZxG",
+        "status"=>"complete",
+        "btcPrice"=>"0.0295",
+        "price"=>"10.00",
+        "currency"=>"USD",
+        "invoiceTime"=>"1370539476654",
+        "expirationTime"=>"1370540376654",
+        "currentTime"=>"1370539573956",
+        "posData" => '{"orderId":123}'
+      }
     }.to_json
   end
 end

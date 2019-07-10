@@ -141,7 +141,7 @@ module OffsitePayments #:nodoc:
         end
 
         def acknowledge(authcode = nil)
-          uri = URI.parse("#{OffsitePayments::Integrations::BitPay.invoicing_url(@options[:credential1])}/#{transaction_id}")
+          uri = URI.parse("#{OffsitePayments::Integrations::BitPay::API_V2_URL}/#{transaction_id}")
 
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true
@@ -151,9 +151,9 @@ module OffsitePayments #:nodoc:
 
           response = http.request(request)
 
-          posted_json = JSON.parse(@raw).tap { |j| j.delete('currentTime') }
+          posted_json = comparable_data
           parse(response.body)
-          retrieved_json = JSON.parse(@raw).tap { |j| j.delete('currentTime') }
+          retrieved_json = comparable_data
 
           posted_json == retrieved_json
         end
@@ -161,7 +161,11 @@ module OffsitePayments #:nodoc:
         private
         def parse(body)
           @raw = body
-          @params = JSON.parse(@raw)
+          @params = JSON.parse(@raw)['data']
+        end
+
+        def comparable_data
+          @params&.reject { |k, _v| k == 'currentTime' }
         end
       end
 
