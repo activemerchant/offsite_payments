@@ -6,7 +6,7 @@ class BitPayNotificationTest < Test::Unit::TestCase
   def setup
     @token = 'g82hEYhfRkhIlX5HJEqO8w5giRVeyGwsJ1wDPRvx8'
     @invoice_id = '98kui1gJ7FocK41gUaBZxG'
-    @bit_pay = BitPay::Notification.new(http_raw_data, credential1: @token)
+    @bit_pay = BitPay::Notification.new(http_raw_data.to_json, credential1: @token)
   end
 
   def test_accessors
@@ -25,7 +25,7 @@ class BitPayNotificationTest < Test::Unit::TestCase
 
   def test_successful_acknowledgement
     stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}")
-      .to_return(status: 200, body: http_raw_data)
+      .to_return(status: 200, body: http_raw_api_data.to_json)
 
     assert @bit_pay.acknowledge
   end
@@ -40,19 +40,23 @@ class BitPayNotificationTest < Test::Unit::TestCase
   private
   def http_raw_data
     {
-      "data" => {
-        "id"=> @invoice_id,
-        "orderID"=>"123",
-        "url"=>"https://bitpay.com/invoice/98kui1gJ7FocK41gUaBZxG",
-        "status"=>"complete",
-        "btcPrice"=>"0.0295",
-        "price"=>"10.00",
-        "currency"=>"USD",
-        "invoiceTime"=>"1370539476654",
-        "expirationTime"=>"1370540376654",
-        "currentTime"=>"1370539573956",
-        "posData" => '{"orderId":123}'
-      }
-    }.to_json
+      "id"=> @invoice_id,
+      "orderID"=>"123",
+      "url"=>"https://bitpay.com/invoice/98kui1gJ7FocK41gUaBZxG",
+      "status"=>"complete",
+      "btcPrice"=>"0.0295",
+      "price"=>"10.00",
+      "currency"=>"USD",
+      "invoiceTime"=>"1370539476654",
+      "expirationTime"=>"1370540376654",
+      "currentTime"=>"1370539573956",
+      "posData" => '{"orderId":123}'
+    }
+  end
+
+  def http_raw_api_data
+    {
+      "data" => http_raw_data
+    }
   end
 end

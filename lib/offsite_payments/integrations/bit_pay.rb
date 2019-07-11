@@ -159,7 +159,9 @@ module OffsitePayments #:nodoc:
         private
         def parse(body)
           @raw = body
-          @params = JSON.parse(@raw)['data']
+          json = JSON.parse(@raw)
+
+          @params = json.key?('data') ? json['data'] : json
         end
 
         def comparable_data
