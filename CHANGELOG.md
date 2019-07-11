@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.18 (July 11, 2019)
+- [Bitpay] Fixes an issue where notification couldn't be acknowledged [pi3r] #329
+
 ### version 2.7.17 (July 10, 2019)
 - [BitPay] Read information from the `data` key present in the payload instead of root [pi3r] #328
 

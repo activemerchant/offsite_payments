@@ -1,3 +1,3 @@
 module OffsitePayments
-  VERSION = "2.7.17"
+  VERSION = "2.7.18"
 end
