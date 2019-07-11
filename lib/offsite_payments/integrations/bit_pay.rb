@@ -149,11 +149,11 @@ module OffsitePayments #:nodoc:
           request = Net::HTTP::Get.new(uri.path)
           response = http.request(request)
 
-          posted_json = comparable_data
-          parse(response.body)
-          retrieved_json = comparable_data
+          received_attributes = [transaction_id, status]
 
-          posted_json == retrieved_json
+          parse(response.body)
+
+          received_attributes == [transaction_id, status]
         end
 
         private
@@ -162,10 +162,6 @@ module OffsitePayments #:nodoc:
           json = JSON.parse(@raw)
 
           @params = json.key?('data') ? json['data'] : json
-        end
-
-        def comparable_data
-          @params&.reject { |k, _v| k == 'currentTime' }
         end
       end
 
