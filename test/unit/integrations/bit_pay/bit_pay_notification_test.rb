@@ -30,6 +30,20 @@ class BitPayNotificationTest < Test::Unit::TestCase
     assert @bit_pay.acknowledge
   end
 
+  def test_acknowledgement_fails_when_transaction_id_doesnt_match
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}")
+      .to_return(status: 200, body: http_raw_api_data("id" => "bad_id").to_json)
+
+    refute @bit_pay.acknowledge
+  end
+
+  def test_acknowledgement_fails_when_status_doesnt_match
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}")
+      .to_return(status: 200, body: http_raw_api_data("status" => "failure").to_json)
+
+    refute @bit_pay.acknowledge
+  end
+
   def test_acknowledgement_error
     stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}")
       .to_return(status: 200, body: { error: 'Doesnt match'}.to_json)
@@ -54,9 +68,9 @@ class BitPayNotificationTest < Test::Unit::TestCase
     }
   end
 
-  def http_raw_api_data
+  def http_raw_api_data(options = {})
     {
-      "data" => http_raw_data
+      "data" => http_raw_data.merge(options)
     }
   end
 end
