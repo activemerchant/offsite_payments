@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.19 (July 11, 2019)
+- [Bitpay] Only compare transaction_id/status while acknowledging [pi3r] #330
+
 ### version 2.7.18 (July 11, 2019)
 - [Bitpay] Fixes an issue where notification couldn't be acknowledged [pi3r] #329
 
