@@ -63,6 +63,85 @@ module OffsitePayments #:nodoc:
           'COU' => 4
         }
 
+        CANADIAN_STATES = {
+          'AB' => 'Alberta',
+          'BC' => 'British Columbia',
+          'MB' => 'Manitoba',
+          'NB' => 'New Brunswick',
+          'NL' => 'Newfoundland',
+          'NS' => 'Nova Scotia',
+          'NU' => 'Nunavut',
+          'NT' => 'Northwest Territories',
+          'ON' => 'Ontario',
+          'PE' => 'Prince Edward Island',
+          'QC' => 'Quebec',
+          'SK' => 'Saskatchewan',
+          'YT' => 'Yukon'
+        }
+
+        US_STATES = {
+          'AL' => 'Alabama',
+          'AK' => 'Alaska',
+          'AS' => 'American Samoa',
+          'AZ' => 'Arizona',
+          'AR' => 'Arkansas',
+          'CA' => 'California',
+          'CO' => 'Colorado',
+          'CT' => 'Connecticut',
+          'DE' => 'Delaware',
+          'DC' => 'District Of Columbia',
+          'FM' => 'Federated States Of Micronesia',
+          'FL' => 'Florida',
+          'GA' => 'Georgia',
+          'GU' => 'Guam',
+          'HI' => 'Hawaii',
+          'ID' => 'Idaho',
+          'IL' => 'Illinois',
+          'IN' => 'Indiana',
+          'IA' => 'Iowa',
+          'KS' => 'Kansas',
+          'KY' => 'Kentucky',
+          'LA' => 'Louisiana',
+          'ME' => 'Maine',
+          'MH' => 'Marshall Islands',
+          'MD' => 'Maryland',
+          'MA' => 'Massachusetts',
+          'MI' => 'Michigan',
+          'MN' => 'Minnesota',
+          'MS' => 'Mississippi',
+          'MO' => 'Missouri',
+          'MT' => 'Montana',
+          'NE' => 'Nebraska',
+          'NV' => 'Nevada',
+          'NH' => 'New Hampshire',
+          'NJ' => 'New Jersey',
+          'NM' => 'New Mexico',
+          'NY' => 'New York',
+          'NC' => 'North Carolina',
+          'ND' => 'North Dakota',
+          'MP' => 'Northern Mariana Islands',
+          'OH' => 'Ohio',
+          'OK' => 'Oklahoma',
+          'OR' => 'Oregon',
+          'PW' => 'Palau',
+          'PA' => 'Pennsylvania',
+          'PR' => 'Puerto Rico',
+          'RI' => 'Rhode Island',
+          'SC' => 'South Carolina',
+          'SD' => 'South Dakota',
+          'TN' => 'Tennessee',
+          'TX' => 'Texas',
+          'UT' => 'Utah',
+          'VT' => 'Vermont',
+          'VI' => 'Virgin Islands',
+          'VA' => 'Virginia',
+          'WA' => 'Washington',
+          'WV' => 'West Virginia',
+          'WI' => 'Wisconsin',
+          'WY' => 'Wyoming'
+        }
+
+
         def create_signature(fields, secret)
           data = fields.join('.')
           digest = Digest::SHA1.hexdigest(data)
@@ -115,6 +194,17 @@ module OffsitePayments #:nodoc:
           "#{country_code}|#{number}"
         end
 
+        def lookup_state_code(country_code, state)
+          case country_code
+          when 'CA'
+            state_code = CANADIAN_STATES.find { |code, state_name| state_name.downcase == state.downcase}
+            state_code ? state_code.first : state
+          when 'US'
+            state_code = US_STATES.find { |code, state_name| state_name.downcase == state.downcase}
+            state_code ? state_code.first : state
+          end
+        end
+
         # if HPP_ADDRESS_MATCH_INDICATOR is set to TRUE
         # HPP requires the shipping address to be sent from the billing address
         def copy_billing_address
@@ -161,9 +251,16 @@ module OffsitePayments #:nodoc:
         end
 
         def billing_address(params={})
+          country = params[:country]
+          country_code = lookup_country_code(country, :alpha2)
           super
+
           add_field(mappings[:billing_address][:zip], extract_avs_code(params))
-          add_field(mappings[:billing_address][:country], lookup_country_code(params[:country]))
+          add_field(mappings[:billing_address][:country], lookup_country_code(country))
+
+          if ['US', 'CA'].include?(country_code) && params[:state].length > 2
+            add_field(mappings[:billing_address][:state], lookup_state_code(country_code, params[:state]))
+          end
         end
 
         def shipping_address(params={})

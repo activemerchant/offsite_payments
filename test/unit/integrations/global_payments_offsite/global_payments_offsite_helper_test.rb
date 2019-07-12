@@ -52,7 +52,7 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
                             :address2 => 'Apt. 1',
                             :address3 => 'Entrance B',
                             :city => 'Leeds',
-                            :state => 'Yorkshire',
+                            :state => 'Newfoundland',
                             :zip => 'LS2 7EE',
                             :country  => 'CA'
 
@@ -62,7 +62,31 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
     assert_field 'HPP_BILLING_STREET2', 'Apt. 1'
     assert_field 'HPP_BILLING_STREET3', 'Entrance B'
     assert_field 'HPP_BILLING_CITY', 'Leeds'
-    assert_field 'HPP_BILLING_STATE', 'Yorkshire'
+    assert_field 'HPP_BILLING_STATE', 'NL'
+  end
+
+  def test_us_country_state
+    @helper.billing_address :address1 => '1 My Street',
+                            :address2 => 'Apt. 1',
+                            :address3 => 'Entrance B',
+                            :city => 'Pasadena',
+                            :country  => 'United States',
+                            :state => 'California'
+
+    assert_field 'HPP_BILLING_STATE', 'CA'
+    assert_field 'HPP_BILLING_COUNTRY', '840'
+  end
+
+  def test_canada_country_state
+    @helper.billing_address :address1 => '1 My Street',
+                            :address2 => 'Apt. 1',
+                            :address3 => 'Entrance B',
+                            :city => 'Pasadena',
+                            :country  => 'Canada',
+                            :state => 'Newfoundland'
+
+    assert_field 'HPP_BILLING_STATE', 'NL'
+    assert_field 'HPP_BILLING_COUNTRY', '124'
   end
 
   def test_shipping_address
@@ -91,14 +115,14 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
                             :city => 'Leeds',
                             :state => 'Yorkshire',
                             :zip => 'LS2 7E1',
-                            :country  => 'CA'
+                            :country  => 'United Kingdom'
 
     @helper.addresses_match true
 
     assert_field 'HPP_ADDRESS_MATCH_INDICATOR', 'TRUE'
 
     assert_field 'HPP_SHIPPING_POSTALCODE', '271|1'
-    assert_field 'HPP_SHIPPING_COUNTRY', '124'
+    assert_field 'HPP_SHIPPING_COUNTRY', '826'
     assert_field 'HPP_SHIPPING_STREET1', '1 My Street'
     assert_field 'HPP_SHIPPING_STREET2', 'Apt. 1'
     assert_field 'HPP_SHIPPING_STREET3', 'Entrance B'
