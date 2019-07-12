@@ -264,9 +264,16 @@ module OffsitePayments #:nodoc:
         end
 
         def shipping_address(params={})
+          country = params[:country]
+          country_code = lookup_country_code(country, :alpha2)
           super
+
           add_field(mappings[:shipping_address][:zip], extract_avs_code(params))
           add_field(mappings[:shipping_address][:country], lookup_country_code(params[:country]))
+
+          if ['US', 'CA'].include?(country_code) && params[:state].length > 2
+            add_field(mappings[:shipping_address][:state], lookup_state_code(country_code, params[:state]))
+          end
         end
 
         def customer(params={})
