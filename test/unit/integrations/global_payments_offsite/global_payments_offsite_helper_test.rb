@@ -165,7 +165,8 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
   def test_comment
     @helper.comment 'This is my fancy comment'
 
-    assert_field 'COMMENT1', 'This is my fancy comment'
+    assert_field 'COMMENT1', 'Shopify'
+    assert_field 'COMMENT2', 'This is my fancy comment'
   end
 
   def test_format_amount_as_float

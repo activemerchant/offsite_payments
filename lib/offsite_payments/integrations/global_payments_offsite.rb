@@ -240,6 +240,7 @@ module OffsitePayments #:nodoc:
           add_field 'X-CURRENCY', @currency
           add_field 'X-TEST', @test.to_s
           add_field 'ORDER_ID', "#{order}#{@timestamp.to_i}"
+          add_field 'COMMENT1', 'Shopify'
         end
 
         def form_fields
@@ -349,7 +350,7 @@ module OffsitePayments #:nodoc:
                                    :state =>      'HPP_BILLING_STATE'
 
         mapping :addresses_match,  'HPP_ADDRESS_MATCH_INDICATOR'
-        mapping :comment, 'COMMENT1'
+        mapping :comment, 'COMMENT2'
       end
 
       class Notification < OffsitePayments::Notification
