@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RealexNotificationTest < Test::Unit::TestCase
+class RealexOffsiteNotificationTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
