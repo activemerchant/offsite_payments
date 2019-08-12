@@ -41,6 +41,8 @@ module OffsitePayments #:nodoc:
           add_field('fullNotifications', true)
           add_field('transactionSpeed', 'high')
           add_field('token', account)
+          
+  
         end
 
         mapping :amount, 'price'
@@ -85,8 +87,11 @@ module OffsitePayments #:nodoc:
           request.content_type = "application/json"
           request.body = @fields.to_json
 
-          unless BitPay.v2_api_token?(@account)
+          #add plugin info for v1 and v2 tokens
+          if BitPay.v2_api_token?(@account)
             request.add_field("x-bitpay-plugin-info", "BitPay_Shopify_Client_v2.0.1906")
+          else
+            request.add_field("x-bitpay-plugin-info", "BitPay_Shopify_Client_v1.0.1906")
             request.basic_auth @account, ''
           end
 
