@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GlobalPaymentsHelperTest < Test::Unit::TestCase
+class RealexOffsiteHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def credentials
@@ -15,7 +15,7 @@ class GlobalPaymentsHelperTest < Test::Unit::TestCase
   end
 
   def setup
-    @helper = GlobalPaymentsOffsite::Helper.new('order-500', 'merchant-1234', order_attributes)
+    @helper = RealexOffsite::Helper.new('order-500', 'merchant-1234', order_attributes)
   end
 
   def teardown
