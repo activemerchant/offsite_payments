@@ -67,7 +67,7 @@ one.
 * [Dwolla](https://www.dwolla.com/default.aspx)
 * [ePay](http://www.epay.dk/epay-payment-solutions/)
 * [First Data](https://firstdata.zendesk.com/entries/407522-first-data-global-gateway-e4sm-payment-pages-integration-manual)
-* [GlobalPayments](https://www.globalpaymentsinc.com)
+* [Realex](https://www.globalpaymentsinc.com)
 * [HiTRUST](http://www.hitrust.com.hk/)
 * [MOLPay](http://www.molpay.com/v2/) - MY, SG, ID, TH, VN, PH, CN, AU
 * [Moneybookers](http://www.moneybookers.com)
