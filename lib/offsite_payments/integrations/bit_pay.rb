@@ -41,9 +41,7 @@ module OffsitePayments #:nodoc:
           add_field('fullNotifications', true)
           add_field('transactionSpeed', 'high')
           add_field('token', account)
-          
-  
-        end
+       end
 
         mapping :amount, 'price'
         mapping :order, 'orderID'
