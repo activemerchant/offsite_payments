@@ -60,6 +60,7 @@ class BitPayHelperTest < Test::Unit::TestCase
         token: @token_v1,
       }.to_json,
       basic_auth: [@token_v1, ''],
+      headers: {'x-bitpay-plugin-info' => 'BitPay_Shopify_Client_v1.0.1909'},
     ).to_return(
       status: 200,
       body: { id: @invoice_id }.to_json
@@ -78,7 +79,8 @@ class BitPayHelperTest < Test::Unit::TestCase
         fullNotifications: "true",
         transactionSpeed: 'high',
         token: @token_v2,
-      }.to_json
+      }.to_json,
+      headers: {'x-bitpay-plugin-info' => 'BitPay_Shopify_Client_v2.0.1909'},
     ).to_return(
       status: 200,
       body: { data: { id: @invoice_id } }.to_json
