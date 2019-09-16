@@ -41,7 +41,7 @@ module OffsitePayments #:nodoc:
           add_field('fullNotifications', true)
           add_field('transactionSpeed', 'high')
           add_field('token', account)
-        end
+       end
 
         mapping :amount, 'price'
         mapping :order, 'orderID'
@@ -73,8 +73,17 @@ module OffsitePayments #:nodoc:
 
           { "id" => extract_invoice_id(invoice) }
         end
-
         private
+
+        def add_plugin_info(request)
+          #add plugin info for v1 and v2 tokens
+          if BitPay.v2_api_token?(@account)
+            request.add_field("x-bitpay-plugin-info", "BitPay_AM" + application_id + "_Client_v2.0.1909")
+          else
+            request.add_field("x-bitpay-plugin-info", "BitPay_AM" + application_id + "_Client_v1.0.1909")
+            request.basic_auth @account, ''
+          end
+        end
 
         def create_invoice
           uri = URI.parse(BitPay.invoicing_url(@account))
@@ -84,11 +93,7 @@ module OffsitePayments #:nodoc:
           request = Net::HTTP::Post.new(uri.request_uri)
           request.content_type = "application/json"
           request.body = @fields.to_json
-
-          unless BitPay.v2_api_token?(@account)
-            request.add_field("x-bitpay-plugin-info", "BitPay_Shopify_Client_v2.0.1906")
-            request.basic_auth @account, ''
-          end
+          add_plugin_info(request)
 
           response = http.request(request)
           JSON.parse(response.body)
