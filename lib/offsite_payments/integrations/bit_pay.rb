@@ -8,9 +8,6 @@ module OffsitePayments #:nodoc:
       mattr_accessor :service_url
       self.service_url = 'https://bitpay.com/invoice'
 
-      mattr_accessor :service_url
-      self.service_url = 'https://bitpay.com/invoice'
-
       def self.notification(post, options = {})
         Notification.new(post, options)
       end
