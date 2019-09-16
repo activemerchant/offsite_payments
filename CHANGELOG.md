@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.20 (Sept 16, 2019)
+- [Bitpay] api version tracking [thejoshualewis] #331
+
 ### version 2.7.19 (July 11, 2019)
 - [Bitpay] Only compare transaction_id/status while acknowledging [pi3r] #330
 
