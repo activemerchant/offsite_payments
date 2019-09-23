@@ -1,5 +1,9 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.21 (Sept 23, 2019)
+- Various updates to the Realex integration [pi3r] #324
+- [Realex] Use application_id instead of hardcoded Shopify [pi3r] #334
+
 ### version 2.7.20 (Sept 16, 2019)
 - [Bitpay] api version tracking [thejoshualewis] #331
 
