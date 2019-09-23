@@ -240,7 +240,7 @@ module OffsitePayments #:nodoc:
           add_field 'X-CURRENCY', @currency
           add_field 'X-TEST', @test.to_s
           add_field 'ORDER_ID', "#{order}#{@timestamp.to_i}"
-          add_field 'COMMENT1', 'Shopify'
+          add_field 'COMMENT1', application_id
         end
 
         def form_fields
