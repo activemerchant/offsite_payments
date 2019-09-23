@@ -15,6 +15,7 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
   end
 
   def setup
+    OffsitePayments::Integrations::RealexOffsite::Helper.application_id = 'Shopify'
     @helper = RealexOffsite::Helper.new('order-500', 'merchant-1234', order_attributes)
   end
 
@@ -162,10 +163,13 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
     assert_field 'HPP_SHIPPING_STATE', nil
   end
 
+  def test_comment1_equals_application_id
+    assert_field 'COMMENT1', 'Shopify'
+  end
+
   def test_comment
     @helper.comment 'This is my fancy comment'
 
-    assert_field 'COMMENT1', 'Shopify'
     assert_field 'COMMENT2', 'This is my fancy comment'
   end
 
