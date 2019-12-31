@@ -22,17 +22,34 @@ Gem::Specification.new do |s|
   s.files = Dir['CHANGELOG', 'README.md', 'MIT-LICENSE', 'lib/**/*']
   s.require_path = 'lib'
 
-  s.add_dependency('activesupport', '>= 3.2.14', '< 5.1')
-  s.add_dependency('i18n', '~> 0.5')
-  s.add_dependency('money', '< 7.0.0')
+  unless defined?(Money)
+    s.post_install_message = %q{
+    In order to use `offsite_payments` gem, you need to either install or add to your Gemfile
+    one of the two options for Money gem:
+      - `gem 'money'`
+      - `gem 'shopify-money', require: 'money'`
+
+    Regardless of which gem you choose, please add them *before* `offsite_payments`.
+    For more info, go to https://github.com/activemerchant/offsite_payments#money-gem-dependency
+
+    It's also important to note that all Money object usage inside `offsite_payments` is being
+    deprecated. We encourage you to use your own Money object inside your app instead of relying
+    on `offsite_payments` doing it for you, e.g. `Money.from_amount(notification.gross)`
+    }
+  end
+
+  s.add_dependency('activesupport', '>= 5.2.3')
+  s.add_dependency('i18n', '>= 0.6.6')
   s.add_dependency('builder', '>= 2.1.2', '< 4.0.0')
-  s.add_dependency('active_utils', '~> 3.2.0')
-  s.add_dependency('nokogiri', "~> 1.4")
-  s.add_dependency('actionpack', ">= 3.2.20", "< 5.1")
+  s.add_dependency('active_utils', '~> 3.3.0')
+  s.add_dependency('nokogiri', ">= 1.8.5")
+  s.add_dependency('actionpack', '>= 5.2.3')
+  s.add_dependency('actionview','>= 5.1.6.2')
 
   s.add_development_dependency('rake')
   s.add_development_dependency('test-unit', '~> 3.0')
   s.add_development_dependency('mocha', '~> 1.0')
   s.add_development_dependency('rails', '>= 3.2.14')
   s.add_development_dependency('thor')
+  s.add_development_dependency('webmock')
 end

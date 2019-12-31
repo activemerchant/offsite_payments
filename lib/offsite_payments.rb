@@ -1,7 +1,12 @@
+fail %q{
+  Money is required for offsite_payments to work, please refer to https://github.com/activemerchant/offsite_payments#money-gem-dependency
+} unless defined?(Money)
 require 'securerandom'
 require 'cgi'
 require "timeout"
 require "socket"
+require 'bigdecimal'
+require 'bigdecimal/util'
 
 require 'active_utils'
 

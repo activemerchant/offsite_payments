@@ -2,6 +2,7 @@ require 'bundler/setup'
 
 require 'test/unit'
 require 'mocha/test_unit'
+require 'webmock/test_unit'
 
 require 'money'
 require 'yaml'

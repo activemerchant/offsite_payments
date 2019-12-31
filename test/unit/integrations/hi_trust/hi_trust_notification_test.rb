@@ -24,7 +24,7 @@ class HiTrustNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(500, 'USD'), @notification.amount
+    assert_equal Money.from_amount(5.00, 'USD'), @notification.amount
   end
 
   def test_send_acknowledgement

@@ -4,20 +4,18 @@ sudo: false
 cache: bundler
 
 rvm:
-- 2.2.3
-- 2.1
-- 2.0
+- 2.5
+- 2.4
 
 gemfile:
-- Gemfile.rails32
-- Gemfile.rails40
-- Gemfile.rails41
-- Gemfile.rails42
-- Gemfile.rails5
+- gemfiles/Gemfile.rails50
+- gemfiles/Gemfile.latest-release
+- gemfiles/Gemfile.shopify
 
 matrix:
-  exclude:
-    - rvm: 2.1
-      gemfile: Gemfile.rails5
-    - rvm: 2.0
-      gemfile: Gemfile.rails5
+  include:
+    - rvm: 2.5
+      gemfile: gemfiles/Gemfile.rails-edge
+
+before_install:
+  - gem update bundler

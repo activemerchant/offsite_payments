@@ -10,7 +10,10 @@ class WebmoneyNotificationTest < Test::Unit::TestCase
   def test_accessors
     assert_equal "1.00", @webmoney.gross
     assert_equal "123",  @webmoney.item_id
-    assert_equal BigDecimal.new("1"), @webmoney.amount
+  end
+
+  def test_compositions
+    assert_equal Money.from_amount(1.00, 'RUB'), @webmoney.amount
   end
 
   def test_acknowledgement

@@ -78,7 +78,8 @@ module OffsitePayments #:nodoc:
         end
 
         def generate_signature
-          Universal.sign(@fields, @key)
+          fields_to_sign = @fields.select { |key, _| key.start_with?('x_') && key != 'x_signature' }
+          Universal.sign(fields_to_sign, @key)
         end
 
         mapping :account,          'x_account_id'
@@ -163,6 +164,10 @@ module OffsitePayments #:nodoc:
           result && result.capitalize
         end
 
+        def message
+          @params['x_message']
+        end
+
         def test?
           @params['x_test'] == 'true'
         end
@@ -183,6 +188,10 @@ module OffsitePayments #:nodoc:
 
         def success?
           @notification.acknowledge
+        end
+
+        def message
+          @notification.message
         end
       end
     end

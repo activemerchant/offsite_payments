@@ -7,9 +7,10 @@ module OffsitePayments #:nodoc:
       self.live_issuers = [
         ["ABN AMRO", "ideal_ABNANL2A"],
         ["ASN Bank", "ideal_ASNBNL21"],
-        ["Friesland Bank", "ideal_FRBKNL2L"],
+        ["Bunq", "ideal_BUNQNL2A"],
         ["ING", "ideal_INGBNL2A"],
         ["Knab", "ideal_KNABNL2H"],
+        ["Moneyou", "ideal_MOYONL21"],
         ["Rabobank", "ideal_RABONL2U"],
         ["RegioBank", "ideal_RBRBNL21"],
         ["SNS Bank", "ideal_SNSBNL2A"],
@@ -17,18 +18,12 @@ module OffsitePayments #:nodoc:
         ["van Lanschot", "ideal_FVLBNL22"]
       ]
 
-      mattr_accessor :test_issuers
-      self.test_issuers = [
-        ["TBM Bank", "ideal_TESTNL99"]
-      ]
-
       def self.redirect_param_label
         "Select your bank"
       end
 
       def self.redirect_param_options(options = {})
-        return test_issuers if options[:credential1].blank?
-        options[:credential1].start_with?('live_') ? live_issuers : test_issuers
+        live_issuers
       end
 
       def self.retrieve_issuers(token)
@@ -66,7 +61,7 @@ module OffsitePayments #:nodoc:
         true
       end
 
-      class Helper < OffsitePayments::Helper
+      class Helper < Mollie::Helper
         attr_reader :transaction_id, :redirect_parameters, :token
 
         def initialize(order, account, options = {})
@@ -87,30 +82,6 @@ module OffsitePayments #:nodoc:
           raise ArgumentError, "The redirect_param option needs to be set to the bank_id the customer selected." if options[:redirect_param].blank?
           raise ArgumentError, "The return_url option needs to be set." if options[:return_url].blank?
           raise ArgumentError, "The description option needs to be set." if options[:description].blank?
-        end
-
-        def credential_based_url
-          response = request_redirect
-          @transaction_id = response['id']
-
-          uri = URI.parse(response['links']['paymentUrl'])
-          set_form_fields_for_redirect(uri)
-          uri.query = ''
-          uri.to_s.sub(/\?\z/, '')
-        end
-
-        def form_method
-          "GET"
-        end
-
-        def set_form_fields_for_redirect(uri)
-          CGI.parse(uri.query).each do |key, value|
-            if value.is_a?(Array) && value.length == 1
-              add_field(key, value.first)
-            else
-              add_field(key, value)
-            end
-          end
         end
 
         def request_redirect

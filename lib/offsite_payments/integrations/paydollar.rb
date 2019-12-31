@@ -2,34 +2,64 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Paydollar
       CURRENCY_MAP = {
-          'AED' => '784',
-          'AUD' => '036',
-          'BND' => '096',
-          'CAD' => '124',
+          'HKD' => '344',
+          'USD' => '840',
+          'SGD' => '702',
           'CNY' => '156',
+          'JPY' => '392',
+          'TWD' => '901',
+          'AUD' => '036',
           'EUR' => '978',
           'GBP' => '826',
-          'HKD' => '344',
-          'IDR' => '360',
-          'JPY' => '392',
-          'KRW' => '410',
+          'CAD' => '124',
           'MOP' => '446',
-          'MYR' => '458',
-          'NZD' => '554',
           'PHP' => '608',
-          'SAR' => '682',
-          'SGD' => '702',
           'THB' => '764',
-          'TWD' => '901',
-          'USD' => '840',
+          'MYR' => '458',
+          'IDR' => '360',
+          'KRW' => '410',
+          'BND' => '096',
+          'NZD' => '554',
+          'SAR' => '682',
+          'AED' => '784',
+          'BRL' => '986',
+          'INR' => '356',
+          'TRY' => '949',
+          'ZAR' => '710',
+          'VND' => '704',
+          'DKK' => '208',
+          'ILS' => '376',
+          'NOK' => '578',
+          'RUB' => '643',
+          'SEK' => '752',
+          'CHF' => '756',
+          'ARS' => '032',
+          'CLP' => '152',
+          'COP' => '170',
+          'CZK' => '203',
+          'EGP' => '818',
+          'HUF' => '348',
+          'KZT' => '398',
+          'LBP' => '422',
+          'MXN' => '484',
+          'NGN' => '566',
+          'PKR' => '586',
+          'PEN' => '604',
+          'PLN' => '985',
+          'QAR' => '634',
+          'RON' => '946',
+          'UAH' => '980',
+          'VEF' => '937',
+          'LKR' => '144',
+          'KWD' => '414',
       }
-
+      # change url
       def self.service_url
         case OffsitePayments.mode
         when :production
-          'https://www.paydollar.com/b2c2/eng/payment/payForm.jsp'
+          'https://www.paydollar.com/b2c2/eng/payment/payShopify.jsp'
         when :test
-          'https://test.paydollar.com/b2cDemo/eng/payment/payForm.jsp'
+          'https://test.paydollar.com/b2cDemo/eng/payment/payShopify.jsp'
         else
           raise StandardError, "Integration mode set to an invalid value: #{mode}"
         end

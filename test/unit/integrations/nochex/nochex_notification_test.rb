@@ -19,7 +19,7 @@ class NochexNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(3166, 'GBP'), @nochex.amount
+    assert_equal Money.from_amount(31.66, 'GBP'), @nochex.amount
   end
 
   def test_successful_acknowledgement

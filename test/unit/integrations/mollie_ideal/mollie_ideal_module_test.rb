@@ -23,7 +23,7 @@ class MollieIdealModuleTest < Test::Unit::TestCase
     OffsitePayments.stubs(:mode).returns(:development)
 
     assert MollieIdeal.requires_redirect_param?
-    assert_equal [["TBM Bank", "ideal_TESTNL99"]], MollieIdeal.redirect_param_options(:credential1 => "test_blah")
+    assert MollieIdeal.redirect_param_options(:credential1 => "test_blah").include?(["Rabobank", "ideal_RABONL2U"])
 
     live_issuers = MollieIdeal.redirect_param_options(:credential1 => "live_blah")
     assert !live_issuers.include?(["TBM Bank", "ideal_TESTNL99"])

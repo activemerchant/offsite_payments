@@ -20,7 +20,7 @@ class MoneybookersNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(3960, 'EUR'), @moneybookers.amount
+    assert_equal Money.from_amount(39.60, 'EUR'), @moneybookers.amount
   end
 
   def test_respond_to_acknowledge
@@ -59,8 +59,19 @@ class MoneybookersNotificationTest < Test::Unit::TestCase
     assert notification.acknowledge
   end
 
+  def test_message
+    Moneybookers::Notification::FAILED_REASON_CODES.each do |code, reason|
+      notification = Moneybookers::Notification.new(http_raw_data.sub(/failed_reason_code=0/, "failed_reason_code=#{code}"), :credential2 => 'secret')
+      assert_equal reason, notification.message
+    end
+
+    undefined_code = 100
+    notification = Moneybookers::Notification.new(http_raw_data.sub(/failed_reason_code=0/, "failed_reason_code=#{undefined_code}"), :credential2 => 'secret')
+    assert_equal nil, notification.message
+  end
+
   private
   def http_raw_data
-    "pay_to_email=merchant@merchant.com&pay_from_email=payer@moneybookers.com&merchant_id=100005&mb_transaction_id=200234&transaction_id=1005&mb_amount=25.46&mb_currency=GBP&status=2&md5sig=327638C253A4637199CEBA6642371F20&amount=39.60&currency=EUR"
+    "pay_to_email=merchant@merchant.com&pay_from_email=payer@moneybookers.com&merchant_id=100005&mb_transaction_id=200234&transaction_id=1005&mb_amount=25.46&mb_currency=GBP&status=2&md5sig=327638C253A4637199CEBA6642371F20&amount=39.60&currency=EUR&failed_reason_code=0"
   end
 end

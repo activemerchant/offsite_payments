@@ -18,7 +18,7 @@ class PaydollarNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(13962, 'HKD'), @paydollar.amount
+    assert_equal Money.from_amount(139.62, 'HKD'), @paydollar.amount
   end
 
   def test_acknowledgement

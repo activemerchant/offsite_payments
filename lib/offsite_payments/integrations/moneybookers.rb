@@ -2,18 +2,20 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Moneybookers
       mattr_accessor :production_url
-      self.production_url = 'https://www.moneybookers.com/app/payment.pl'
+      self.production_url = 'https://pay.skrill.com'
 
-      def self.service_url
-        self.production_url
-      end
+      class << self
+        def service_url
+          production_url
+        end
 
-      def self.notification(post, options)
-        Notification.new(post, options)
-      end
+        def notification(post, options)
+          Notification.new(post, options)
+        end
 
-      def self.return(post, options = {})
-        Return.new(post, options)
+        def return(post, options = {})
+          Return.new(post, options)
+        end
       end
 
       class Helper < OffsitePayments::Helper
@@ -44,13 +46,11 @@ module OffsitePayments #:nodoc:
         MAPPED_COUNTRY_CODES = {
           'SE' => 'SV',
           'DK' => 'DA'
-        }
+        }.freeze
 
-        SUPPORTED_COUNTRY_CODES = [
-          'FI', 'DE', 'ES', 'FR',
-          'IT','PL', 'GR', 'RO',
-          'RU', 'TR', 'CN', 'CZ', 'NL'
-        ]
+        SUPPORTED_COUNTRY_CODES = %w[
+          FI DE ES FR IT PL GR RO RU TR CN CZ NL
+        ].freeze
 
         def initialize(order, account, options = {})
           super
@@ -85,6 +85,34 @@ module OffsitePayments #:nodoc:
       end
 
       class Notification < OffsitePayments::Notification
+        FAILED_REASON_CODES = {
+          '1' => "Referred by card issuer",
+          '2' => "Invalid Merchant",
+          '3' => "Stolen card",
+          '4' => "Declined by customer's Card Issuer",
+          '5' => "Insufficient funds",
+          '8' => "PIN tries exceed - card blocked",
+          '9' => "Invalid Transaction",
+          '10' => "Transaction frequency limit exceeded",
+          '12' => "Invalid credit card or bank account",
+          '15' => "Duplicate transaction",
+          '19' => "Unknown failure reason. Try again",
+          '24' => "Card expired",
+          '28' => "Lost/Stolen card",
+          '32' => "Card Security Code check failed",
+          '37' => "Card restricted by card issuer",
+          '38' => "Security violation",
+          '42' => "Card blocked by card issuer",
+          '44' => "Customer's issuing bank not available",
+          '51' => "Processing system error",
+          '63' => "Transaction not permitted to cardholder",
+          '70' => "Customer failed to complete 3DS",
+          '71' => "Customer failed SMS verification",
+          '80' => "Fraud engine declined",
+          '98' => "Error in communication with provider",
+          '99' => "Failure reason not specified"
+        }.freeze
+
         def complete?
           status == 'Completed'
         end
@@ -113,6 +141,15 @@ module OffsitePayments #:nodoc:
 
         def status_code
           params['status']
+        end
+
+        def message
+          return unless failed_reason_code
+          FAILED_REASON_CODES[failed_reason_code]
+        end
+
+        def failed_reason_code
+          params['failed_reason_code']
         end
 
         def item_id

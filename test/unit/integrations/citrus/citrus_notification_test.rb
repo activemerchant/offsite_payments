@@ -12,7 +12,6 @@ class CitrusNotificationTest < Test::Unit::TestCase
     assert_equal "Completed", @citrus.status
     assert_equal "CTX1309180549472058821", @citrus.transaction_id
     assert_equal "SUCCESS", @citrus.transaction_status
-    assert_equal "10.00", @citrus.amount
     assert_equal "INR", @citrus.currency
     assert_equal true, @citrus.invoice_ok?('ORD427')
     assert_equal true, @citrus.amount_ok?(BigDecimal.new('10.00'))
@@ -24,7 +23,7 @@ class CitrusNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal '10.00', @citrus.amount
+    assert_equal Money.from_amount(10.00, @citrus.currency), @citrus.amount
   end
 
   def test_acknowledgement

@@ -28,7 +28,7 @@ class FirstDataNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(12100, 'USD'), @first_data.amount
+    assert_equal Money.from_amount(121.00, 'USD'), @first_data.amount
   end
 
   def test_accessors_when_set

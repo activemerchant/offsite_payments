@@ -83,7 +83,7 @@ module OffsitePayments #:nodoc:
         end
 
         def amount
-          BigDecimal.new(gross)
+          Money.from_amount(BigDecimal.new(gross), currency)
         end
 
         def key_present?
@@ -112,6 +112,10 @@ module OffsitePayments #:nodoc:
 
         def success_response(*args)
           {:nothing => true}
+        end
+
+        def currency
+          'RUB'
         end
       end
     end

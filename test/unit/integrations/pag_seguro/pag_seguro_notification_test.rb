@@ -27,7 +27,7 @@ class PagSeguroNotificationTest < Test::Unit::TestCase
   def test_compositions
     Net::HTTP.expects(:get_response).with(@uri).returns(stub(code: "200", body: http_raw_data))
     pag_seguro = PagSeguro::Notification.new(notification_data)
-    assert_equal Money.new(4912, 'BRL'), pag_seguro.amount
+    assert_equal Money.from_amount(49.12, 'BRL'), pag_seguro.amount
   end
 
   def test_respond_to_acknowledge

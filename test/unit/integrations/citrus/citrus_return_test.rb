@@ -44,7 +44,7 @@ class CitrusReturnTest < Test::Unit::TestCase
     assert_equal "Completed", notification.status
     assert_equal "CTX1309180549472058821", notification.transaction_id
     assert_equal "SUCCESS", notification.transaction_status
-    assert_equal "10.00", notification.amount
+    assert_equal Money.from_amount(BigDecimal.new(10), "inr"), notification.amount
     assert_equal "INR", notification.currency
     assert_equal true, notification.invoice_ok?('ORD427')
     assert_equal true, notification.amount_ok?(BigDecimal.new('10.00'))

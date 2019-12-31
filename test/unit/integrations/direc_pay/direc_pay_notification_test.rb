@@ -37,7 +37,7 @@ class DirecPayNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.new(100, 'INR'), @direc_pay.amount
+    assert_equal Money.from_amount(1.00, 'INR'), @direc_pay.amount
   end
 
   def test_acknowledgement

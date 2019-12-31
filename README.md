@@ -1,6 +1,6 @@
 # Offsite Payments
-[![Build Status](https://travis-ci.org/activemerchant/offsite_payments.png?branch=master)](https://travis-ci.org/activemerchant/offsite_payments)
-[![Code Climate](https://codeclimate.com/github/activemerchant/offsite_payments.png)](https://codeclimate.com/github/activemerchant/offsite_payments)
+[![Build Status](https://travis-ci.org/activemerchant/offsite_payments.svg?branch=master)](https://travis-ci.org/activemerchant/offsite_payments)
+[![Code Climate](https://codeclimate.com/github/activemerchant/offsite_payments/badges/gpa.svg)](https://codeclimate.com/github/activemerchant/offsite_payments)
 
 Offsite Payments is an extraction from the ecommerce system [Shopify](http://www.shopify.com). Shopify's requirements for a simple and unified API to handle dozens of different offsite payment pages (often called hosted payment pages) with very different exposed APIs was the chief principle in designing the library.
 
@@ -17,7 +17,7 @@ The addition of your gateway to offsite_payments does not guarantee placement wi
 4. Your most recent Certificate of PCI Compliance
 5. Reason that the [Universal API](https://github.com/activemerchant/offsite_payments/blob/master/lib/offsite_payments/integrations/universal.rb)* cannot be used for your integration.
 
-*The Universal API defines a standard set of requests and callbacks that can be used to integrate with Shopify. A sample app and documentation are hosted [here](https://github.com/Shopify/offsite-gateway-sim). The Universal API should be used for all integrations in which placement within Shopify is the desired outcome. 
+*The Universal API defines a standard set of requests and callbacks that can be used to integrate with Shopify. A sample app and documentation are hosted [here](https://github.com/Shopify/offsite-gateway-sim). The Universal API should be used for all integrations in which placement within Shopify is the desired outcome.
 
 ## Installation
 
@@ -37,6 +37,19 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 
     gem 'offsite_payments'
 
+### Money gem dependency
+
+At the moment, `offsite_payments` gem depends on `Money` object, which was previously included by default. Since Shopify
+released their own `shopify-money` gem. Because `offsite_payments` does not impose which one of those gems should be
+included into your gem file, as long as one of them is included.
+
+
+- For [ruby money gem](https://github.com/RubyMoney/money) add `gem 'money'` to your `Gemfile`;
+- For [Shopify money gem](https://github.com/Shopify/money) add `gem 'shopify-money', require: 'money'` in your `Gemfile`.
+
+It's important to note that either of those Money gems would need to be added to your `Gemfile` before the `offsite_payments`
+one.
+
 [API documentation](http://www.rubydoc.info/github/activemerchant/offsite_payments/master).
 
 ## Supported Integrations
@@ -54,6 +67,7 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 * [Dwolla](https://www.dwolla.com/default.aspx)
 * [ePay](http://www.epay.dk/epay-payment-solutions/)
 * [First Data](https://firstdata.zendesk.com/entries/407522-first-data-global-gateway-e4sm-payment-pages-integration-manual)
+* [Realex](https://www.globalpaymentsinc.com)
 * [HiTRUST](http://www.hitrust.com.hk/)
 * [MOLPay](http://www.molpay.com/v2/) - MY, SG, ID, TH, VN, PH, CN, AU
 * [Moneybookers](http://www.moneybookers.com)
@@ -64,7 +78,6 @@ Or, if you're using Bundler, just add the following to your Gemfile:
 * [PayDollar](http://www.paydollar.com)
 * [Paysbuy](https://www.paysbuy.com/) - TH
 * [Platron](https://www.platron.ru/) - RU
-* [Realex](http://www.realexpayments.com)
 * [RBK Money](https://rbkmoney.ru/) - RU
 * [Robokassa](http://robokassa.ru/) - RU
 * [SagePay Form](http://www.sagepay.com/products_services/sage_pay_go/integration/form)

@@ -21,8 +21,6 @@ module OffsitePayments
       class Helper < OffsitePayments::Helper
         mapping :order, 'merchantTxnId'
         mapping :amount, 'orderAmount'
-        mapping :account, 'merchantAccessKey'
-        mapping :credential2, 'secret_key'
         mapping :credential3, 'pmt_url'
         mapping :currency, 'currency'
 
@@ -55,6 +53,7 @@ module OffsitePayments
           super
           add_field 'paymentMode', 'NET_BANKING'
           add_field 'reqtime', (Time.now.to_i * 1000).to_s
+          @secret_key = options[:credential2]
         end
 
         def form_fields
@@ -63,7 +62,7 @@ module OffsitePayments
 
         def generate_checksum
           checksum_fields = @fields["pmt_url"] + @fields["orderAmount"].to_s + @fields["merchantTxnId"] + @fields["currency"]
-          Citrus.checksum(@fields["secret_key"],  checksum_fields )
+          Citrus.checksum(@secret_key,  checksum_fields )
         end
       end
 
@@ -96,8 +95,8 @@ module OffsitePayments
           order_id.to_s == invoice.to_s
         end
 
-        def amount_ok?( order_amount )
-          BigDecimal.new( amount ) == order_amount
+        def amount_ok?(order_amount)
+          amount == Money.from_amount(order_amount, currency)
         end
 
         def item_id
@@ -120,7 +119,7 @@ module OffsitePayments
         end
 
         def amount
-          gross
+          Money.from_amount(BigDecimal.new(gross), currency)
         end
 
         def transaction_id
@@ -182,7 +181,7 @@ module OffsitePayments
         end
 
         def checksum_ok?
-          fields = [invoice, transaction_status, amount.to_s, transaction_id, issuerrefno, authidcode, customer_first_name, customer_last_name, pgrespcode, customer_address[:zip]].join
+          fields = [invoice, transaction_status, sprintf('%.2f', amount), transaction_id, issuerrefno, authidcode, customer_first_name, customer_last_name, pgrespcode, customer_address[:zip]].join
 
           unless Citrus.checksum(@secret_key, fields ) == checksum
             @message = 'checksum mismatch...'
