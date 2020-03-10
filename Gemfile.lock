@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    offsite_payments (2.7.21)
+    offsite_payments (2.7.22)
       actionpack (>= 5.2.3)
       actionview (>= 5.1.6.2)
       active_utils (~> 3.3.0)
@@ -36,7 +36,7 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_utils (3.3.16)
+    active_utils (3.3.17)
       activesupport (>= 4.2)
       i18n
     activejob (5.2.3)
@@ -191,4 +191,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.0.2
+   2.1.4
