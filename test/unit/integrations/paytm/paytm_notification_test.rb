@@ -16,7 +16,7 @@ class PaytmNotificationTest < Test::Unit::TestCase
     assert_equal '10.00', @paytm.gross
     assert_equal 'INR', @paytm.currency
     assert_equal true, @paytm.invoice_ok?('100PT012')
-    assert_equal true, @paytm.amount_ok?(BigDecimal.new('10.00'))
+    assert_equal true, @paytm.amount_ok?(BigDecimal('10.00'))
     assert_equal 'CC', @paytm.type
     assert_equal '100PT012', @paytm.invoice
     assert_equal 'WorldP64425807474247', @paytm.account

@@ -320,7 +320,7 @@ module OffsitePayments #:nodoc:
           data = ActiveUtils::PostData.new
           data[:requestparams] = parameters.join('|')
 
-          response = ssl_get("#{url}?#{data.to_post_data}")
+          ssl_get("#{url}?#{data.to_post_data}")
         end
 
         def test?

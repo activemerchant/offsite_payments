@@ -80,7 +80,7 @@ module OffsitePayments #:nodoc:
         end
 
         def amount
-          Money.from_amount(BigDecimal.new(gross), currency)
+          Money.from_amount(BigDecimal(gross), currency)
         end
 
         def item_id
@@ -156,7 +156,7 @@ module OffsitePayments #:nodoc:
         end
 
         def amount
-          BigDecimal.new(gross)
+          BigDecimal(gross)
         end
 
         def item_id

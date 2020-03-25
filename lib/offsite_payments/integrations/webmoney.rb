@@ -83,7 +83,7 @@ module OffsitePayments #:nodoc:
         end
 
         def amount
-          Money.from_amount(BigDecimal.new(gross), currency)
+          Money.from_amount(BigDecimal(gross), currency)
         end
 
         def key_present?

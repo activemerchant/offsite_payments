@@ -138,10 +138,6 @@ module OffsitePayments #:nodoc:
           nil
         end
 
-        def status
-          params['RESPMSG']
-        end
-
         # Id of this transaction (paypal number)
         def transaction_id
           params['PNREF']
