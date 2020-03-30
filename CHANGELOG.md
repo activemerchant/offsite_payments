@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.23 (March 30, 2020)
+- Test newer rubies and railses [byroot] #342
+
 ### version 2.7.22 (March 10, 2020)
 - Bump rake from 12.3.2 to 13.0.1 [dependabot] #340
 - Remove special subunit case for HUF in universal integration [krispenney] #341
