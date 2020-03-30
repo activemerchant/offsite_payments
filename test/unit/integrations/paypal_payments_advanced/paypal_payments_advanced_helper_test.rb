@@ -11,7 +11,7 @@ class PaypalPaymentsAdvancedHelperTest < Test::Unit::TestCase
   end
 
   def teardown
-    $KCODE = @original_kcode if @original_kcode
+    $KCODE = @original_kcode if defined? @original_kcode
   end
 
   def test_basic_helper_fields

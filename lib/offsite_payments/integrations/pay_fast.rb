@@ -212,7 +212,7 @@ module OffsitePayments #:nodoc:
 
         # The net amount credited to the receiver's account.
         def amount
-          Money.from_amount(BigDecimal.new(params['amount_net']), currency)
+          Money.from_amount(BigDecimal(params['amount_net']), currency)
         end
 
         # The name of the item being charged for.

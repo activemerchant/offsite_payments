@@ -424,10 +424,6 @@ module OffsitePayments #:nodoc:
           params['MESSAGE']
         end
 
-        def pasref
-          params['PASREF']
-        end
-
         def authcode
           params['AUTHCODE']
         end

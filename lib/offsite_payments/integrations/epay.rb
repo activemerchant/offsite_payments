@@ -125,7 +125,7 @@ module OffsitePayments #:nodoc:
           return false
         end
 
-        %w(txnid orderid currency date time hash fraud payercountry issuercountry txnfee subscriptionid paymenttype cardno).each do |attr|
+        %w(txnid orderid date time hash fraud payercountry issuercountry txnfee subscriptionid paymenttype cardno).each do |attr|
           define_method(attr) do
             params[attr]
           end
@@ -138,7 +138,7 @@ module OffsitePayments #:nodoc:
         def generate_md5string
           md5string = String.new
           for line in @raw.split('&')
-            key, value = *line.scan( %r{^([A-Za-z0-9_.]+)\=(.*)$} ).flatten
+            key, _ = *line.scan( %r{^([A-Za-z0-9_.]+)\=(.*)$} ).flatten
             md5string += params[key] if key != 'hash'
           end
           return md5string + @options[:credential3]

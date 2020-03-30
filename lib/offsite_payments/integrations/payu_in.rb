@@ -116,9 +116,9 @@ module OffsitePayments #:nodoc:
         end
 
         # Order amount should be equal to gross - discount
-        def amount_ok?( order_amount, order_discount = BigDecimal.new( '0.0' ) )
+        def amount_ok?( order_amount, order_discount = BigDecimal( '0.0' ) )
           parsed_discount = discount.nil? ? 0.to_d : discount.to_d
-          BigDecimal.new( original_gross ) == order_amount && parsed_discount == order_discount
+          BigDecimal( original_gross ) == order_amount && parsed_discount == order_discount
         end
 
         # Status of transaction return from the PayU. List of possible values:
@@ -258,7 +258,7 @@ module OffsitePayments #:nodoc:
         end
 
         def status( order_id, order_amount )
-          if @notification.invoice_ok?( order_id ) && @notification.amount_ok?( BigDecimal.new(order_amount) )
+          if @notification.invoice_ok?( order_id ) && @notification.amount_ok?( BigDecimal(order_amount) )
             @notification.status
           else
             'Mismatch'

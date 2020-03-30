@@ -136,7 +136,7 @@ module OffsitePayments #:nodoc:
 
         # Order amount should be equal to gross
         def amount_ok?(order_amount)
-          BigDecimal.new(original_gross) == order_amount
+          BigDecimal(original_gross) == order_amount
         end
 
         # Status of transaction return from the Paytm. List of possible values:
@@ -245,7 +245,7 @@ module OffsitePayments #:nodoc:
         end
 
         def status(order_id, order_amount)
-          if @notification.invoice_ok?(order_id) && @notification.amount_ok?(BigDecimal.new(order_amount))
+          if @notification.invoice_ok?(order_id) && @notification.amount_ok?(BigDecimal(order_amount))
             @notification.status
           else
             'Mismatch'

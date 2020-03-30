@@ -14,7 +14,7 @@ class CitrusNotificationTest < Test::Unit::TestCase
     assert_equal "SUCCESS", @citrus.transaction_status
     assert_equal "INR", @citrus.currency
     assert_equal true, @citrus.invoice_ok?('ORD427')
-    assert_equal true, @citrus.amount_ok?(BigDecimal.new('10.00'))
+    assert_equal true, @citrus.amount_ok?(BigDecimal('10.00'))
     assert_equal "CASH_ON_DELIVERY", @citrus.paymentmode
     assert_equal "ORD427", @citrus.invoice
     assert_equal "807bb30a30a02b904f1434539f2eb07942ecb6f1", @citrus.checksum
