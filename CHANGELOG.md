@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.24 (March 30, 2020)
+- Add ``allowed_push_host` to gemspec [pi3r]`
+
 ### version 2.7.23 (March 30, 2020)
 - Test newer rubies and railses [byroot] #342
 

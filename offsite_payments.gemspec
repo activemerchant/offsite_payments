@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
   s.files = Dir['CHANGELOG', 'README.md', 'MIT-LICENSE', 'lib/**/*']
   s.require_path = 'lib'
 
+  s.metadata['allowed_push_host'] = "https://rubygems.org"
+
   unless defined?(Money)
     s.post_install_message = %q{
     In order to use `offsite_payments` gem, you need to either install or add to your Gemfile
