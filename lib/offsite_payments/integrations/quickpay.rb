@@ -2,7 +2,7 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Quickpay
       mattr_accessor :service_url
-      self.service_url = 'https://secure.quickpay.dk/form/'
+      self.service_url = 'https://legacy-proxy.quickpay.net/form/'
 
       def self.notification(post, options = {})
         Notification.new(post, options)

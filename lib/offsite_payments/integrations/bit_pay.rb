@@ -73,8 +73,17 @@ module OffsitePayments #:nodoc:
 
           { "id" => extract_invoice_id(invoice) }
         end
-
         private
+
+        def add_plugin_info(request)
+          #add plugin info for v1 and v2 tokens
+          if BitPay.v2_api_token?(@account)
+            request.add_field("x-bitpay-plugin-info", "BitPay_AM" + application_id + "_Client_v2.0.1909")
+          else
+            request.add_field("x-bitpay-plugin-info", "BitPay_AM" + application_id + "_Client_v1.0.1909")
+            request.basic_auth @account, ''
+          end
+        end
 
         def create_invoice
           uri = URI.parse(BitPay.invoicing_url(@account))
@@ -84,11 +93,7 @@ module OffsitePayments #:nodoc:
           request = Net::HTTP::Post.new(uri.request_uri)
           request.content_type = "application/json"
           request.body = @fields.to_json
-
-          unless BitPay.v2_api_token?(@account)
-            request.add_field("x-bitpay-plugin-info", "BitPay_Shopify_Client_v2.0.1906")
-            request.basic_auth @account, ''
-          end
+          add_plugin_info(request)
 
           response = http.request(request)
           JSON.parse(response.body)
@@ -141,27 +146,27 @@ module OffsitePayments #:nodoc:
         end
 
         def acknowledge(authcode = nil)
-          uri = URI.parse("#{OffsitePayments::Integrations::BitPay.invoicing_url(@options[:credential1])}/#{transaction_id}")
+          uri = URI.parse("#{OffsitePayments::Integrations::BitPay::API_V2_URL}/#{transaction_id}")
 
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true
 
           request = Net::HTTP::Get.new(uri.path)
-          request.basic_auth @options[:credential1], ''
-
           response = http.request(request)
 
-          posted_json = JSON.parse(@raw).tap { |j| j.delete('currentTime') }
-          parse(response.body)
-          retrieved_json = JSON.parse(@raw).tap { |j| j.delete('currentTime') }
+          received_attributes = [transaction_id, status]
 
-          posted_json == retrieved_json
+          parse(response.body)
+
+          received_attributes == [transaction_id, status]
         end
 
         private
         def parse(body)
           @raw = body
-          @params = JSON.parse(@raw)
+          json = JSON.parse(@raw)
+
+          @params = json.key?('data') ? json['data'] : json
         end
       end
 

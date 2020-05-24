@@ -72,6 +72,7 @@ module OffsitePayments #:nodoc:
         attr_reader :identifier
 
         def initialize(order, account, options={})
+          @shipping_address_set = nil
           super
           @identifier = rand(0..99999).to_s.rjust(5, '0')
           add_field 'VendorTxCode', "#{order}-#{@identifier}"

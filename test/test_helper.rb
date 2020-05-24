@@ -158,7 +158,7 @@ module OffsitePayments
 
     def load_fixtures
       [DEFAULT_CREDENTIALS, LOCAL_CREDENTIALS].inject({}) do |credentials, file_name|
-        if File.exists?(file_name)
+        if File.exist?(file_name)
           yaml_data = YAML.load(File.read(file_name))
           credentials.merge!(symbolize_keys(yaml_data))
         end

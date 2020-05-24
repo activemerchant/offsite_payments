@@ -93,14 +93,6 @@ module OffsitePayments #:nodoc:
           params['type']
         end
 
-        def partner_income
-          params['partner_income']
-        end
-
-        def system_income
-          params['system_income']
-        end
-
         # Additional notification request params:
         # tid
         # name

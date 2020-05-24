@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    offsite_payments (2.7.16)
+    offsite_payments (2.7.24)
       actionpack (>= 5.2.3)
       actionview (>= 5.1.6.2)
       active_utils (~> 3.3.0)
@@ -36,7 +36,7 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_utils (3.3.16)
+    active_utils (3.3.17)
       activesupport (>= 4.2)
       i18n
     activejob (5.2.3)
@@ -64,7 +64,7 @@ GEM
     concurrent-ruby (1.1.5)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
-    crass (1.0.4)
+    crass (1.0.5)
     daemons (1.0.10)
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
@@ -79,7 +79,7 @@ GEM
       concurrent-ruby (~> 1.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    loofah (2.2.3)
+    loofah (2.3.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -114,12 +114,12 @@ GEM
     net-http-digest_auth (1.4.1)
     net-http-persistent (2.9.4)
     nio4r (2.3.1)
-    nokogiri (1.10.3)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
     power_assert (1.1.1)
     public_suffix (3.0.2)
-    rack (2.0.7)
+    rack (2.0.8)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.3)
@@ -146,7 +146,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
-    rake (12.3.2)
+    rake (13.0.1)
     safe_yaml (1.0.5)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
@@ -191,4 +191,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.0.1
+   2.1.4

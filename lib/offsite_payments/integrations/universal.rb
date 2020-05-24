@@ -22,7 +22,6 @@ module OffsitePayments #:nodoc:
           'CVE' => 0,
           'DJF' => 0,
           'GNF' => 0,
-          'HUF' => 0,
           'ISK' => 0,
           'JPY' => 0,
           'KMF' => 0,
