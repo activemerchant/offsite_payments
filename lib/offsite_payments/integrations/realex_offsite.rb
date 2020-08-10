@@ -529,10 +529,8 @@ module OffsitePayments #:nodoc:
             add_field(mappings[:billing_address][:state], lookup_state_code(country_code, params[:state]))
           end
 
-          if @fields[mappings[:customer][:phone]]&.chr == '|'
-            phone = @fields[mappings[:customer][:phone]].split('|').last
-
-            add_field(mappings[:customer][:phone], format_phone_number(phone, country_code))
+          if @fields[mappings[:customer][:phone]]
+            add_field(mappings[:customer][:phone], format_phone_number(@phone_number, country_code))
           end
         end
 
@@ -548,17 +546,18 @@ module OffsitePayments #:nodoc:
             add_field(mappings[:shipping_address][:state], lookup_state_code(country_code, params[:state]))
           end
 
-          if @fields[mappings[:customer][:phone]]
-            phone = @fields[mappings[:customer][:phone]].split('|').last
-
-            add_field(mappings[:customer][:phone], format_phone_number(phone, country_code))
+          if @fields[mappings[:customer][:phone]]&.chr == '|'
+            add_field(mappings[:customer][:phone], format_phone_number(@phone_number, country_code))
           end
         end
 
         def customer(params={})
           super
-          country = @fields[mappings[:shipping_address][:country]]
-          add_field(mappings[:customer][:phone], format_phone_number(params[:phone], lookup_country_code(country, :alpha2)))
+
+          country = @fields[mappings[:billing_address][:country]]
+          @phone_number = params[:phone]
+        
+          add_field(mappings[:customer][:phone], format_phone_number(@phone_number, lookup_country_code(country, :alpha2)))
         end
 
         def addresses_match(address_match = nil)
