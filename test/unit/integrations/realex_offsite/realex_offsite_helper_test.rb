@@ -48,12 +48,17 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
   end
 
   def test_phone_formatting
-    @helper.customer :first_name => 'Cody',
-                     :last_name => 'Fauser',
-                     :email => 'cody@example.com',
-                     :phone => '+48 12 345 67 89'
+    @helper.customer :phone => '+48 12 345 67 89'
                      
-    @helper.shipping_address :country  => 'PL'
+    @helper.billing_address :country => 'PL'
+
+    assert_field 'HPP_CUSTOMER_PHONENUMBER_MOBILE', '48|123456789'
+  end
+
+  def test_fixing_phone_calling_code
+    @helper.customer :phone => '+84 12 345 67 89'
+                     
+    @helper.billing_address :country => 'PL'
 
     assert_field 'HPP_CUSTOMER_PHONENUMBER_MOBILE', '48|123456789'
   end
