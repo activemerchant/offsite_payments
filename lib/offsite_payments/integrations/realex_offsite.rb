@@ -237,7 +237,6 @@ module OffsitePayments #:nodoc:
           'GW' => { :code => '245', :length => [7] },
           'GY' => { :code => '592', :length => [6, 7] },
           'HK' => { :code => '852', :length => [8] },
-          'HM' => { :code => '', :length => [] },
           'HN' => { :code => '504', :length => [7, 8] },
           'HR' => { :code => '385', :length => [8] },
           'HT' => { :code => '509', :length => [8] },
@@ -435,16 +434,25 @@ module OffsitePayments #:nodoc:
         def format_phone_number(phone_number, country_code)
           return nil if phone_number.nil?
 
+          country_number = COUNTRY_PHONE_NUMBERS[country_code] || { :code => '0', :length => [] }
+
           # Remove non-digit characters
           processed_number = phone_number.gsub(/\D/, '')
+
+          # Allow Italy and Ivory Coast to have leading zero, as they use it as a part of some phone numbers
+          if ['IT', 'CI'].include?(country_code) && /\A0[1-9]\d*/.match(processed_number)
+            return "#{country_number[:code]}|#{processed_number}"[0...19]
+          end
 
           # Remove leading zero(s)
           processed_number = processed_number.gsub(/\A0*/, '')
 
-          country_number = COUNTRY_PHONE_NUMBERS[country_code] || { :code => '', :length => [] }
-
-          if processed_number.start_with?(country_calling_code)
-            processed_number = processed_number[country_calling_code.length..-1]
+          # Check if the potential Singapore calling code is not the local prefix
+          if country_code == 'SG' &&
+            processed_number.start_with?(country_number[:code]) &&
+            country_number[:length].include?(processed_number.length)
+          then
+            return "#{country_number[:code]}|#{processed_number}"[0...19]
           end
 
           # Remove country calling code from the processed number and try to fix trivial mistakes
@@ -452,7 +460,7 @@ module OffsitePayments #:nodoc:
             (!(country_number[:length].include?(processed_number.length)) &&
             country_number[:length].include?(processed_number.length - country_number[:code].length) &&
             (country_number[:code].chars.sort == processed_number[0...country_number[:code].length].chars.sort))
-
+          then
             processed_number = processed_number[country_number[:code].length..-1]
           end
 

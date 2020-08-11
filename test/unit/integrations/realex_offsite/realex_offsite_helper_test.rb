@@ -55,6 +55,44 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
     assert_field 'HPP_CUSTOMER_PHONENUMBER_MOBILE', '48|123456789'
   end
 
+  def test_phone_formatting_when_no_country_specified
+    @helper.customer :phone => '123-456-789'
+
+    assert_field 'HPP_CUSTOMER_PHONENUMBER_MOBILE', '0|123456789'
+  end
+
+  def test_phone_formatting_for_italy_when_leading_zero_exists
+    @helper.customer :phone => '06 123 4567'
+
+    @helper.billing_address :country => 'IT'
+
+    assert_field 'HPP_CUSTOMER_PHONENUMBER_MOBILE', '39|061234567'
+  end
+
+  def test_phone_formatting_for_italy_when_leading_zero_does_not_exist
+    @helper.customer :phone => '330 1234567'
+
+    @helper.billing_address :country => 'IT'
+
+    assert_field 'HPP_CUSTOMER_PHONENUMBER_MOBILE', '39|3301234567'
+  end
+
+  def test_phone_formatting_for_singapore_when_no_country_code_is_given
+    @helper.customer :phone => '0 6500 0000'
+
+    @helper.billing_address :country => 'SG'
+
+    assert_field 'HPP_CUSTOMER_PHONENUMBER_MOBILE', '65|65000000'
+  end
+
+  def test_phone_formatting_for_singapore_when_country_code_is_given
+    @helper.customer :phone => '65 6500 0000'
+
+    @helper.billing_address :country => 'SG'
+
+    assert_field 'HPP_CUSTOMER_PHONENUMBER_MOBILE', '65|65000000'
+  end
+
   def test_fixing_phone_calling_code
     @helper.customer :phone => '+84 12 345 67 89'
                      
