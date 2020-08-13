@@ -438,12 +438,15 @@ module OffsitePayments #:nodoc:
 
           # Remove non-digit characters
           processed_number = phone_number.gsub(/\D/, '')
+          return '0|0' if [[], ['0']].include? processed_number.chars.uniq
 
           # Allow Italy and Ivory Coast to have leading zero, as they use it as a part of some phone numbers
           if ['IT', 'CI'].include?(country_code) && /\A0[1-9]\d*/.match(processed_number)
             return "#{country_number[:code]}|#{processed_number}"[0...19]
           end
 
+          return '0|0' if processed_number == country_number[:code]
+          
           # Remove leading zero(s)
           processed_number = processed_number.gsub(/\A0*/, '')
 
@@ -554,7 +557,7 @@ module OffsitePayments #:nodoc:
             add_field(mappings[:shipping_address][:state], lookup_state_code(country_code, params[:state]))
           end
 
-          if @fields[mappings[:customer][:phone]]&.chr == '|'
+          if @fields[mappings[:customer][:phone]]&.[](0..1) == '0|'
             add_field(mappings[:customer][:phone], format_phone_number(@phone_number, country_code))
           end
         end
