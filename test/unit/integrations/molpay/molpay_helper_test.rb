@@ -2,12 +2,14 @@ require 'test_helper'
 
 class MolpayHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
-  
+
   def setup
+    ::WebMock.allow_net_connect!
+
     @helper = Molpay::Helper.new('order-5.00','molpaytech', :amount => 5.00, :currency => 'MYR', :credential2 => 'testcredential')
   end
- 
- def test_basic_helper_fields
+
+  def test_basic_helper_fields
     assert_field "merchantid", "molpaytech"
     assert_field "amount", "5.00"
     assert_field "orderid", "order-5.00"
@@ -20,7 +22,7 @@ class MolpayHelperTest < Test::Unit::TestCase
 
   def test_credential_based_url_optional
     molpay = Molpay::Helper.new('order-5.00','molpaytech', :amount => 5.00, :currency => 'MYR', :credential2 => 'testcredential', :channel => 'maybank2u.php')
-    assert_equal 'https://www.onlinepayment.com.my/MOLPay/pay/molpaytech/maybank2u.php', molpay.credential_based_url 
+    assert_equal 'https://www.onlinepayment.com.my/MOLPay/pay/molpaytech/maybank2u.php', molpay.credential_based_url
   end
 
   def test_customer_fields
@@ -38,7 +40,7 @@ class MolpayHelperTest < Test::Unit::TestCase
   def test_supported_currency
     ['MYR', 'USD', 'SGD', 'PHP', 'VND', 'IDR', 'AUD', 'CNY', 'THB', 'GBP', 'EUR', 'HKD'].each do |cur|
       @helper.currency cur
-      assert_field "cur", cur 
+      assert_field "cur", cur
     end
   end
 
@@ -65,7 +67,7 @@ class MolpayHelperTest < Test::Unit::TestCase
     @helper.return_url "http://www.example.com"
     assert_field "returnurl", "http://www.example.com"
   end
-  
+
   def test_notify_url
     @helper.notify_url "http://www.example.com"
     assert_field "callbackurl", "http://www.example.com"

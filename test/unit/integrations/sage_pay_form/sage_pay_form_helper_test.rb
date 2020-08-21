@@ -28,7 +28,7 @@ class SagePayFormHelperTest < Test::Unit::TestCase
   end
 
   def test_identifier_should_only_contain_digits
-    assert_match /^[0-9]*$/, @helper.identifier
+    assert_match(/^[0-9]*$/, @helper.identifier)
   end
 
   def test_customer_fields
@@ -204,7 +204,7 @@ class SagePayFormHelperTest < Test::Unit::TestCase
 
   def test_crypt_field_is_hex
     crypt = @helper.form_fields['Crypt']
-    assert_match /^@[A-F0-9]+$/, crypt
+    assert_match(/^@[A-F0-9]+$/, crypt)
   end
 
   def test_crypt_field_is_uniq

@@ -4,7 +4,9 @@ class BitPayNotificationTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    @bit_pay = BitPay::Notification.new(http_raw_data)
+    @token = 'g82hEYhfRkhIlX5HJEqO8w5giRVeyGwsJ1wDPRvx8'
+    @invoice_id = '98kui1gJ7FocK41gUaBZxG'
+    @bit_pay = BitPay::Notification.new(http_raw_data.to_json, credential1: @token)
   end
 
   def test_accessors
@@ -22,19 +24,37 @@ class BitPayNotificationTest < Test::Unit::TestCase
   end
 
   def test_successful_acknowledgement
-    Net::HTTP.any_instance.expects(:request).returns(stub(:body => http_raw_data))
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}")
+      .to_return(status: 200, body: http_raw_api_data.to_json)
+
     assert @bit_pay.acknowledge
   end
 
+  def test_acknowledgement_fails_when_transaction_id_doesnt_match
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}")
+      .to_return(status: 200, body: http_raw_api_data("id" => "bad_id").to_json)
+
+    refute @bit_pay.acknowledge
+  end
+
+  def test_acknowledgement_fails_when_status_doesnt_match
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}")
+      .to_return(status: 200, body: http_raw_api_data("status" => "failure").to_json)
+
+    refute @bit_pay.acknowledge
+  end
+
   def test_acknowledgement_error
-    Net::HTTP.any_instance.expects(:request).returns(stub(:body => '{"error":"Doesnt match"}'))
+    stub_request(:get, "#{BitPay::API_V2_URL}/#{@invoice_id}")
+      .to_return(status: 200, body: { error: 'Doesnt match'}.to_json)
+
     assert !@bit_pay.acknowledge
   end
 
   private
   def http_raw_data
     {
-      "id"=>"98kui1gJ7FocK41gUaBZxG",
+      "id"=> @invoice_id,
       "orderID"=>"123",
       "url"=>"https://bitpay.com/invoice/98kui1gJ7FocK41gUaBZxG",
       "status"=>"complete",
@@ -45,6 +65,12 @@ class BitPayNotificationTest < Test::Unit::TestCase
       "expirationTime"=>"1370540376654",
       "currentTime"=>"1370539573956",
       "posData" => '{"orderId":123}'
-    }.to_json
+    }
+  end
+
+  def http_raw_api_data(options = {})
+    {
+      "data" => http_raw_data.merge(options)
+    }
   end
 end

@@ -56,7 +56,6 @@ class Ipay88NotificationTest < Test::Unit::TestCase
   end
 
   def test_successful_acknowledge_on_cancellation
-    params = parameterize(payload)
     ipay = build_notification(http_raw_data(:payment_cancelled))
     assert ipay.acknowledge
   end

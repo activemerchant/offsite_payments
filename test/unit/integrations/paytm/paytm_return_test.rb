@@ -32,7 +32,7 @@ class PaytmReturnTest < Test::Unit::TestCase
     assert notification.complete?
     assert_equal 'Completed', notification.status
     assert notification.invoice_ok?('100PT012')
-    assert notification.amount_ok?(BigDecimal.new('10.00'))
+    assert notification.amount_ok?(BigDecimal('10.00'))
     assert_equal 'TXN_SUCCESS', notification.transaction_status
     assert_equal '494157', @paytm.notification.transaction_id
     assert_equal 'CC', @paytm.notification.type

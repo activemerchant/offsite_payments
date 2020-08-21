@@ -106,7 +106,7 @@ class KlarnaHelperTest < Test::Unit::TestCase
   private
 
   def example_line_item(order_number = 1)
-    item = {
+    {
       :type => 'line item',
       :reference => "##{order_number}",
       :name => 'example item description',

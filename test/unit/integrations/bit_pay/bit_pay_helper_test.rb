@@ -4,7 +4,10 @@ class BitPayHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    @helper = BitPay::Helper.new(1234, 'cody@example.com', :amount => 500, :currency => 'USD')
+    @token_v1 = 'g82hEYhfRkhIlX5HJEqO8w5giRVeyGwsJ1wDPRvx8'
+    @token_v2 = '5v2K2rwuWQbnKexiQF9Eu6xdCVg7HFtkFNXarGEq9vLR'
+    @invoice_id = '98kui1gJ7FocK41gUaBZxG'
+    @helper = BitPay::Helper.new(1234, @token_v1, :amount => 500, :currency => 'USD')
   end
 
   def test_basic_helper_fields
@@ -45,9 +48,46 @@ class BitPayHelperTest < Test::Unit::TestCase
     assert_equal fields, @helper.fields
   end
 
-  def test_form_fields_uses_invoice_id
-    Net::HTTP.any_instance.expects(:request).returns(stub(:body => '{"id": "98kui1gJ7FocK41gUaBZxG"}'))
+  def test_calls_the_v1_api_url_when_the_token_is_v1
+    stub_request(:post, BitPay::API_V1_URL).with(
+      body: {
+        orderID: '1234',
+        price: '500',
+        currency: 'USD',
+        posData: { orderId: 1234 }.to_json,
+        fullNotifications: "true",
+        transactionSpeed: 'high',
+        token: @token_v1,
+      }.to_json,
+      basic_auth: [@token_v1, ''],
+      headers: {'x-bitpay-plugin-info' => 'BitPay_AM' + @helper.application_id + '_Client_v1.0.1909'},
+    ).to_return(
+      status: 200,
+      body: { id: @invoice_id }.to_json
+    )
 
-    assert_equal '98kui1gJ7FocK41gUaBZxG', @helper.form_fields['id']
+    assert_equal @invoice_id, @helper.form_fields['id']
+  end
+
+  def test_calls_the_v2_api_url_when_the_token_is_v2
+    stub_request(:post, BitPay::API_V2_URL).with(
+      body: {
+        orderID: '1234',
+        price: '500',
+        currency: 'USD',
+        posData: { orderId: 1234 }.to_json,
+        fullNotifications: "true",
+        transactionSpeed: 'high',
+        token: @token_v2,
+      }.to_json,
+      headers: {'x-bitpay-plugin-info' => 'BitPay_AM' + @helper.application_id + '_Client_v2.0.1909'},
+    ).to_return(
+      status: 200,
+      body: { data: { id: @invoice_id } }.to_json
+    )
+
+    helper = BitPay::Helper.new(1234, @token_v2, :amount => 500, :currency => 'USD')
+
+    assert_equal @invoice_id, helper.form_fields['id']
   end
 end

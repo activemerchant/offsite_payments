@@ -19,7 +19,7 @@ class PayFastNotificationTest < Test::Unit::TestCase
   end
 
   def test_compositions
-    assert_equal Money.from_amount(BigDecimal.new('120.20'), 'ZAR'), @pay_fast.amount
+    assert_equal Money.from_amount(BigDecimal('120.20'), 'ZAR'), @pay_fast.amount
   end
 
   def test_acknowledgement

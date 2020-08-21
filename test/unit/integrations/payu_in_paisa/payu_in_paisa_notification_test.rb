@@ -16,7 +16,7 @@ class PayuInPaisaNotificationTest < Test::Unit::TestCase
     assert_equal "Product Info", @payu.product_info
     assert_equal "INR", @payu.currency
     assert_equal true, @payu.invoice_ok?('4ba4afe87f7e73468f2a')
-    assert_equal true, @payu.amount_ok?(BigDecimal.new('10.00'),BigDecimal.new('0.00'))
+    assert_equal true, @payu.amount_ok?(BigDecimal('10.00'),BigDecimal('0.00'))
     assert_equal "CC", @payu.type
     assert_equal "4ba4afe87f7e73468f2a", @payu.invoice
     assert_equal "merchant_id", @payu.account

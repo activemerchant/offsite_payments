@@ -44,10 +44,10 @@ class CitrusReturnTest < Test::Unit::TestCase
     assert_equal "Completed", notification.status
     assert_equal "CTX1309180549472058821", notification.transaction_id
     assert_equal "SUCCESS", notification.transaction_status
-    assert_equal Money.from_amount(BigDecimal.new(10), "inr"), notification.amount
+    assert_equal Money.from_amount(BigDecimal(10), "inr"), notification.amount
     assert_equal "INR", notification.currency
     assert_equal true, notification.invoice_ok?('ORD427')
-    assert_equal true, notification.amount_ok?(BigDecimal.new('10.00'))
+    assert_equal true, notification.amount_ok?(BigDecimal('10.00'))
     assert_equal "CASH_ON_DELIVERY", notification.paymentmode
     assert_equal "ORD427", notification.invoice
     assert_equal "807bb30a30a02b904f1434539f2eb07942ecb6f1", notification.checksum

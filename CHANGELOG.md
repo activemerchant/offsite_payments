@@ -1,6 +1,56 @@
 # Offsite Payments CHANGELOG
 
-### version 2.7.10 (December 14, 2018)
+### version 2.7.24 (March 30, 2020)
+- Add ``allowed_push_host` to gemspec [pi3r]`
+
+### version 2.7.23 (March 30, 2020)
+- Test newer rubies and railses [byroot] #342
+
+### version 2.7.22 (March 10, 2020)
+- Bump rake from 12.3.2 to 13.0.1 [dependabot] #340
+- Remove special subunit case for HUF in universal integration [krispenney] #341
+- Bump nokogiri from 1.10.5 to 1.10.8 [dependabot] #339
+- Added quickpay which already has code for it [espen] #85
+- Added support for Quickpay v10 [calvincorreli] #205
+- Bump loofah from 2.2.3 to 2.3.1 [dependabot] #336
+- Bump rack from 2.0.7 to 2.0.8 [dependabot] #338
+
+### version 2.7.21 (Sept 23, 2019)
+- Various updates to the Realex integration [pi3r] #324
+- [Realex] Use application_id instead of hardcoded Shopify [pi3r] #334
+
+### version 2.7.20 (Sept 16, 2019)
+- [Bitpay] api version tracking [thejoshualewis] #331
+
+### version 2.7.19 (July 11, 2019)
+- [Bitpay] Only compare transaction_id/status while acknowledging [pi3r] #330
+
+### version 2.7.18 (July 11, 2019)
+- [Bitpay] Fixes an issue where notification couldn't be acknowledged [pi3r] #329
+
+### version 2.7.17 (July 10, 2019)
+- [BitPay] Read information from the `data` key present in the payload instead of root [pi3r] #328
+
+### version 2.7.16 (June 26, 2019)
+- [BitPay] properly call `v2_api_token?` on the BitPay module [pi3r] #325
+- [BitPay] properly fetch the invoice id after creation [pi3r] #325
+- Remove support for Ruby 2.3/2.2 (they are EOL) [pi3r]
+
+### version 2.7.15 (June 18, 2019)
+- Update URL for Paytm [AnnaGyergyai] #315
+
+### version 2.7.14 (June 18, 2019)
+- [Bitpay] Include basic auth only when the api isn't v2 [anbugal] #323
+
+### version 2.7.13 (May 22, 2019)
+- [BitPay] Add token to payload while creating the invoice [pi3r] #321
+
+### version 2.7.12 (May 13, 2019)
+
+- [BitPay] Use v2 api urls when the api token is of type v2 [pi3r] #319
+- Fix CVE-2019-5418, CVE-2018-14404 [pi3r] #317
+
+### version 2.7.11 (December 14, 2018)
 - Add `TXNDATETIME` to the whitelist of params to use for checksum verification [pi3r] #308
 
 ### version 2.7.10 (November 26, 2018)

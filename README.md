@@ -67,6 +67,7 @@ one.
 * [Dwolla](https://www.dwolla.com/default.aspx)
 * [ePay](http://www.epay.dk/epay-payment-solutions/)
 * [First Data](https://firstdata.zendesk.com/entries/407522-first-data-global-gateway-e4sm-payment-pages-integration-manual)
+* [Realex](https://www.globalpaymentsinc.com)
 * [HiTRUST](http://www.hitrust.com.hk/)
 * [MOLPay](http://www.molpay.com/v2/) - MY, SG, ID, TH, VN, PH, CN, AU
 * [Moneybookers](http://www.moneybookers.com)
@@ -77,7 +78,7 @@ one.
 * [PayDollar](http://www.paydollar.com)
 * [Paysbuy](https://www.paysbuy.com/) - TH
 * [Platron](https://www.platron.ru/) - RU
-* [Realex](http://www.realexpayments.com)
+* [QuickPay](http://quickpay.net/dk/) - AT, DE, DK, EE, LT, LV, FO, NL, NO, SE, UK
 * [RBK Money](https://rbkmoney.ru/) - RU
 * [Robokassa](http://robokassa.ru/) - RU
 * [SagePay Form](http://www.sagepay.com/products_services/sage_pay_go/integration/form)

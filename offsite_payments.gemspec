@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
   s.files = Dir['CHANGELOG', 'README.md', 'MIT-LICENSE', 'lib/**/*']
   s.require_path = 'lib'
 
+  s.metadata['allowed_push_host'] = "https://rubygems.org"
+
   unless defined?(Money)
     s.post_install_message = %q{
     In order to use `offsite_payments` gem, you need to either install or add to your Gemfile
@@ -38,16 +40,18 @@ Gem::Specification.new do |s|
     }
   end
 
-  s.add_dependency('activesupport', '>= 3.2.14')
+  s.add_dependency('activesupport', '>= 5.2.3')
   s.add_dependency('i18n', '>= 0.6.6')
   s.add_dependency('builder', '>= 2.1.2', '< 4.0.0')
   s.add_dependency('active_utils', '~> 3.3.0')
-  s.add_dependency('nokogiri', "~> 1.6")
-  s.add_dependency('actionpack', '>= 3.2.20', '< 6.0')
+  s.add_dependency('nokogiri', ">= 1.8.5")
+  s.add_dependency('actionpack', '>= 5.2.3')
+  s.add_dependency('actionview','>= 5.1.6.2')
 
   s.add_development_dependency('rake')
   s.add_development_dependency('test-unit', '~> 3.0')
   s.add_development_dependency('mocha', '~> 1.0')
   s.add_development_dependency('rails', '>= 3.2.14')
   s.add_development_dependency('thor')
+  s.add_development_dependency('webmock')
 end

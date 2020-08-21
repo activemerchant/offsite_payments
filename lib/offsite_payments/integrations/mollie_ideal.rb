@@ -133,7 +133,7 @@ module OffsitePayments #:nodoc:
         end
 
         def gross_cents
-          (BigDecimal.new(@params['amount'], 2) * 100).to_i
+          (BigDecimal(@params['amount'], 2) * 100).to_i
         end
 
         def status
