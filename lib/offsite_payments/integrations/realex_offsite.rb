@@ -429,6 +429,10 @@ module OffsitePayments #:nodoc:
           value ? 'TRUE' : 'FALSE'
         end
 
+        def adjust_phone_number_length(country_calling_code, phone_number)
+          country_calling_code[0...3] + '|' + phone_number[0...15]
+        end
+
         # The home phone number provided by the Cardholder. Should be In format:
         # of 'CountryCallingCode|Number' for example, '1|123456789'.
         def format_phone_number(phone_number, country_code)
@@ -442,7 +446,7 @@ module OffsitePayments #:nodoc:
 
           # Allow Italy and Ivory Coast to have leading zero, as they use it as a part of some phone numbers
           if ['IT', 'CI'].include?(country_code) && /\A0[1-9]\d*/.match(processed_number)
-            return "#{country_number[:code]}|#{processed_number}"[0...19]
+            return adjust_phone_number_length(country_number[:code], processed_number)
           end
 
           return '0|0' if processed_number == country_number[:code]
@@ -455,7 +459,7 @@ module OffsitePayments #:nodoc:
             processed_number.start_with?(country_number[:code]) &&
             country_number[:length].include?(processed_number.length)
           then
-            return "#{country_number[:code]}|#{processed_number}"[0...19]
+            return adjust_phone_number_length(country_number[:code], processed_number)
           end
 
           # Remove country calling code from the processed number and try to fix trivial mistakes
@@ -467,8 +471,8 @@ module OffsitePayments #:nodoc:
             processed_number = processed_number[country_number[:code].length..-1]
           end
 
-          # Limit returned string to 19 characters
-          "#{country_number[:code]}|#{processed_number}"[0...19]
+          # Limit returned string to 3 characters + | + 15 characters
+          adjust_phone_number_length(country_number[:code], processed_number)
         end
 
         def lookup_state_code(country_code, state)
