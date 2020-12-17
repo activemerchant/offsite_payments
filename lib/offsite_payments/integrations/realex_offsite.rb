@@ -260,35 +260,49 @@ module OffsitePayments #:nodoc:
         end
 
         def billing_address(params={})
-          # we add the generated code to the mappings,
-          # this is at the start because, after the lookup_country_code method is called,
-          # the country is removed from params, and we need it in the extract_avs_code method
-          add_field(mappings[:billing_address][:code], extract_avs_code(params))
-          
           country = params[:country]
           country_code = lookup_country_code(country, :alpha2)
+
+          # this call is at the start because, after the 'super' keyword is used,
+          # the country is removed from params
+          add_field(mappings[:billing_address][:code], extract_avs_code(params))
+          add_field(mappings[:billing_address][:country], lookup_country_code(country))
+
           super
 
           add_field(mappings[:billing_address][:zip], params[:zip])
-          add_field(mappings[:billing_address][:country], lookup_country_code(country))
 
           if ['US', 'CA'].include?(country_code) && params[:state].length > 2
             add_field(mappings[:billing_address][:state], lookup_state_code(country_code, params[:state]))
+          else
+            # HPP_BILLING_STATE is required only for US and CA, otherwise is deleted
+            @fields.delete_if do |k, _|
+              k == 'HPP_BILLING_STATE'
+            end
           end
         end
 
         def shipping_address(params={})
           country = params[:country]
           country_code = lookup_country_code(country, :alpha2)
+
+          # this call is at the start because, after the 'super' keyword is used,
+          # the country is removed from params
+          add_field(mappings[:shipping_address][:country], lookup_country_code(params[:country]))
+
           super
 
           add_field(mappings[:shipping_address][:zip], params[:zip])
           # the mapping for 'SHIPPING_CODE' field, which has the same value as the 'HPP_SHIPPING_POSTALCODE'
           add_field(mappings[:shipping_address][:code], params[:zip])
-          add_field(mappings[:shipping_address][:country], lookup_country_code(params[:country]))
 
           if ['US', 'CA'].include?(country_code) && params[:state].length > 2
             add_field(mappings[:shipping_address][:state], lookup_state_code(country_code, params[:state]))
+          else
+            # HPP_SHIPPING_STATE is required only for US and CA, otherwise is deleted
+            @fields.delete_if do |k, _|
+              k == 'HPP_SHIPPING_STATE'
+            end
           end
         end
 

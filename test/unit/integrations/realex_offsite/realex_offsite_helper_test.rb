@@ -120,7 +120,7 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
     assert_field 'HPP_SHIPPING_STREET2', 'Apt. 1'
     assert_field 'HPP_SHIPPING_STREET3', 'Entrance B'
     assert_field 'HPP_SHIPPING_CITY', 'London'
-    assert_field 'HPP_SHIPPING_STATE', 'Whales'
+    assert_field 'HPP_SHIPPING_STATE', nil
     assert_field 'SHIPPING_CODE', 'LS2 7E1'
   end
 
@@ -143,7 +143,7 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
     assert_field 'HPP_SHIPPING_STREET2', 'Apt. 1'
     assert_field 'HPP_SHIPPING_STREET3', 'Entrance B'
     assert_field 'HPP_SHIPPING_CITY', 'Leeds'
-    assert_field 'HPP_SHIPPING_STATE', 'Yorkshire'
+    assert_field 'HPP_SHIPPING_STATE', nil
   end
 
   def test_address_match_indicator_false
