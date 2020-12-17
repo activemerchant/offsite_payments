@@ -57,13 +57,25 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
                             :zip => 'LS2 7EE',
                             :country  => 'CA'
 
-    assert_field 'HPP_BILLING_POSTALCODE', '27|1'
+    assert_field 'HPP_BILLING_POSTALCODE', 'LS2 7EE'
     assert_field 'HPP_BILLING_COUNTRY', '124'
     assert_field 'HPP_BILLING_STREET1', '1 My Street'
     assert_field 'HPP_BILLING_STREET2', 'Apt. 1'
     assert_field 'HPP_BILLING_STREET3', 'Entrance B'
     assert_field 'HPP_BILLING_CITY', 'Leeds'
     assert_field 'HPP_BILLING_STATE', 'NL'
+    assert_field 'BILLING_CODE', 'LS2 7EE|1 My Street'
+  end
+
+  def test_address_mapping_gb
+    @helper.billing_address :address1 => '1 My Street',
+                            :address2 => 'Apt. 1',
+                            :address3 => 'Entrance B',
+                            :city => 'Leeds',
+                            :zip => 'LS2 7EE',
+                            :country  => 'GB'
+
+     assert_field 'BILLING_CODE', '27|1'
   end
 
   def test_us_country_state
@@ -71,6 +83,7 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
                             :address2 => 'Apt. 1',
                             :address3 => 'Entrance B',
                             :city => 'Pasadena',
+                            :zip => 'LS2 7EE',
                             :country  => 'United States',
                             :state => 'California'
 
@@ -83,6 +96,7 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
                             :address2 => 'Apt. 1',
                             :address3 => 'Entrance B',
                             :city => 'Pasadena',
+                            :zip => 'LS2 7EE',
                             :country  => 'Canada',
                             :state => 'Newfoundland'
 
@@ -100,13 +114,14 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
                              :zip => 'LS2 7E1',
                              :country  => 'GB'
 
-    assert_field 'HPP_SHIPPING_POSTALCODE', '271|1'
+    assert_field 'HPP_SHIPPING_POSTALCODE', 'LS2 7E1'
     assert_field 'HPP_SHIPPING_COUNTRY', '826'
     assert_field 'HPP_SHIPPING_STREET1', '1 My Street'
     assert_field 'HPP_SHIPPING_STREET2', 'Apt. 1'
     assert_field 'HPP_SHIPPING_STREET3', 'Entrance B'
     assert_field 'HPP_SHIPPING_CITY', 'London'
     assert_field 'HPP_SHIPPING_STATE', 'Whales'
+    assert_field 'SHIPPING_CODE', 'LS2 7E1'
   end
 
   def test_address_match_indicator
@@ -122,7 +137,7 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
 
     assert_field 'HPP_ADDRESS_MATCH_INDICATOR', 'TRUE'
 
-    assert_field 'HPP_SHIPPING_POSTALCODE', '271|1'
+    assert_field 'HPP_SHIPPING_POSTALCODE', 'LS2 7E1'
     assert_field 'HPP_SHIPPING_COUNTRY', '826'
     assert_field 'HPP_SHIPPING_STREET1', '1 My Street'
     assert_field 'HPP_SHIPPING_STREET2', 'Apt. 1'
