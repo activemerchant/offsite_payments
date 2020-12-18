@@ -503,6 +503,48 @@ module OffsitePayments #:nodoc:
                    add_field("HPP_SHIPPING_#{k.split('HPP_BILLING_')[1]}", v)
                  end
         end
+
+        # Validations
+        def get_pattern(key)
+          return case key
+            when 'HPP_CUSTOMER_EMAIL' then /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,24})*$/
+            when 'HPP_CUSTOMER_PHONENUMBER_MOBILE' then /^([0-9 +]){1,3}(\|){0,1}([0-9 +]){1,15}$/
+            when 'HPP_BILLING_STREET1', 'HPP_SHIPPING_STREET1', 'HPP_BILLING_STREET2', 'HPP_SHIPPING_STREET2' then /^[\p{L}\p{M}\p{Blank}\p{N}\/\.\-\_\'\,]{1,50}$/
+            when 'HPP_BILLING_CITY', 'HPP_SHIPPING_CITY' then /^[\p{L}\p{M}\p{Blank}\p{N}\/\.\-\_\'\,]{1,40}$/
+            when 'HPP_BILLING_COUNTRY', 'HPP_SHIPPING_COUNTRY' then /^([0-9])*$/
+            when 'HPP_BILLING_POSTALCODE', 'HPP_SHIPPING_POSTALCODE' then /^[a-zA-Z0-9\-\s]{1,16}$/
+            when 'HPP_BILLING_STATE', 'HPP_SHIPPING_STATE' then /^([A-Z])*$/
+          end
+        end
+
+        def get_message(key)
+          return case key
+            when 'HPP_CUSTOMER_EMAIL' then 'Invalid E-mail address.'
+            when 'HPP_CUSTOMER_PHONENUMBER_MOBILE' then 'Invalid Telephone. The selected payment method only allows numbers, spaces or punctuation (+, |), and no more than 19 characters.'
+            when 'HPP_BILLING_STREET1', 'HPP_SHIPPING_STREET1', 'HPP_BILLING_STREET2', 'HPP_SHIPPING_STREET2' then 'Invalid Street address. The selected payment method only allows letters, numbers, spaces or punctuation, and no more than 50 characters per line.'
+            when 'HPP_BILLING_CITY', 'HPP_SHIPPING_CITY' then 'Invalid City. The selected payment method only allows letters, numbers, spaces or punctuation, and no more than 40 characters.'
+            when 'HPP_BILLING_COUNTRY', 'HPP_SHIPPING_COUNTRY' then 'Invalid Country code.'
+            when 'HPP_BILLING_POSTALCODE', 'HPP_SHIPPING_POSTALCODE' then 'Invalid Zip/Postal Code. The selected payment method only allows letters, numbers, spaces or punctuation, and no more than 16 characters.'
+            when 'HPP_BILLING_STATE', 'HPP_SHIPPING_STATE' then 'Invalid State.'
+          end
+        end
+
+        def validate(key, value)
+          pattern = get_pattern(key)
+
+          return value unless pattern.present?
+
+          if value =~pattern
+            return value
+          else
+            raise ArgumentError, get_message(key)
+          end
+        end
+
+        def add_field(name, value)
+          return if name.blank? || value.blank?
+          @fields[name.to_s] = validate(name.to_s, value.to_s)
+        end
       end
 
       class Helper < OffsitePayments::Helper
@@ -544,19 +586,15 @@ module OffsitePayments #:nodoc:
         def billing_address(params={})
           country = params[:country]
           country_code = lookup_country_code(country, :alpha2)
-
-          # this call is at the start because, after the 'super' keyword is used,
-          # the country is removed from params
-          add_field(mappings[:billing_address][:code], extract_avs_code(params))
-          add_field(mappings[:billing_address][:country], lookup_country_code(country))
+          avs_code = extract_avs_code(params)
+          params[:state] = lookup_state_code(country_code, params[:state])
 
           super
 
-          add_field(mappings[:billing_address][:zip], params[:zip])
+          add_field(mappings[:billing_address][:country], lookup_country_code(country))
+          add_field(mappings[:billing_address][:code], avs_code)
 
-          if ['US', 'CA'].include?(country_code) && params[:state].length > 2
-            add_field(mappings[:billing_address][:state], lookup_state_code(country_code, params[:state]))
-          else
+          unless ['US', 'CA'].include?(country_code)
             # HPP_BILLING_STATE is required only for US and CA, otherwise is deleted
             @fields.delete_if do |k, _|
               k == 'HPP_BILLING_STATE'
@@ -571,21 +609,16 @@ module OffsitePayments #:nodoc:
         def shipping_address(params={})
           country = params[:country]
           country_code = lookup_country_code(country, :alpha2)
-
-          # this call is at the start because, after the 'super' keyword is used,
-          # the country is removed from params
-          add_field(mappings[:shipping_address][:country], lookup_country_code(params[:country]))
+          params[:state] = lookup_state_code(country_code, params[:state])
 
           super
 
-          add_field(mappings[:shipping_address][:zip], params[:zip])
+          add_field(mappings[:shipping_address][:country], lookup_country_code(country))
           # the mapping for 'SHIPPING_CODE' field, which has the same value as the 'HPP_SHIPPING_POSTALCODE'
           add_field(mappings[:shipping_address][:code], params[:zip])
 
-          if ['US', 'CA'].include?(country_code) && params[:state].length > 2
-            add_field(mappings[:shipping_address][:state], lookup_state_code(country_code, params[:state]))
-          else
-            # HPP_SHIPPING_STATE is required only for US and CA, otherwise is deleted
+          unless ['US', 'CA'].include?(country_code)
+            # HPP_BILLING_STATE is required only for US and CA, otherwise is deleted
             @fields.delete_if do |k, _|
               k == 'HPP_SHIPPING_STATE'
             end
@@ -597,12 +630,11 @@ module OffsitePayments #:nodoc:
         end
 
         def customer(params={})
-          super
-
           country = @fields[mappings[:billing_address][:country]]
           @phone_number = params[:phone]
-        
-          add_field(mappings[:customer][:phone], format_phone_number(@phone_number, lookup_country_code(country, :alpha2)))
+          params[:phone] = format_phone_number(@phone_number, lookup_country_code(country, :alpha2))
+
+          super
         end
 
         def addresses_match(address_match = nil)
