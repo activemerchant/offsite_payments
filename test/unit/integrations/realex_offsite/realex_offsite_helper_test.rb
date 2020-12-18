@@ -51,9 +51,10 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
     assert_raise ArgumentError do
       @helper.customer(:email => 'cody@example')
     end
-    assert_raise ArgumentError do
-      @helper.customer :phone => '(000555555000)000-000-000-000-0000'
+    assert_nothing_raised ArgumentError do
+      @helper.customer :phone => '(000)000-0000'
     end
+    assert_field 'HPP_CUSTOMER_PHONENUMBER_MOBILE', '0|0'
   end
 
   def test_phone_formatting
@@ -167,34 +168,34 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
   end
 
   def test_raises_invalid_billing_address
-      assert_raise ArgumentError do
-        @helper.billing_address :address1  => '1 My Street▓'
-      end
-      assert_raise ArgumentError do
-        @helper.billing_address :address1  => 'Lorem Ipsum is simply dummy text for testing length'
-      end
-      assert_raise ArgumentError do
-        @helper.billing_address :city  => 'Lorem Ipsum is simply dummy text for testing length'
-      end
-      assert_raise ArgumentError do
-        @helper.billing_address :zip  => 'LS2 7EE | 555'
-      end
-      assert_raise ArgumentError do
-        @helper.billing_address :country  => 'ZZ'
-      end
-      assert_raise ArgumentError do
-        @helper.billing_address :state  => '8888',
-                                 :country  => 'Canada'
-      end
-      assert_raise ArgumentError do
-        @helper.billing_address :state  => '8888',
-                                 :country  => 'United States'
-      end
-      assert_nothing_raised ArgumentError do
-        @helper.billing_address :state  => '8888',
-                                :country  => 'United Kingdom'
-      end
+    assert_raise ArgumentError do
+      @helper.billing_address :address1  => '1 My Street▓'
     end
+    assert_raise ArgumentError do
+      @helper.billing_address :address1  => 'Lorem Ipsum is simply dummy text for testing length'
+    end
+    assert_raise ArgumentError do
+      @helper.billing_address :city  => 'Lorem Ipsum is simply dummy text for testing length'
+    end
+    assert_raise ArgumentError do
+      @helper.billing_address :zip  => 'LS2 7EE | 555'
+    end
+    assert_raise ArgumentError do
+      @helper.billing_address :country  => 'ZZ'
+    end
+    assert_raise ArgumentError do
+      @helper.billing_address :state  => '8888',
+                              :country  => 'Canada'
+    end
+    assert_raise ArgumentError do
+      @helper.billing_address :state  => '8888',
+                              :country  => 'United States'
+    end
+    assert_nothing_raised ArgumentError do
+      @helper.billing_address :state  => '8888',
+                              :country  => 'United Kingdom'
+    end
+  end
 
   def test_shipping_address
     @helper.shipping_address :name => 'Testing Tester',
