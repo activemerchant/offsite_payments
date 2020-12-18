@@ -618,7 +618,7 @@ module OffsitePayments #:nodoc:
           add_field(mappings[:shipping_address][:code], params[:zip])
 
           unless ['US', 'CA'].include?(country_code)
-            # HPP_BILLING_STATE is required only for US and CA, otherwise is deleted
+            # HPP_SHIPPING_STATE is required only for US and CA, otherwise is deleted
             @fields.delete_if do |k, _|
               k == 'HPP_SHIPPING_STATE'
             end
