@@ -47,6 +47,15 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
     assert_field 'HPP_CUSTOMER_EMAIL', 'cody@example.com'
   end
 
+  def test_raises_invalid_customer
+    assert_raise ArgumentError do
+      @helper.customer(:email => 'cody@example')
+    end
+    assert_raise ArgumentError do
+      @helper.customer :phone => '(000555555000)000-000-000-000-0000'
+    end
+  end
+
   def test_phone_formatting
     @helper.customer :phone => '+48 12 345 67 89'
                      
@@ -157,6 +166,36 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
     assert_field 'HPP_BILLING_COUNTRY', '124'
   end
 
+  def test_raises_invalid_billing_address
+      assert_raise ArgumentError do
+        @helper.billing_address :address1  => '1 My Street▓'
+      end
+      assert_raise ArgumentError do
+        @helper.billing_address :address1  => 'Lorem Ipsum is simply dummy text for testing length'
+      end
+      assert_raise ArgumentError do
+        @helper.billing_address :city  => 'Lorem Ipsum is simply dummy text for testing length'
+      end
+      assert_raise ArgumentError do
+        @helper.billing_address :zip  => 'LS2 7EE | 555'
+      end
+      assert_raise ArgumentError do
+        @helper.billing_address :country  => 'ZZ'
+      end
+      assert_raise ArgumentError do
+        @helper.billing_address :state  => '8888',
+                                 :country  => 'Canada'
+      end
+      assert_raise ArgumentError do
+        @helper.billing_address :state  => '8888',
+                                 :country  => 'United States'
+      end
+      assert_nothing_raised ArgumentError do
+        @helper.billing_address :state  => '8888',
+                                :country  => 'United Kingdom'
+      end
+    end
+
   def test_shipping_address
     @helper.shipping_address :name => 'Testing Tester',
                              :address1 => '1 My Street',
@@ -175,6 +214,59 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
     assert_field 'HPP_SHIPPING_CITY', 'London'
     assert_field 'HPP_SHIPPING_STATE', nil
     assert_field 'SHIPPING_CODE', 'LS2 7E1'
+  end
+
+  def test_shipping_us_country_state
+    @helper.shipping_address :address1 => '1 My Street',
+                             :address2 => 'Apt. 1',
+                             :address3 => 'Entrance B',
+                             :city => 'Pasadena',
+                             :zip => 'LS2 7EE',
+                             :country  => 'United States',
+                             :state => 'California'
+
+    assert_field 'HPP_SHIPPING_STATE', 'CA'
+    assert_field 'HPP_SHIPPING_COUNTRY', '840'
+  end
+
+  def test_shipping_canada_country_state
+    @helper.shipping_address :address1 => '1 My Street',
+                             :address2 => 'Apt. 1',
+                             :address3 => 'Entrance B',
+                             :city => 'Pasadena',
+                             :zip => 'LS2 7EE',
+                             :country  => 'Canada',
+                             :state => 'Newfoundland'
+
+    assert_field 'HPP_SHIPPING_STATE', 'NL'
+    assert_field 'HPP_SHIPPING_COUNTRY', '124'
+  end
+
+  def test_raises_invalid_shipping_address
+    assert_raise ArgumentError do
+      @helper.shipping_address :address1  => '1 My Street▓'
+    end
+    assert_raise ArgumentError do
+      @helper.shipping_address :city  => 'Lorem Ipsum is simply dummy text for testing length'
+    end
+    assert_raise ArgumentError do
+      @helper.shipping_address :zip  => 'LS2 7EE | 555'
+    end
+    assert_raise ArgumentError do
+      @helper.shipping_address :country  => 'ZZ'
+    end
+    assert_raise ArgumentError do
+      @helper.shipping_address :state  => '8888',
+                               :country  => 'Canada'
+    end
+    assert_raise ArgumentError do
+      @helper.shipping_address :state  => '8888',
+                               :country  => 'United States'
+    end
+    assert_nothing_raised ArgumentError do
+      @helper.shipping_address :state  => '8888',
+                               :country  => 'United Kingdom'
+    end
   end
 
   def test_address_match_indicator
