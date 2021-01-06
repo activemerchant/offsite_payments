@@ -428,9 +428,7 @@ module OffsitePayments #:nodoc:
         def extract_avs_code(params={})
           return unless params[:zip] && params[:address1]
           code = [params[:zip], params[:address1]]
-          if 'GB' == params[:country]
-            code = code.collect{|p| extract_digits(p) }
-          end
+          code = code.collect{|p| extract_digits(p) } if params[:country] == 'GB'
           code.reject{|p| p.empty? }.join('|')
         end
 
