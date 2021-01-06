@@ -504,7 +504,7 @@ module OffsitePayments #:nodoc:
 
         # Validations
         def get_pattern(key)
-          return case key
+          case key
             when 'HPP_CUSTOMER_EMAIL' then /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,24})*$/
             when 'HPP_CUSTOMER_PHONENUMBER_MOBILE' then /^([0-9 +]){1,3}(\|){0,1}([0-9 +]){1,15}$/
             when 'HPP_BILLING_STREET1', 'HPP_SHIPPING_STREET1', 'HPP_BILLING_STREET2', 'HPP_SHIPPING_STREET2' then /^[\p{L}\p{M}\p{Blank}\p{N}\/\.\-\_\'\,]{1,50}$/
@@ -516,7 +516,7 @@ module OffsitePayments #:nodoc:
         end
 
         def get_message(key)
-          return case key
+          case key
             when 'HPP_CUSTOMER_EMAIL' then 'Invalid E-mail address.'
             when 'HPP_CUSTOMER_PHONENUMBER_MOBILE' then 'Invalid Telephone. The selected payment method only allows numbers, spaces or punctuation (+, |), and no more than 19 characters.'
             when 'HPP_BILLING_STREET1', 'HPP_SHIPPING_STREET1', 'HPP_BILLING_STREET2', 'HPP_SHIPPING_STREET2' then 'Invalid Street address. The selected payment method only allows letters, numbers, spaces or punctuation, and no more than 50 characters per line.'
