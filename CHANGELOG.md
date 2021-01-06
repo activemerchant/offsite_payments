@@ -1,5 +1,9 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.25 (January 06, 2021)
+- [REALEX] Improvements, validations and formatted phone number [ahumulescu, tjozwik, apetrovici] #348
+- Change to use `String#start_with?` instead of `String#starts_with?`. [akiko-pusu] #342
+
 ### version 2.7.24 (March 30, 2020)
 - Add ``allowed_push_host` to gemspec [pi3r]`
 
