@@ -119,7 +119,7 @@ GEM
     ntlm-http (0.1.1)
     power_assert (1.1.1)
     public_suffix (3.0.2)
-    rack (2.0.8)
+    rack (2.2.3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.3)
