@@ -507,8 +507,8 @@ module OffsitePayments #:nodoc:
           case key
             when 'HPP_CUSTOMER_EMAIL' then /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,24})*$/
             when 'HPP_CUSTOMER_PHONENUMBER_MOBILE' then /^([0-9 +]){1,3}(\|){0,1}([0-9 +]){1,15}$/
-            when 'HPP_BILLING_STREET1', 'HPP_SHIPPING_STREET1', 'HPP_BILLING_STREET2', 'HPP_SHIPPING_STREET2' then /^[\p{L}\p{M}\p{Blank}\p{N}\/\.\-\_\'\,]{1,50}$/
-            when 'HPP_BILLING_CITY', 'HPP_SHIPPING_CITY' then /^[\p{L}\p{M}\p{Blank}\p{N}\/\.\-\_\'\,]{1,40}$/
+            when 'HPP_BILLING_STREET1', 'HPP_SHIPPING_STREET1', 'HPP_BILLING_STREET2', 'HPP_SHIPPING_STREET2' then /^^[ÀÁÂÃÂÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷ø¤ùúûüýþÿ~L~N~Z~\~^~_¥a-zA-Z0-9.'";\s,\+\-£\/@!\?%\(\)\*:$#\[\]|=\\&amp;\u0152\u0153\u017D\u0161\u017E\u0178\u20AC]{1,50}$/
+            when 'HPP_BILLING_CITY', 'HPP_SHIPPING_CITY' then /^[ÀÁÂÃÂÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷ø¤ùúûüýþÿ~L~N~Z~\~^~_¥a-zA-Z0-9.'";\s,\+\-£\/@!\?%\(\)\*:$#\[\]|=\\&amp;\u0152\u0153\u017D\u0161\u017E\u0178\u20AC]{1,40}$/
             when 'HPP_BILLING_COUNTRY', 'HPP_SHIPPING_COUNTRY' then /^([0-9])*$/
             when 'HPP_BILLING_POSTALCODE', 'HPP_SHIPPING_POSTALCODE' then /^[a-zA-Z0-9\-\s]{1,16}$/
             when 'HPP_BILLING_STATE', 'HPP_SHIPPING_STATE' then /^([A-Z])*$/

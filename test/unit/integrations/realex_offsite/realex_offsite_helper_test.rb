@@ -172,6 +172,9 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
       @helper.billing_address :address1  => '1 My Street▓'
     end
     assert_raise ArgumentError do
+      @helper.billing_address :address2  => 'My Street º2'
+    end
+    assert_raise ArgumentError do
       @helper.billing_address :address1  => 'Lorem Ipsum is simply dummy text for testing length'
     end
     assert_raise ArgumentError do
