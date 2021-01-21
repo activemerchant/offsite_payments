@@ -1,5 +1,9 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.27 (January 21, 2021)
+- [Gestpay] Update service_url #352
+- Specify money gem version #353
+
 ### version 2.7.26 (January 06, 2021)
 - Exactly the same as 2.7.25, just adding a missing Gemfile.lock file
 
