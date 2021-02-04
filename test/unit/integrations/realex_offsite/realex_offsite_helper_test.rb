@@ -138,7 +138,18 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
                             :zip => 'LS2 7EE',
                             :country  => 'GB'
 
-     assert_field 'BILLING_CODE', '27|1'
+    assert_field 'BILLING_CODE', '27|1'
+  end
+
+  def test_es_billing_code
+    @helper.billing_address :address1 => '1 My Street',
+                            :address2 => 'Apt. 1',
+                            :address3 => 'Entrance B',
+                            :city => 'Leeds',
+                            :zip => 'LS2 7EE',
+                            :country  => 'ES'
+
+    assert_field 'BILLING_CODE', nil
   end
 
   def test_us_country_state
