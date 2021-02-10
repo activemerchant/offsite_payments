@@ -431,7 +431,10 @@ module OffsitePayments #:nodoc:
           return unless params[:zip] && params[:address1] && ['US', 'CA', 'GB'].include?(country_code)
           code = [params[:zip], params[:address1]]
           code = code.collect{|p| extract_digits(p) } if params[:country] == 'GB'
-          code.reject{|p| p.empty? }.join('|')
+          code = code.reject{|p| p.empty? }.join('|')
+          # Since this field accepts only a few characters, we remove the ones that are not accepted,
+          # and trim the white spaces
+          code = code.gsub(/[^a-z0-9_\-| ]+/i, '').strip
         end
 
         def extract_address_match_indicator(value)
@@ -509,8 +512,8 @@ module OffsitePayments #:nodoc:
           case key
             when 'HPP_CUSTOMER_EMAIL' then /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,24})*$/
             when 'HPP_CUSTOMER_PHONENUMBER_MOBILE' then /^([0-9 +]){1,3}(\|){0,1}([0-9 +]){1,15}$/
-            when 'HPP_BILLING_STREET1', 'HPP_SHIPPING_STREET1', 'HPP_BILLING_STREET2', 'HPP_SHIPPING_STREET2' then /^[ÀÁÂÃÂÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷ø¤ùúûüýþÿ~L~N~Z~\~^~_¥a-zA-Z0-9.'";\s,\+\-£\/@!\?%\(\)\*:$#\[\]|=\\&amp;\u0152\u0153\u017D\u0161\u017E\u0178\u20AC]{1,50}$/
-            when 'HPP_BILLING_CITY', 'HPP_SHIPPING_CITY' then /^[ÀÁÂÃÂÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷ø¤ùúûüýþÿ~L~N~Z~\~^~_¥a-zA-Z0-9.'";\s,\+\-£\/@!\?%\(\)\*:$#\[\]|=\\&amp;\u0152\u0153\u017D\u0161\u017E\u0178\u20AC]{1,40}$/
+            when 'HPP_BILLING_STREET1', 'HPP_SHIPPING_STREET1', 'HPP_BILLING_STREET2', 'HPP_SHIPPING_STREET2' then /^[ÀÁÂÃÂÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåªæçèéêëìíîïðñòóôõöº÷ø¤ùúûüýþÿ~L~N~Z~\~^~_¥a-zA-Z0-9.'";\s,\+\-£\/@!\?%\*:$#\[\]|=\\&amp;\u0152\u0153\u017D\u0161\u017E\u0178\u20AC]{1,50}$/
+            when 'HPP_BILLING_CITY', 'HPP_SHIPPING_CITY' then /^[ÀÁÂÃÂÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåªæçèéêëìíîïðñòóôõöº÷ø¤ùúûüýþÿ~L~N~Z~\~^~_¥a-zA-Z0-9.'";\s,\+\-£\/@!\?%\*:$#\[\]|=\\&amp;\u0152\u0153\u017D\u0161\u017E\u0178\u20AC]{1,40}$/
             when 'HPP_BILLING_COUNTRY', 'HPP_SHIPPING_COUNTRY' then /^([0-9])*$/
             when 'HPP_BILLING_POSTALCODE', 'HPP_SHIPPING_POSTALCODE' then /^[a-zA-Z0-9\-\s]{1,16}$/
             when 'HPP_BILLING_STATE', 'HPP_SHIPPING_STATE' then /^([A-Z])*$/
