@@ -1,5 +1,12 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.28 (February 11, 2021)
+- [Realex] #351
+  - Regex updates for address and city
+  - TR-86: [29RnExPb]: regex updates - minor correction
+  - Removed the BILLING_CODE field when the country is not US, CA or GB
+  - added two new characters to the REGEXES for street and city fields, removed the parantheeses on these REGEXES and removed the non allowed characters from the BILLING_CODE field
+
 ### version 2.7.27 (January 21, 2021)
 - [Gestpay] Update service_url #352
 - Specify money gem version #353
