@@ -112,7 +112,7 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
   end
 
   def test_address_mapping
-    @helper.billing_address :address1 => '1 My Street',
+    @helper.billing_address :address1 => '1 My Streetº',
                             :address2 => 'Apt. 1',
                             :address3 => 'Entrance B',
                             :city => 'Leeds',
@@ -122,7 +122,7 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
 
     assert_field 'HPP_BILLING_POSTALCODE', 'LS2 7EE'
     assert_field 'HPP_BILLING_COUNTRY', '124'
-    assert_field 'HPP_BILLING_STREET1', '1 My Street'
+    assert_field 'HPP_BILLING_STREET1', '1 My Streetº'
     assert_field 'HPP_BILLING_STREET2', 'Apt. 1'
     assert_field 'HPP_BILLING_STREET3', 'Entrance B'
     assert_field 'HPP_BILLING_CITY', 'Leeds'
@@ -138,7 +138,18 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
                             :zip => 'LS2 7EE',
                             :country  => 'GB'
 
-     assert_field 'BILLING_CODE', '27|1'
+    assert_field 'BILLING_CODE', '27|1'
+  end
+
+  def test_es_billing_code
+    @helper.billing_address :address1 => '1 My Street',
+                            :address2 => 'Apt. 1',
+                            :address3 => 'Entrance B',
+                            :city => 'Leeds',
+                            :zip => 'LS2 7EE',
+                            :country  => 'ES'
+
+    assert_field 'BILLING_CODE', nil
   end
 
   def test_us_country_state
@@ -170,6 +181,12 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
   def test_raises_invalid_billing_address
     assert_raise ArgumentError do
       @helper.billing_address :address1  => '1 My Street▓'
+    end
+    assert_raise ArgumentError do
+      @helper.billing_address :address2  => 'My Street (2'
+    end
+    assert_raise ArgumentError do
+      @helper.billing_address :address2  => 'My Street )2'
     end
     assert_raise ArgumentError do
       @helper.billing_address :address1  => 'Lorem Ipsum is simply dummy text for testing length'
