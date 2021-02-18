@@ -66,7 +66,7 @@ module OffsitePayments #:nodoc:
         end
 
         def amount=(money)
-          @amount_in_cents = money.respond_to?(:cents) ? money.cents : money
+          @amount_in_cents = to_cents(money)
           raise ArgumentError, "amount must be a Money object or an integer" if money.is_a?(String)
           raise ActionViewHelperError, "amount must be greater than $0.00" if @amount_in_cents.to_i <= 0
 

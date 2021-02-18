@@ -26,10 +26,12 @@ jobs:
           - gemfiles/Gemfile.shopify
           - gemfiles/Gemfile.rails-edge
         exclude:
-          - version: 2.5
-            gemfile: gemfiles/Gemfile.rails-edge
           - version: 2.6
             gemfile: gemfiles/Gemfile.rails-edge
+          - version: 2.5
+            gemfile: gemfiles/Gemfile.rails-edge
+          - version: 2.5
+            gemfile: gemfiles/Gemfile.shopify
     steps:
       - uses: actions/checkout@v2
 
