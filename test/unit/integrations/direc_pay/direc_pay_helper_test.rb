@@ -7,6 +7,11 @@ class DirecPayHelperTest < Test::Unit::TestCase
     @helper = DirecPay::Helper.new('#1234', 'account id', :amount => 500, :currency => 'INR')
   end
 
+  def test_money_amount_assigment
+    @helper.amount = Money.from_amount(1.20)
+    assert_field 'Amount', '1.20'
+  end
+
   def test_basic_helper_fields
     assert_field 'MID', 'account id'
     assert_field 'Merchant Order No', '#1234'
