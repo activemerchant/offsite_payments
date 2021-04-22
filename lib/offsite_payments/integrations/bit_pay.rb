@@ -44,7 +44,7 @@ module OffsitePayments #:nodoc:
         end
 
         mapping :amount, 'price'
-        mapping :order, 'orderID'
+        mapping :order, 'orderId'
         mapping :currency, 'currency'
 
         mapping :customer, :first_name => 'buyerName',
