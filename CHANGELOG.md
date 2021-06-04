@@ -1,5 +1,23 @@
 # Offsite Payments CHANGELOG
 
+### version 2.7.28 (February 11, 2021)
+- [Realex] #351
+  - Regex updates for address and city
+  - TR-86: [29RnExPb]: regex updates - minor correction
+  - Removed the BILLING_CODE field when the country is not US, CA or GB
+  - added two new characters to the REGEXES for street and city fields, removed the parantheeses on these REGEXES and removed the non allowed characters from the BILLING_CODE field
+
+### version 2.7.27 (January 21, 2021)
+- [Gestpay] Update service_url #352
+- Specify money gem version #353
+
+### version 2.7.26 (January 06, 2021)
+- Exactly the same as 2.7.25, just adding a missing Gemfile.lock file
+
+### version 2.7.25 (January 06, 2021)
+- [REALEX] Improvements, validations and formatted phone number [ahumulescu, tjozwik, apetrovici] #348
+- Change to use `String#start_with?` instead of `String#starts_with?`. [akiko-pusu] #342
+
 ### version 2.7.24 (March 30, 2020)
 - Add ``allowed_push_host` to gemspec [pi3r]`
 

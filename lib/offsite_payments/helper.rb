@@ -1,5 +1,13 @@
 module OffsitePayments #:nodoc:
+  module MoneyCompatibility
+    def to_cents(money)
+      money.try(:cents) || money.try(:subunits) || money
+    end
+  end
+
   class Helper #:nodoc:
+    include MoneyCompatibility
+
     attr_reader :fields
     class_attribute :service_url
     class_attribute :mappings

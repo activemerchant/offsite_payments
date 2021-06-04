@@ -7,6 +7,11 @@ class NochexHelperTest < Test::Unit::TestCase
     @helper = Nochex::Helper.new('order-500','cody@example.com', :amount => 500, :currency => 'GBP')
   end
 
+  def test_money_amount_assigment
+    @helper.amount = Money.from_amount(1.20)
+    assert_field 'amount', '1.20'
+  end
+
   def test_basic_helper_fields
     assert_field 'email', 'cody@example.com'
 

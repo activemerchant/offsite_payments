@@ -34,9 +34,9 @@ module OffsitePayments #:nodoc:
 
       module Common
         def generate_signature_string
-          @raw_post.slice!(0) if @raw_post.starts_with?("&")
+          @raw_post.slice!(0) if @raw_post.start_with?("&")
           @raw_post = CGI.unescape(@raw_post)
-          @raw_post = "&#{@raw_post}" unless @raw_post.starts_with?("&")
+          @raw_post = "&#{@raw_post}" unless @raw_post.start_with?("&")
           arr = @raw_post.split('&')
           arr.delete(arr.last)
           data = arr.join('&')

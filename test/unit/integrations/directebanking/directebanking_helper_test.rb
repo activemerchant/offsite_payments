@@ -9,6 +9,11 @@ class DirectebankingHelperTest < Test::Unit::TestCase
     @helper.return_url "https://localhost:8080/directebanking"
   end
 
+  def test_money_amount_assigment
+    @helper.amount = Money.from_amount(1.20)
+    assert_field 'amount', '1.20'
+  end
+
   def test_urls
     @helper.cancel_return_url "https://localhost:8080/directebanking/cancel"
     @helper.notify_url "https://localhost:8080/directebanking/notify"
