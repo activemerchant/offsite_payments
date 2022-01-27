@@ -3,8 +3,8 @@ module OffsitePayments #:nodoc:
     module RealexOffsite
       mattr_accessor :production_url
       mattr_accessor :test_url
-      self.production_url = 'https://epage.payandshop.com/epage.cgi'
-      self.test_url       = 'https://hpp.sandbox.realexpayments.com/pay'
+      self.production_url = 'https://api.realexpayments.com/epage-remote.cgi'
+      self.test_url       = 'https://api.sandbox.realexpayments.com/epage-remote.cgi'
 
       def self.helper(order, account, options={})
         Helper.new(order, account, options)
