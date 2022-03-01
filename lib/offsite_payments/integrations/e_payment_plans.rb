@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module EPaymentPlans

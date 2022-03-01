@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AuthorizeNetSimHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 

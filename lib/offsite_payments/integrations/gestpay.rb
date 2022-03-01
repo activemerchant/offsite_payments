@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # With help from Giovanni Intini and his code for RGestPay - http://medlar.it/it/progetti/rgestpay
 
 module OffsitePayments #:nodoc:

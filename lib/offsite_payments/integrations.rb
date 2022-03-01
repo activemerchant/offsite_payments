@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OffsitePayments
   module Integrations
     Dir[File.dirname(__FILE__) + '/integrations/*.rb'].each do |f|

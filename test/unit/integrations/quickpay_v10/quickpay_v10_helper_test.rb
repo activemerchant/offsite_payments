@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class QuickpayV10HelperTest < Test::Unit::TestCase

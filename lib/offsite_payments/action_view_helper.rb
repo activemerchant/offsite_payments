@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'action_pack'
 
 module OffsitePayments #:nodoc:
@@ -63,7 +65,7 @@ module OffsitePayments #:nodoc:
       end
 
       result << '</form>'
-      result= result.join("\n")
+      result = result.join("\n")
 
       concat(result.respond_to?(:html_safe) ? result.html_safe : result)
       nil

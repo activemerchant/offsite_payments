@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
 
 require 'test/unit'
@@ -9,6 +11,7 @@ require 'yaml'
 require 'json'
 require 'nokogiri'
 
+require 'active_support'
 require 'active_support/core_ext/integer/time'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/core_ext/time/acts_like'
@@ -201,7 +204,7 @@ module ActionViewHelperTestHelper
       end
     end
     @controller = @controller.new
-    @output_buffer = ''
+    @output_buffer = +''
   end
 
   protected

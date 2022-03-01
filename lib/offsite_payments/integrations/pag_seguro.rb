@@ -1,4 +1,4 @@
-# encoding: utf-8
+# frozen_string_literal: true
 
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
@@ -117,10 +117,10 @@ module OffsitePayments #:nodoc:
 
         def area_code_and_number(phone)
           return if phone.nil?
-          phone.gsub!(/[^\d]/, '')
+          clean_phone = phone.gsub(/[^\d]/, '')
 
-          ddd    = phone.slice(0..1)
-          number = phone.slice(2..12)
+          ddd    = clean_phone.slice(0..1)
+          number = clean_phone.slice(2..12)
 
           [ddd, number]
         end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mechanize'
 require 'action_view/base'
 require 'launchy'

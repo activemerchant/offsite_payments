@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'builder'
 
 module OffsitePayments #:nodoc:
@@ -137,7 +139,7 @@ module OffsitePayments #:nodoc:
 
         def success_response(path,secret)
           salt = rand(36**15).to_s(36)
-          xml = ""
+          xml = +""
           doc = Builder::XmlMarkup.new(:target => xml)
           sign = Platron.generate_signature({:pg_status => 'ok', :pg_salt => salt}, path, secret)
           doc.response do
