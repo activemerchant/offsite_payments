@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class KlarnaModuleTest < Test::Unit::TestCase

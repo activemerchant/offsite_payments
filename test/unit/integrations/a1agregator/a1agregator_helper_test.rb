@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class A1agregatorHelperTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 

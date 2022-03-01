@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Klarna
@@ -17,12 +19,9 @@ module OffsitePayments #:nodoc:
       def self.cart_items_payload(fields, cart_items)
         check_required_fields!(fields)
 
-        payload = ""
-        REQUIRED_FIELDS.sort.each do |field|
-           payload << fields[field].to_s
-        end
-
-        payload
+        REQUIRED_FIELDS.sort.map do |field|
+           fields[field].to_s
+        end.join
       end
 
       def self.sign(fields, cart_items, shared_secret)

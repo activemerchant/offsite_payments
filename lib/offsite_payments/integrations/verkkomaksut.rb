@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     # Usage, see the blog post here: http://blog.kiskolabs.com/post/22374612968/understanding-active-merchant-integrations and E1 API documentation here: http://docs.verkkomaksut.fi/

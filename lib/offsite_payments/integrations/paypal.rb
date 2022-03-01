@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Paypal
@@ -93,10 +95,8 @@ module OffsitePayments #:nodoc:
           add_field(mappings[:shipping_address][:country], country_code)
 
           if params.has_key?(:phone)
-            phone = params.delete(:phone).to_s
-
             # Wipe all non digits
-            phone.gsub!(/\D+/, '')
+            phone = params.delete(:phone).to_s.gsub(/\D+/, '')
 
             if ['US', 'CA'].include?(country_code) && phone =~ /(\d{3})(\d{3})(\d{4})$/
               add_field('night_phone_a', $1)

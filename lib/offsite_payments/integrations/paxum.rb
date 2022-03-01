@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     # Documentation:
@@ -89,8 +91,7 @@ module OffsitePayments #:nodoc:
 
         def initialize(post, options = {})
           @raw_post = post.dup
-          post.slice!(0)
-          super
+          super(post.slice(1..-1), options)
         end
 
         def self.recognizes?(params)

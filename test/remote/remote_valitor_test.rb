@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'remote_test_helper'
 require 'nokogiri'

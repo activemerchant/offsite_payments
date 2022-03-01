@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "thor/group"
 
 class IntegrationGenerator < Thor::Group
