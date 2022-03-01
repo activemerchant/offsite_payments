@@ -9,6 +9,7 @@ require 'yaml'
 require 'json'
 require 'nokogiri'
 
+require 'active_support'
 require 'active_support/core_ext/integer/time'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/core_ext/time/acts_like'

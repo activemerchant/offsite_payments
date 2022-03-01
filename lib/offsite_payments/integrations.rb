@@ -10,5 +10,12 @@ module OffsitePayments
       # Register for autoloading
       autoload integration_class, f
     end
+
+    def self.eager_load!
+      constants.each do |const_name|
+        const_get(const_name)
+      end
+      nil
+    end
   end
 end
