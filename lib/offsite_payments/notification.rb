@@ -61,9 +61,9 @@ module OffsitePayments #:nodoc:
     # Take the posted data and move the relevant data into a hash
     def parse(post)
       @raw = post.to_s
-      for line in @raw.split('&')
+      for line in CGI.unescape(@raw).split('&')
         key, value = *line.scan( %r{^([A-Za-z0-9_.-]+)\=(.*)$} ).flatten
-        params[key] = CGI.unescape(value.to_s) if key.present?
+        params[key] = value.to_s if key.present?
       end
     end
   end
