@@ -5,7 +5,8 @@ class PagSeguroNotificationTest < Test::Unit::TestCase
   include OffsitePayments::Integrations
 
   def setup
-    @uri = stub(:query=)
+    @uri = stub(:uri)
+    @uri.stubs(:query=)
     URI.expects(:join).with(PagSeguro.notification_url, notification_code).returns(@uri)
   end
 
