@@ -63,7 +63,23 @@ module OffsitePayments #:nodoc:
       @raw = post.to_s
       for line in @raw.split('&')
         key, value = *line.scan( %r{^([A-Za-z0-9_.-]+)\=(.*)$} ).flatten
-        params[key] = CGI.unescape(value.to_s) if key.present?
+        if key.present?
+          value = CGI.unescape(value.to_s)
+
+          # Paypal tend to send data encoded in ISO-8859-1
+          unless value.valid_encoding?
+            iso_value = value.dup.force_encoding(Encoding::ISO_8859_1)
+            if iso_value.valid_encoding?
+              value = iso_value.encode(Encoding::UTF_8)
+            else
+              # To be safe, if we get something even weirder, we ensure
+              # we return a UTF-8 strings.
+              value = value.b.encode(Encoding::UTF_8, replace: "?")
+            end
+          end
+
+          params[key] = value
+        end
       end
     end
   end

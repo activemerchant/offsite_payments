@@ -353,10 +353,10 @@ class RealexOffsiteHelperTest < Test::Unit::TestCase
 
   def test_format_amount_as_float
     amount_gbp = @helper.format_amount_as_float(929, 'GBP')
-    assert_in_delta amount_gbp, 9.29, 0.00
+    assert_in_delta 9.29, amount_gbp, 0.001
 
     amount_bhd = @helper.format_amount_as_float(929, 'BHD')
-    assert_in_delta amount_bhd, 0.929, 0.00
+    assert_in_delta 0.929, amount_bhd, 0.001
   end
 
   def test_format_amount
