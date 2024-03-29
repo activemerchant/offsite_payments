@@ -32,6 +32,11 @@ module OffsitePayments
     Integrations.const_get("#{name.to_s.downcase}".camelize)
   end
 
+  def self.eager_load!
+    Integrations.eager_load!
+    nil
+  end
+
   mattr_accessor :mode
   self.mode = :production
 
@@ -42,3 +47,5 @@ module OffsitePayments
 
   CURRENCIES_WITHOUT_FRACTIONS = [ 'BIF', 'BYR', 'CLP', 'CVE', 'DJF', 'GNF', 'ISK', 'JPY', 'KMF', 'KRW', 'PYG', 'RWF', 'TWD', 'UGX', 'VND', 'VUV', 'XAF', 'XOF', 'XPF' ]
 end
+
+require "offsite_payments/railtie" if defined? Rails::Railtie
