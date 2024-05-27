@@ -711,8 +711,8 @@ usa_epay_advanced:
   software_id: Z
 
 valitor:
-  login: WebsiteID
-  password: SecurityNumber
+  login: 1
+  password: 12345
 
 # Working credentials, no need to replace
 verify:
