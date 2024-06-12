@@ -55,7 +55,7 @@ class BitPayNotificationTest < Test::Unit::TestCase
   def http_raw_data
     {
       "id"=> @invoice_id,
-      "orderID"=>"123",
+      "orderId"=>"123",
       "url"=>"https://bitpay.com/invoice/98kui1gJ7FocK41gUaBZxG",
       "status"=>"complete",
       "btcPrice"=>"0.0295",

@@ -11,7 +11,7 @@ class BitPayHelperTest < Test::Unit::TestCase
   end
 
   def test_basic_helper_fields
-    assert_field 'orderID', "1234"
+    assert_field 'orderId', "1234"
     assert_field 'price', "500"
     assert_field 'currency', 'USD'
   end
@@ -51,7 +51,7 @@ class BitPayHelperTest < Test::Unit::TestCase
   def test_calls_the_v1_api_url_when_the_token_is_v1
     stub_request(:post, BitPay::API_V1_URL).with(
       body: {
-        orderID: '1234',
+        orderId: '1234',
         price: '500',
         currency: 'USD',
         posData: { orderId: 1234 }.to_json,
@@ -72,7 +72,7 @@ class BitPayHelperTest < Test::Unit::TestCase
   def test_calls_the_v2_api_url_when_the_token_is_v2
     stub_request(:post, BitPay::API_V2_URL).with(
       body: {
-        orderID: '1234',
+        orderId: '1234',
         price: '500',
         currency: 'USD',
         posData: { orderId: 1234 }.to_json,
