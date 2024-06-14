@@ -687,6 +687,11 @@ swipe_checkout:
   api_key: f2fe4efd5033edfaed9e4aad319ef4d34536a10eea07f90f182616d7216ae2b8
   region: NZ
 
+# Working credentials, no need to replace
+swipe_gateway:
+  public_key: "2f8baa1002d4cf6b581357f3be0a0daa"
+  private_key: "74625cbe61fe4db078096eb021ee1d3dba6a8d5d0700d86e6a944c7fc0573ef4"
+
 trans_first:
   login: LOGIN
   password: PASSWORD
