@@ -34,7 +34,7 @@ class SagePayFormNotificationTest < Test::Unit::TestCase
     assert_false n.test?
 
     assert_nil n.address_status
-    assert_nil n.currency
+    assert_equal Money::NULL_CURRENCY, n.currency
   end
 
   def test_failed_purchase
@@ -63,7 +63,7 @@ class SagePayFormNotificationTest < Test::Unit::TestCase
 
     assert_nil n.auth_id
     assert_nil n.address_status
-    assert_nil n.currency
+    assert_equal Money::NULL_CURRENCY, n.currency
   end
 
   def test_cancelled_purchase
@@ -92,12 +92,12 @@ class SagePayFormNotificationTest < Test::Unit::TestCase
 
     assert_nil n.auth_id
     assert_nil n.address_status
-    assert_nil n.currency
+    assert_equal Money::NULL_CURRENCY, n.currency
   end
 
   def test_compositions
     n = SagePayForm::Notification.new(successful_purchase, @options)
-    assert_equal Money.from_amount(1231.47), n.amount
+    assert_equal Money.from_amount(1231.47, Money::NULL_CURRENCY), n.amount
   end
 
   def test_bogus_crypt

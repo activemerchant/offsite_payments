@@ -201,7 +201,6 @@ module ActionViewHelperTestHelper
       end
     end
     @controller = @controller.new
-    @output_buffer = ''
   end
 
   protected

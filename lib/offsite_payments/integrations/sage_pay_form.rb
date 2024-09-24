@@ -367,7 +367,7 @@ module OffsitePayments #:nodoc:
 
         # Used by composition methods, but not supplied by SagePay.
         def currency
-          nil
+          Money::NULL_CURRENCY
         end
 
         def test?

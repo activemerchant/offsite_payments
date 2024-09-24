@@ -1,3 +1,6 @@
+> [!CAUTION]  
+> This gem is not actively maintained, and many of the integrations have not been updated in years. It is deprecated at Shopify, and should not be used.
+
 # Offsite Payments
 [![Build Status](https://github.com/activemerchant/offsite_payments/workflows/CI/badge.svg?branch=master)](https://github.com/activemerchant/offsite_payments/actions?query=workflow%3ACI)
 [![Code Climate](https://codeclimate.com/github/activemerchant/offsite_payments/badges/gpa.svg)](https://codeclimate.com/github/activemerchant/offsite_payments)

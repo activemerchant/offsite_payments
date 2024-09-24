@@ -9,5 +9,7 @@ group :remote_test do
   gem 'mongrel', '1.2.0.pre2', :platforms => :ruby
 end
 
-gem 'actionpack', github: 'rails/rails'
-gem 'money', '~> 6.8'
+gem 'actionpack', '~> 7.2.0'
+gem 'activesupport', '~> 7.2.0'
+gem 'actionview', '~> 7.2.0'
+gem 'shopify-money'

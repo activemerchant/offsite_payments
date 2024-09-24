@@ -14,7 +14,7 @@ class WorldPayNotificationTest < Test::Unit::TestCase
     assert_equal "1", @world_pay.item_id
     assert_equal "5.00", @world_pay.gross
     assert_equal "GBP", @world_pay.currency
-    assert_equal Time.utc('2007-01-01 00:00:00').utc, @world_pay.received_at
+    assert_equal Time.utc(2007, 1, 1), @world_pay.received_at
     assert @world_pay.test?
   end
 

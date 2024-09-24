@@ -8,7 +8,7 @@ class DirecPayHelperTest < Test::Unit::TestCase
   end
 
   def test_money_amount_assigment
-    @helper.amount = Money.from_amount(1.20)
+    @helper.amount = Money.from_amount(1.20, 'INR')
     assert_field 'Amount', '1.20'
   end
 
