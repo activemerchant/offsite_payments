@@ -19,24 +19,24 @@ class AuthorizeNetSimModuleTest < Test::Unit::TestCase
     payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0){|service|
       35.times {service.add_line_item :name => 'beauty2 - ayoyo', :quantity => 1, :unit_price => 0}
     }
-    assert @output_buffer =~ / more unshown items after this one/
+    assert @output_buffer.to_s =~ / more unshown items after this one/
     # It should display them all in, despite each having the same name.
-    assert @output_buffer.scan(/beauty2 - ayoyo/).length > 5
+    assert @output_buffer.to_s.scan(/beauty2 - ayoyo/).length > 5
   end
 
   def test_lots_of_line_items_different_names
     payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => 157.0){|service|
       35.times {|n| service.add_line_item :name => 'beauty2 - ayoyo' + n.to_s, :quantity => 1, :unit_price => 0}
     }
-    assert @output_buffer =~ / ayoyo3/
-    assert @output_buffer =~ / ayoyo4/
+    assert @output_buffer.to_s =~ / ayoyo3/
+    assert @output_buffer.to_s =~ / ayoyo4/
   end
 
   def test_should_round_numbers
     payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => "157.003"){}
-    assert @output_buffer !~ /x_amount.*157.003"/
+    assert @output_buffer.to_s !~ /x_amount.*157.003"/
     payment_service_for('44','8wd65QS', :service => :authorize_net_sim,  :amount => "157.005"){}
-    assert @output_buffer =~ /x_amount.*157.01"/
+    assert @output_buffer.to_s =~ /x_amount.*157.01"/
   end
 
   def test_all_fields
@@ -105,7 +105,7 @@ class AuthorizeNetSimModuleTest < Test::Unit::TestCase
 
   def check_inclusion(these_lines)
     for line in these_lines do
-      assert @output_buffer.include?(line), ['unable to find ', line, ' ', 'in \n', @output_buffer].join(' ')
+      assert @output_buffer.to_s.include?(line), ['unable to find ', line, ' ', 'in \n', @output_buffer.to_s].join(' ')
     end
   end
 
@@ -166,8 +166,8 @@ class AuthorizeNetSimModuleTest < Test::Unit::TestCase
       service.add_line_item :name => 'name2', :quantity => '2', :unit_price => '1.006'
     }
     # should round the prices
-    assert @output_buffer !~ /1.001/
-    assert @output_buffer =~ /1.01/
+    assert @output_buffer.to_s !~ /1.001/
+    assert @output_buffer.to_s =~ /1.01/
   end
 
   def test_ship_to

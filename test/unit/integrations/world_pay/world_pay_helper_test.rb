@@ -73,12 +73,12 @@ class WorldPayHelperTest < Test::Unit::TestCase
   end
 
   def test_valid_from_time
-    @helper.valid_from Time.utc('2007-01-01 00:00:00')
+    @helper.valid_from Time.utc(2007, 1, 1)
     assert_field 'authValidFrom', '1167609600000'
   end
 
   def test_valid_to_time
-    @helper.valid_to Time.utc('2007-01-01 00:00:00')
+    @helper.valid_to Time.utc(2007, 1, 1)
     assert_field 'authValidTo', '1167609600000'
   end
 

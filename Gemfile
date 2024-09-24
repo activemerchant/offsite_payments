@@ -9,4 +9,4 @@ group :remote_test do
   gem 'mongrel', '1.2.0.pre2', :platforms => :ruby
 end
 
-gem 'money', '~> 6.8'
+gem 'shopify-money'

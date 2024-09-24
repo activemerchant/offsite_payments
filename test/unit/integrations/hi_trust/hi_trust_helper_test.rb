@@ -8,7 +8,7 @@ class HiTrustHelperTest < Test::Unit::TestCase
   end
 
   def test_money_amount_to_cents
-    @helper.amount = Money.from_amount(1.20)
+    @helper.amount = Money.from_amount(1.20, 'USD')
     assert_field 'amount', '120'
   end
 

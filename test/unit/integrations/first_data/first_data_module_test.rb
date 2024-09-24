@@ -22,7 +22,7 @@ class FirstDataModuleTest < Test::Unit::TestCase
     assert_match(/ more unshown items after this one/, @output_buffer)
 
     # It should display them all in, despite each having the same name.
-    assert(@output_buffer.scan(/beauty2 - ayoyo/).length > 5)
+    assert(@output_buffer.to_s.scan(/beauty2 - ayoyo/).length > 5)
   end
 
   def test_lots_of_line_items_different_names

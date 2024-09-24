@@ -18,21 +18,11 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - 2.5
-          - 2.6
-          - 2.7
+          - 3.2
+          - 3.3
         gemfile:
-          - gemfiles/Gemfile.rails60
+          - gemfiles/Gemfile.rails72
           - gemfiles/Gemfile.latest-release
-          - gemfiles/Gemfile.shopify
-          - gemfiles/Gemfile.rails-edge
-        exclude:
-          - version: 2.6
-            gemfile: gemfiles/Gemfile.rails-edge
-          - version: 2.5
-            gemfile: gemfiles/Gemfile.rails-edge
-          - version: 2.5
-            gemfile: gemfiles/Gemfile.shopify
     steps:
       - uses: actions/checkout@v2
 

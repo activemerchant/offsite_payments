@@ -10,7 +10,7 @@ class DirectebankingHelperTest < Test::Unit::TestCase
   end
 
   def test_money_amount_assigment
-    @helper.amount = Money.from_amount(1.20)
+    @helper.amount = Money.from_amount(1.20, 'EUR')
     assert_field 'amount', '1.20'
   end
 
