@@ -1,5 +1,12 @@
 # Offsite Payments CHANGELOG
 
+### version 3.0.0 (September 24, 2024)
+This version officially deprecates this gem. It is no longer maintained and should not be used.
+
+- Update ruby test targets to 3.2 and 3.3
+- Require rails v7.2
+- Require shopify-money gem, no longer support other money gem.
+
 ### version 2.7.28 (February 11, 2021)
 - [Realex] #351
   - Regex updates for address and city

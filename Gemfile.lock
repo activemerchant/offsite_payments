@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    offsite_payments (2.7.28)
+    offsite_payments (3.0.0)
       actionpack (>= 7.2.0)
       actionview (>= 7.2.0)
       active_utils (>= 3.3.0)
