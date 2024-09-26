@@ -168,6 +168,8 @@ GEM
     nkf (0.2.0)
     nokogiri (1.16.7-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.16.7-x86_64-linux)
+      racc (~> 1.4)
     power_assert (2.0.3)
     psych (5.1.2)
       stringio
@@ -241,6 +243,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-23
+  x86_64-linux
 
 DEPENDENCIES
   jruby-openssl
