@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
 
   s.metadata['allowed_push_host'] = "https://rubygems.org"
 
-  s.add_dependency('shopify-money', '~> 2.0')
+  s.add_dependency('shopify-money', '>= 2.0')
   s.add_dependency('activesupport', '>= 7.2.0')
   s.add_dependency('i18n', '>= 0.6.6')
   s.add_dependency('builder', '>= 2.1.2', '< 4.0.0')

@@ -9,7 +9,7 @@ PATH
       builder (>= 2.1.2, < 4.0.0)
       i18n (>= 0.6.6)
       nokogiri (>= 1.8.5)
-      shopify-money (~> 2.0)
+      shopify-money (>= 2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -221,7 +221,7 @@ GEM
     rubyntlm (0.6.5)
       base64
     securerandom (0.3.1)
-    shopify-money (2.2.2)
+    shopify-money (3.0.0)
     stringio (3.1.1)
     test-unit (3.6.2)
       power_assert
