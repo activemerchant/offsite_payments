@@ -15,7 +15,13 @@ class PxpayModuleTest < Test::Unit::TestCase
       :service => :pxpay,
       :amount => 157.0,
       :return_url => "http://example.com/pxpay/return_url",
-      :credential2 => @options[:password]
+      :credential2 => @options[:password],
+      :customer_email => "customer@email.com",
+      :custom1 => 'custom1field',
+      :custom2 => 'custom2field',
+      :custom3 => 'custom3field',
+      :enable_add_bill_card => '1',
+      :transaction_type => 'Auth'
     }
   end
 
@@ -38,14 +44,28 @@ class PxpayModuleTest < Test::Unit::TestCase
     payment_service_for('44', @username, @service_options) {}
   end
 
+  def test_default_enable_add_bill_card
+    Pxpay::Helper.any_instance.expects(:ssl_post).with { |_, request| request.include?("<EnableAddBillCard>0</EnableAddBillCard>") }.returns(valid_response)
+    payment_service_for('44', @username, @service_options.except(:enable_add_bill_card)) {}
+  end
+
+  def test_default_txn_type
+    Pxpay::Helper.any_instance.expects(:ssl_post).with { |_, request| request.include?("<TxnType>Purchase</TxnType>") }.returns(valid_response)
+    payment_service_for('44', @username, @service_options.except(:transaction_type)) {}
+  end
+
   def test_all_fields
     Pxpay::Helper.any_instance.expects(:ssl_post).with do |_, request|
       request.include?("<MerchantReference>44</MerchantReference>") &&
         request.include?("<PxPayUserId>#{@username}</PxPayUserId>") &&
         request.include?("<PxPayKey>#{@key}</PxPayKey>") &&
-        request.include?("<TxnType>Purchase</TxnType>") &&
+        request.include?("<TxnType>Auth</TxnType>") &&
+        request.include?("<TxnData1>custom1field</TxnData1>") &&
+        request.include?("<TxnData2>custom2field</TxnData2>") &&
+        request.include?("<TxnData3>custom3field</TxnData3>") &&
+        request.include?("<EmailAddress>customer@email.com</EmailAddress>") &&
         request.include?("<AmountInput>157.00</AmountInput>") &&
-        request.include?("<EnableAddBillCard>0</EnableAddBillCard>") &&
+        request.include?("<EnableAddBillCard>1</EnableAddBillCard>") &&
         request.include?("<UrlSuccess>http://example.com/pxpay/return_url</UrlSuccess>") &&
         request.include?("<UrlFail>http://example.com/pxpay/return_url</UrlFail>")
     end.returns(valid_response)
