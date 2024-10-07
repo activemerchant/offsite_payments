@@ -1,4 +1,4 @@
-> [!CAUTION]  
+> [!CAUTION]
 > This gem is not actively maintained, and many of the integrations have not been updated in years. It is deprecated at Shopify, and should not be used.
 
 # Offsite Payments
@@ -39,19 +39,6 @@ Installation from RubyGems:
 Or, if you're using Bundler, just add the following to your Gemfile:
 
     gem 'offsite_payments'
-
-### Money gem dependency
-
-At the moment, `offsite_payments` gem depends on `Money` object, which was previously included by default. Since Shopify
-released their own `shopify-money` gem. Because `offsite_payments` does not impose which one of those gems should be
-included into your gem file, as long as one of them is included.
-
-
-- For [ruby money gem](https://github.com/RubyMoney/money) add `gem 'money'` to your `Gemfile`;
-- For [Shopify money gem](https://github.com/Shopify/money) add `gem 'shopify-money', require: 'money'` in your `Gemfile`.
-
-It's important to note that either of those Money gems would need to be added to your `Gemfile` before the `offsite_payments`
-one.
 
 [API documentation](http://www.rubydoc.info/github/activemerchant/offsite_payments/master).
 
