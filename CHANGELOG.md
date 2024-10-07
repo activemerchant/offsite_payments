@@ -1,5 +1,8 @@
 # Offsite Payments CHANGELOG
 
+### version 3.0.1 (September 24, 2024)
+- Update shopify-money dependency to >= 2.0
+
 ### version 3.0.0 (September 24, 2024)
 This version officially deprecates this gem. It is no longer maintained and should not be used.
 
