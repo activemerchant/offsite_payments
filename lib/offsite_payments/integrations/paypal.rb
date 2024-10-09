@@ -3,11 +3,13 @@ module OffsitePayments #:nodoc:
     module Paypal
       # Overwrite this if you want to change the Paypal test url
       mattr_accessor :test_url
-      self.test_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
+      self.test_url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr'
 
       # Overwrite this if you want to change the Paypal production url
+      # NOTE: https://www.paypal.com/ returns dynamic IP addresse.
+      # Please refer to <https://www.paypal.com/us/smarthelp/article/what-are-the-ip-addresses-for-live-paypal-servers-ts1056>
       mattr_accessor :production_url
-      self.production_url = 'https://www.paypal.com/cgi-bin/webscr'
+      self.production_url = 'https://ipnpb.paypal.com/cgi-bin/webscr'
 
       def self.service_url
         mode = OffsitePayments.mode

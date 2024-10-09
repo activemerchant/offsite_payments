@@ -9,12 +9,12 @@ class PaypalModuleTest < Test::Unit::TestCase
 
   def test_test_mode
     OffsitePayments.mode = :test
-    assert_equal 'https://www.sandbox.paypal.com/cgi-bin/webscr', Paypal.service_url
+    assert_equal 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr', Paypal.service_url
   end
 
   def test_production_mode
     OffsitePayments.mode = :production
-    assert_equal 'https://www.paypal.com/cgi-bin/webscr', Paypal.service_url
+    assert_equal 'https://ipnpb.paypal.com/cgi-bin/webscr', Paypal.service_url
   ensure
     OffsitePayments.mode = :test
   end
